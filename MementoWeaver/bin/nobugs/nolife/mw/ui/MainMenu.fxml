@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.ui.MainMenuController">
+  <children>
+    <Button fx:id="installButton" layoutX="39.0" layoutY="103.0" mnemonicParsing="false" onAction="#install" prefHeight="33.0" prefWidth="216.0" text="Install Materials" />
+    <Button fx:id="generateButton" layoutX="349.0" layoutY="103.0" mnemonicParsing="false" onAction="#generate" prefHeight="33.0" prefWidth="216.0" text="Generate Memento" />
+    <Button fx:id="modifyButton" layoutX="349.0" layoutY="167.0" mnemonicParsing="false" onAction="#modify" prefHeight="33.0" prefWidth="216.0" text="Modify Memento" />
+    <Button fx:id="exitButton" layoutX="523.0" layoutY="361.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
+  </children>
+</AnchorPane>
