@@ -26,7 +26,7 @@ public class MainMenuController extends AnchorPane implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
+		// do nothing.
 	}
 
 	public void setApplication(AppMain appMain) {

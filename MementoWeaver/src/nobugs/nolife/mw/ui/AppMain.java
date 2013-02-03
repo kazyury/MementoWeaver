@@ -30,11 +30,12 @@ public class AppMain extends Application {
 	 * ‰æ–Ê‘JˆÚƒƒ\ƒbƒh(MainMenu‚Ö‚Ì‘JˆÚ)
 	 */
 	void fwdMainMenu() {
+		MainMenuController next;
 		try {
-			MainMenuController next = (MainMenuController) replaceSceneContent("MainMenu.fxml");
+			next = (MainMenuController) replaceSceneContent("MainMenu.fxml");
 			next.setApplication(this);
-		} catch (Exception ex) {
-			// TODO error handling
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -45,8 +46,8 @@ public class AppMain extends Application {
 		try {
 			InstallMaterialController next = (InstallMaterialController) replaceSceneContent("InstallMaterial.fxml");
 			next.setApplication(this);
-		} catch (Exception ex) {
-			// TODO error handling
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
