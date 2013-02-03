@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.ui.InstallMaterialController">
+  <children>
+    <Button fx:id="exitButton" layoutX="523.0" layoutY="361.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
+    <Button id="exitButton" fx:id="installButton" layoutX="429.0" layoutY="361.0" mnemonicParsing="false" onAction="#install" text="Install" />
+    <Label layoutX="39.0" layoutY="84.0" text="Photo file path" />
+    <TextField fx:id="pathInput" layoutX="140.0" layoutY="81.0" prefWidth="289.0000999999975" />
+    <Button id="exitButton" fx:id="browseButton" layoutX="429.0" layoutY="82.0" mnemonicParsing="false" onAction="#browse" text="browse" />
+  </children>
+</AnchorPane>
