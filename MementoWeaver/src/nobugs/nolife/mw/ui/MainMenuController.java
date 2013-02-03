@@ -17,7 +17,6 @@ public class MainMenuController extends AnchorPane implements Initializable {
 
 	// イベントハンドラ
 	@FXML	protected void install(ActionEvent e) {
-		System.out.println(e);
 		appl.fwdInstallMaterial();
 	}
 	@FXML	protected void generate(ActionEvent e) {} // TODO not implemented yet
