@@ -1,14 +1,16 @@
-package nobugs.nolife.mw.ui;
+package nobugs.nolife.mw.processor;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import nobugs.nolife.mw.AppMain;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 
-public class MainMenuController extends AnchorPane implements Initializable {
+public class MainMenuProcessor extends AnchorPane implements Initializable {
 	private AppMain appl;
 	
 	// 入力フィールドに対応するインスタンスを保持する変数

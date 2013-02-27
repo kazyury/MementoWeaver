@@ -1,7 +1,10 @@
-package nobugs.nolife.mw.ui;
+package nobugs.nolife.mw;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import nobugs.nolife.mw.processor.InstallMaterialProcessor;
+import nobugs.nolife.mw.processor.MainMenuProcessor;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -30,9 +33,9 @@ public class AppMain extends Application {
 	 * ‰æ–Ê‘JˆÚƒƒ\ƒbƒh(MainMenu‚Ö‚Ì‘JˆÚ)
 	 */
 	void fwdMainMenu() {
-		MainMenuController next;
+		MainMenuProcessor next;
 		try {
-			next = (MainMenuController) replaceSceneContent("MainMenu.fxml");
+			next = (MainMenuProcessor) replaceSceneContent("MainMenu.fxml");
 			next.setApplication(this);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -42,9 +45,9 @@ public class AppMain extends Application {
 	/**
 	 * ‰æ–Ê‘JˆÚƒƒ\ƒbƒh(InstallMaterial‚Ö‚Ì‘JˆÚ)
 	 */
-	void fwdInstallMaterial() {
+	public void fwdInstallMaterial() {
 		try {
-			InstallMaterialController next = (InstallMaterialController) replaceSceneContent("InstallMaterial.fxml");
+			InstallMaterialProcessor next = (InstallMaterialProcessor) replaceSceneContent("InstallMaterial.fxml");
 			next.setApplication(this);
 		} catch (IOException e) {
 			e.printStackTrace();

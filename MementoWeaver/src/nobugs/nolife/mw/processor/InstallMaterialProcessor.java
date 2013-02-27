@@ -1,8 +1,10 @@
-package nobugs.nolife.mw.ui;
+package nobugs.nolife.mw.processor;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import nobugs.nolife.mw.AppMain;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,7 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 
-public class InstallMaterialController extends AnchorPane implements Initializable{
+public class InstallMaterialProcessor extends AnchorPane implements Initializable{
 	private AppMain appl;
 	
 	// 入力フィールドに対応するインスタンスを保持する変数
