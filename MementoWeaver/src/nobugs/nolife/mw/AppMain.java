@@ -29,13 +29,14 @@ public class AppMain extends Application {
 		stage.show(); // ‰æ–Ê•\¦
 	}
 
+	//TODO ‰æ–Ê‘JˆÚŒn‚Í—‚½‚æ‚¤‚Èˆ—‚É‚È‚é‚Ì‚Å‚P‚Â‚É‚Ü‚Æ‚ß‚½‚¢B
 	/**
 	 * ‰æ–Ê‘JˆÚƒƒ\ƒbƒh(MainMenu‚Ö‚Ì‘JˆÚ)
 	 */
 	void fwdMainMenu() {
 		MainMenuProcessor next;
 		try {
-			next = (MainMenuProcessor) replaceSceneContent("MainMenu.fxml");
+			next = (MainMenuProcessor) replaceSceneContent("ui/MainMenu.fxml");
 			next.setApplication(this);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -47,7 +48,7 @@ public class AppMain extends Application {
 	 */
 	public void fwdInstallMaterial() {
 		try {
-			InstallMaterialProcessor next = (InstallMaterialProcessor) replaceSceneContent("InstallMaterial.fxml");
+			InstallMaterialProcessor next = (InstallMaterialProcessor) replaceSceneContent("ui/InstallMaterial.fxml");
 			next.setApplication(this);
 		} catch (IOException e) {
 			e.printStackTrace();
