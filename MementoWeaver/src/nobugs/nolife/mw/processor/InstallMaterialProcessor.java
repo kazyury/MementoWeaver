@@ -13,9 +13,14 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+
 import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.derivatizer.Derivatizer;
 import nobugs.nolife.mw.derivatizer.DerivatizerFactory;
+import nobugs.nolife.mw.persistence.Material;
+import nobugs.nolife.mw.util.Constants;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,10 +44,12 @@ public class InstallMaterialProcessor extends AnchorPane implements Initializabl
 
 	// イベントハンドラ
 	@FXML	protected void install(ActionEvent e) {
+		EntityManager em = Persistence.createEntityManagerFactory(Constants.PERSISTENCE_UNIT_NAME).createEntityManager();
+
 		// 素材ソース、ステージングエリアのパスをチェック
 		if (!isValidPathSet()) {
 			System.out.println("checkFilePath() fails.");
-			return;
+			return; // TODO 例外スロー
 		}
 
 		// ファイルリストの取得。.jpeg, .jpg, .mov を対象とする(大文字小文字は無視)
@@ -56,18 +63,39 @@ public class InstallMaterialProcessor extends AnchorPane implements Initializabl
 				return false;
 			}
 		};
-		File[] materialList = srcdir.listFiles(filter);
 
-		// 素材ソース内のファイル毎に以下の処理を行う。
+		// 素材ソース内のファイル毎の繰り返し
+		File[] materialList = srcdir.listFiles(filter);
 		for (File material:materialList) {
+			
+			// MaterialEntityの生成
+			Material materialEntity = new Material();
+
 			// ファイルタイプの取得
 			int pos = material.getPath().lastIndexOf(".");
 			String suffix = material.getPath().toLowerCase().substring(pos+1);
+			
+			if (suffix.equals("jpg")||suffix.equals("jpeg")){
+				suffix = "jpg";
+				materialEntity.setMaterialType(Constants.MATERIAL_TYPE_JPG);
+			} else if (suffix.equals("mov")){
+				materialEntity.setMaterialType(Constants.MATERIAL_TYPE_MOV);
+			} else {
+				System.out.println("Unsupported file type");
+				return; // TODO 例外を投げるようにするべき。
+			}
 
 			// ファイルタイムスタンプの取得
 			Date lastModifiedDate = new Date(material.lastModified());
-			DateFormat df = new SimpleDateFormat("yyyyMMdd'_'hhmmss");
-			String timestamp = df.format(lastModifiedDate);
+			DateFormat filenameFormat = new SimpleDateFormat("yyyyMMdd'_'hhmmss");
+			DateFormat materialIdFormat = new SimpleDateFormat("yyyyMMddhhmmss");
+			DateFormat yearFormat = new SimpleDateFormat("yyyy");
+			DateFormat monthFormat = new SimpleDateFormat("MM");
+			
+			String timestamp = filenameFormat.format(lastModifiedDate);
+			materialEntity.setMaterialId(materialIdFormat.format(lastModifiedDate));
+			materialEntity.setCreatedYear(Integer.parseInt(yearFormat.format(lastModifiedDate)));
+			materialEntity.setCreatedMonth(Integer.parseInt(monthFormat.format(lastModifiedDate)));
 
 			// ステージングエリアにファイル名を変更してコピー
 			java.nio.file.Path dest = new File(todir,timestamp+"."+suffix).toPath();
@@ -82,9 +110,13 @@ public class InstallMaterialProcessor extends AnchorPane implements Initializabl
 			Derivatizer derivatizer = DerivatizerFactory.getDerivatizer(material);
 			derivatizer.derivate();
 			
-			//　TODO PersistenceManagerにインストール状況の登録を要求
-			
+			//　PersistenceManagerにインストール状況の登録を要求
+			materialEntity.setMaterialState(Constants.MATERIAL_STATE_INSTALLED);
+			em.getTransaction().begin();
+			em.persist(materialEntity);
+			em.getTransaction().commit();
 		}
+		em.close();
 		//TODO MaterialSourceManagerにキャッシュを要求
 		//TODO 次の画面への遷移
 	}

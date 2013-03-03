@@ -1,0 +1,11 @@
+----------------------------------------------------------------
+Mon Mar 04 01:05:12 JST 2013:
+ Derby バージョン The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): インスタンス a816c00e-013d-30ff-ef8a-00000144b8e0 を
+クラスローダー sun.misc.Launcher$AppClassLoader@709fa12f によってデータベースディレクトリ C:\Users\kazyury\MyDB  上でブート中 
+
+
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_13-b20
+user.dir=C:\Users\kazyury\devel\github\java\MementoWeaver\MementoWeaver
+derby.system.home=null
+データベースクラスローダーが開始されました - derby.database.classpath=''
