@@ -1,9 +1,11 @@
 package nobugs.nolife.mw.processor;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -22,6 +24,7 @@ import nobugs.nolife.mw.derivatizer.DerivatizerFactory;
 import nobugs.nolife.mw.persistence.Material;
 import nobugs.nolife.mw.util.Constants;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -117,7 +120,21 @@ public class InstallMaterialProcessor extends AnchorPane implements Initializabl
 			em.getTransaction().commit();
 		}
 		em.close();
-		//TODO MaterialSourceManagerにキャッシュを要求
+		// 今回のpathInputをプロパティにセットして保管
+		dirProperties.setProperty("dir.materialSource", pathInput.getText());
+
+//		File cache = new File("dir.properties");
+		try {
+			// クラスパスに書き込むための小賢しい方法
+			File cache = new File(this.getClass().getResource("/dir.properties").toURI().getPath());
+			OutputStream out = new FileOutputStream(cache);
+			dirProperties.store(out, "cached material source path");
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
 		//TODO 次の画面への遷移
 	}
 
@@ -130,12 +147,14 @@ public class InstallMaterialProcessor extends AnchorPane implements Initializabl
 		}
 	}
 
-	@FXML	protected void exit(ActionEvent e) {} // TODO not implemented yet
+	@FXML	protected void exit(ActionEvent e) {
+		Platform.exit();
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// プロパティの読み込み
-		InputStream is = this.getClass().getResourceAsStream("dir.properties");
+		InputStream is = this.getClass().getResourceAsStream("/dir.properties");
 		try {
 			dirProperties.load(is);
 			is.close();
