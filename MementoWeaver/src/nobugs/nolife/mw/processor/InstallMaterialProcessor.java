@@ -74,12 +74,9 @@ public class InstallMaterialProcessor extends AnchorPane implements Initializabl
 			// MaterialEntityの生成
 			Material materialEntity = new Material();
 
-			// ファイルタイプの取得
-			int pos = material.getPath().lastIndexOf(".");
-			String suffix = material.getPath().toLowerCase().substring(pos+1);
-			
-			if (suffix.equals("jpg")||suffix.equals("jpeg")){
-				suffix = "jpg";
+			// ファイルタイプの取得と設定
+			String suffix = fileTypeOf(material);
+			if (suffix.equals("jpg")){
 				materialEntity.setMaterialType(Constants.MATERIAL_TYPE_JPG);
 			} else if (suffix.equals("mov")){
 				materialEntity.setMaterialType(Constants.MATERIAL_TYPE_MOV);
@@ -88,20 +85,16 @@ public class InstallMaterialProcessor extends AnchorPane implements Initializabl
 				return; // TODO 例外を投げるようにするべき。
 			}
 
-			// ファイルタイムスタンプの取得
+			// ファイルタイムスタンプの取得と設定
 			Date lastModifiedDate = new Date(material.lastModified());
-			DateFormat filenameFormat = new SimpleDateFormat("yyyyMMdd'_'hhmmss");
-			DateFormat materialIdFormat = new SimpleDateFormat("yyyyMMddhhmmss");
-			DateFormat yearFormat = new SimpleDateFormat("yyyy");
-			DateFormat monthFormat = new SimpleDateFormat("MM");
 			
-			String timestamp = filenameFormat.format(lastModifiedDate);
-			materialEntity.setMaterialId(materialIdFormat.format(lastModifiedDate));
-			materialEntity.setCreatedYear(Integer.parseInt(yearFormat.format(lastModifiedDate)));
-			materialEntity.setCreatedMonth(Integer.parseInt(monthFormat.format(lastModifiedDate)));
-
+			String destBaseFilename = formatDate(lastModifiedDate, "yyyyMMdd'_'hhmmss");
+			materialEntity.setMaterialId(formatDate(lastModifiedDate,"yyyyMMddhhmmss"));
+			materialEntity.setCreatedYear(Integer.parseInt(formatDate(lastModifiedDate,"yyyy")));
+			materialEntity.setCreatedMonth(Integer.parseInt(formatDate(lastModifiedDate,"MM")));
+			
 			// ステージングエリアにファイル名を変更してコピー
-			java.nio.file.Path dest = new File(todir,timestamp+"."+suffix).toPath();
+			java.nio.file.Path dest = new File(todir,destBaseFilename+"."+suffix).toPath();
 			try {
 				Files.copy(material.toPath(), dest, StandardCopyOption.COPY_ATTRIBUTES);
 			} catch (IOException e1) {
@@ -110,7 +103,7 @@ public class InstallMaterialProcessor extends AnchorPane implements Initializabl
 				return;
 			}
 			// DerivationManager(Derivatizer)に派生ファイルの作成を要求
-			Derivatizer derivatizer = DerivatizerFactory.getDerivatizer(material);
+			Derivatizer derivatizer = DerivatizerFactory.getDerivatizer(dest);
 			derivatizer.derivate();
 			
 			//　PersistenceManagerにインストール状況の登録を要求
@@ -120,20 +113,9 @@ public class InstallMaterialProcessor extends AnchorPane implements Initializabl
 			em.getTransaction().commit();
 		}
 		em.close();
-		// 今回のpathInputをプロパティにセットして保管
-		dirProperties.setProperty("dir.materialSource", pathInput.getText());
 
-//		File cache = new File("dir.properties");
-		try {
-			// クラスパスに書き込むための小賢しい方法
-			File cache = new File(this.getClass().getResource("/dir.properties").toURI().getPath());
-			OutputStream out = new FileOutputStream(cache);
-			dirProperties.store(out, "cached material source path");
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
+		// 今回のpathInputをプロパティにセットして保管
+		storeMaterialSourceCache();
 		
 		//TODO 次の画面への遷移
 	}
@@ -193,4 +175,41 @@ public class InstallMaterialProcessor extends AnchorPane implements Initializabl
 		}
 		return  true;
 	}
+
+	/**
+	 * @param material
+	 * @return
+	 */
+	private String fileTypeOf(File material) {
+		int pos = material.getPath().lastIndexOf(".");
+		String suffix = material.getPath().toLowerCase().substring(pos+1);
+		
+		if (suffix.equals("jpg")||suffix.equals("jpeg")){
+			suffix = "jpg";
+		}
+		if (!suffix.equals("mov") && !suffix.equals("jpg")){
+			System.out.println("Unsupported file type");
+		}
+		return suffix;
+	}
+
+	private String formatDate(Date date, String pattern) {
+		DateFormat formatter = new SimpleDateFormat(pattern);
+		return formatter.format(date);
+	}
+
+	private void storeMaterialSourceCache() {
+		dirProperties.setProperty("dir.materialSource", pathInput.getText());
+		try {
+			// クラスパスに書き込むための小賢しい方法
+			File cache = new File(this.getClass().getResource("/dir.properties").toURI().getPath());
+			OutputStream out = new FileOutputStream(cache);
+			dirProperties.store(out, "cached material source path");
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+
 }

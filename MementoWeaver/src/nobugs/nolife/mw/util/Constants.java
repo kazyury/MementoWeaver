@@ -13,5 +13,11 @@ public class Constants {
 	public static String MATERIAL_STATE_STAGED="2";
 	public static String MATERIAL_STATE_IN_USE="3";
 
+	// Derivatizer
+	public static double THUMBNAIL_LONG_SIDE_PIXELS=240.0;
+	public static String THUMBNAIL_SUBPATH="thumbnail";
 
+	public static String FFMPEG_PATH="C:\\home\\softwares\\ffmpeg\\ffmpeg ";
+	public static String FFMPEG_OPTS=" -f image2 -pix_fmt jpg -ss 1 -s 640x480 -an -y -vframes 1 ";
+	
 }

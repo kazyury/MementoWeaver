@@ -55,6 +55,20 @@ public class AppMain extends Application {
 		}
 	}
 
+	// TODO 各画面は、Initializableを実装したインターフェース(MWScreen)をImplementsするようにする。
+	// TODO 以下の処理をMWScreenインターフェースを操作するようにする。
+	// TODO 各画面遷移メソッドをこれに統一する。
+	/* 
+	private void forward(String fxml) {
+		Initializable next;
+		try {
+			next = (Initializable) replaceSceneContent(fxml);
+			next.setApplication(this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	*/
 	/**
 	 * 
 	 * @param fxml
