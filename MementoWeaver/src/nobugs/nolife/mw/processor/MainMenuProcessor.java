@@ -7,10 +7,9 @@ import nobugs.nolife.mw.AppMain;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 
-public class MainMenuProcessor extends AnchorPane implements Initializable {
+public class MainMenuProcessor extends AnchorPane implements MWProcessor {
 	private AppMain appl;
 	
 	// 入力フィールドに対応するインスタンスを保持する変数
@@ -30,6 +29,7 @@ public class MainMenuProcessor extends AnchorPane implements Initializable {
 		// do nothing.
 	}
 
+	@Override
 	public void setApplication(AppMain appMain) {
 		appl = appMain;
 	}

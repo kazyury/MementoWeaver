@@ -3,8 +3,7 @@ package nobugs.nolife.mw;
 import java.io.IOException;
 import java.io.InputStream;
 
-import nobugs.nolife.mw.processor.InstallMaterialProcessor;
-import nobugs.nolife.mw.processor.MainMenuProcessor;
+import nobugs.nolife.mw.processor.MWProcessor;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -29,46 +28,35 @@ public class AppMain extends Application {
 		stage.show(); // 画面表示
 	}
 
-	//TODO 画面遷移系は似たような処理になるので１つにまとめたい。
+	// TODO 画面遷移系をforwardに一本化するか?
 	/**
 	 * 画面遷移メソッド(MainMenuへの遷移)
 	 */
-	void fwdMainMenu() {
-		MainMenuProcessor next;
-		try {
-			next = (MainMenuProcessor) replaceSceneContent("ui/MainMenu.fxml");
-			next.setApplication(this);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void fwdMainMenu() {
+		forward("ui/MainMenu.fxml");
 	}
 
 	/**
 	 * 画面遷移メソッド(InstallMaterialへの遷移)
 	 */
 	public void fwdInstallMaterial() {
-		try {
-			InstallMaterialProcessor next = (InstallMaterialProcessor) replaceSceneContent("ui/InstallMaterial.fxml");
-			next.setApplication(this);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		forward("ui/InstallMaterial.fxml");
 	}
 
-	// TODO 各画面は、Initializableを実装したインターフェース(MWScreen)をImplementsするようにする。
-	// TODO 以下の処理をMWScreenインターフェースを操作するようにする。
-	// TODO 各画面遷移メソッドをこれに統一する。
-	/* 
+	
+	/**
+	 * 画面遷移の実装
+	 * @param fxml
+	 */
 	private void forward(String fxml) {
-		Initializable next;
+		MWProcessor next;
 		try {
-			next = (Initializable) replaceSceneContent(fxml);
+			next = (MWProcessor) replaceSceneContent(fxml);
 			next.setApplication(this);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	*/
 	/**
 	 * 
 	 * @param fxml

@@ -27,12 +27,11 @@ import nobugs.nolife.mw.util.Constants;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 
-public class InstallMaterialProcessor extends AnchorPane implements Initializable{
+public class InstallMaterialProcessor extends AnchorPane implements MWProcessor{
 	private AppMain appl;
 	private Properties dirProperties = new Properties();
 	private String materialSourcePath = null; // プロパティファイルより
@@ -150,6 +149,7 @@ public class InstallMaterialProcessor extends AnchorPane implements Initializabl
 		pathInput.setText(materialSourcePath);
 	}
 
+	@Override
 	public void setApplication(AppMain appMain) {
 		appl = appMain;
 	}
