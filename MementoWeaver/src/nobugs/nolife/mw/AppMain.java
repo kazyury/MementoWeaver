@@ -29,19 +29,9 @@ public class AppMain extends Application {
 	}
 
 	// TODO ‰æ–Ê‘JˆÚŒn‚ğforward‚Éˆê–{‰»‚·‚é‚©?
-	/**
-	 * ‰æ–Ê‘JˆÚƒƒ\ƒbƒh(MainMenu‚Ö‚Ì‘JˆÚ)
-	 */
-	public void fwdMainMenu() {
-		forward("ui/MainMenu.fxml");
-	}
-
-	/**
-	 * ‰æ–Ê‘JˆÚƒƒ\ƒbƒh(InstallMaterial‚Ö‚Ì‘JˆÚ)
-	 */
-	public void fwdInstallMaterial() {
-		forward("ui/InstallMaterial.fxml");
-	}
+	public void fwdMainMenu() {	forward("ui/MainMenu.fxml"); }
+	public void fwdStagedMaterial() { forward("ui/ListStagingMaterial.fxml"); }
+	public void fwdInstallMaterial() { forward("ui/InstallMaterial.fxml"); }
 
 	
 	/**
@@ -80,4 +70,5 @@ public class AppMain extends Application {
 		stage.sizeToScene();
 		return (Initializable) loader.getController();
 	}
+
 }

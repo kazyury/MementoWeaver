@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import nobugs.nolife.mw.AppMain;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
@@ -22,7 +23,7 @@ public class MainMenuProcessor extends AnchorPane implements MWProcessor {
 	}
 	@FXML	protected void generate(ActionEvent e) {} // TODO not implemented yet
 	@FXML	protected void modify(ActionEvent e) {} // TODO not implemented yet
-	@FXML	protected void exit(ActionEvent e) {} // TODO not implemented yet
+	@FXML	protected void exit(ActionEvent e) {Platform.exit();}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {

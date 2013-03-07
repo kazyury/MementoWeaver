@@ -116,7 +116,7 @@ public class InstallMaterialProcessor extends AnchorPane implements MWProcessor{
 		// 今回のpathInputをプロパティにセットして保管
 		storeMaterialSourceCache();
 		
-		//TODO 次の画面への遷移
+		appl.fwdStagedMaterial();
 	}
 
 	@FXML	protected void browse(ActionEvent e) {
