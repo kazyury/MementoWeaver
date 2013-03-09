@@ -16,13 +16,13 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 
 import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.derivatizer.Derivatizer;
 import nobugs.nolife.mw.derivatizer.DerivatizerFactory;
 import nobugs.nolife.mw.persistence.Material;
 import nobugs.nolife.mw.util.Constants;
+import nobugs.nolife.mw.util.PersistenceUtil;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -31,7 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 
-public class InstallMaterialProcessor extends AnchorPane implements MWProcessor{
+public class InstallProcessor extends AnchorPane implements MWProcessor{
 	private AppMain appl;
 	private Properties dirProperties = new Properties();
 	private String materialSourcePath = null; // プロパティファイルより
@@ -46,7 +46,7 @@ public class InstallMaterialProcessor extends AnchorPane implements MWProcessor{
 
 	// イベントハンドラ
 	@FXML	protected void install(ActionEvent e) {
-		EntityManager em = Persistence.createEntityManagerFactory(Constants.PERSISTENCE_UNIT_NAME).createEntityManager();
+		EntityManager em = PersistenceUtil.getMWEntityManager();
 
 		// 素材ソース、ステージングエリアのパスをチェック
 		if (!isValidPathSet()) {
@@ -116,7 +116,7 @@ public class InstallMaterialProcessor extends AnchorPane implements MWProcessor{
 		// 今回のpathInputをプロパティにセットして保管
 		storeMaterialSourceCache();
 		
-		appl.fwdStagedMaterial();
+		appl.fwdStagingMaterial();
 	}
 
 	@FXML	protected void browse(ActionEvent e) {

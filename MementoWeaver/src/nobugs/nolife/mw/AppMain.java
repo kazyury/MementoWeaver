@@ -2,7 +2,10 @@ package nobugs.nolife.mw;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
+import nobugs.nolife.mw.persistence.Material;
+import nobugs.nolife.mw.persistence.TaggedMaterial;
 import nobugs.nolife.mw.processor.MWProcessor;
 
 import javafx.application.Application;
@@ -30,8 +33,13 @@ public class AppMain extends Application {
 
 	// TODO 画面遷移系をforwardに一本化するか?
 	public void fwdMainMenu() {	forward("ui/MainMenu.fxml"); }
-	public void fwdStagedMaterial() { forward("ui/ListStagingMaterial.fxml"); }
 	public void fwdInstallMaterial() { forward("ui/InstallMaterial.fxml"); }
+	public void fwdStagingMaterial() { forward("ui/ListInstalledMaterial.fxml"); }
+
+	public void fwdMaterialEditor(Material material, List<TaggedMaterial> list) {
+		forward("ui/EditMaterial.fxml");
+		// TODO データ渡しのための方法
+	}
 
 	
 	/**
@@ -39,6 +47,17 @@ public class AppMain extends Application {
 	 * @param fxml
 	 */
 	private void forward(String fxml) {
+		MWProcessor next;
+		try {
+			next = (MWProcessor) replaceSceneContent(fxml);
+			next.setApplication(this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// TODO データ渡しのためのメソッドが必要
+	private void forward(String fxml, Object bulk) {
 		MWProcessor next;
 		try {
 			next = (MWProcessor) replaceSceneContent(fxml);

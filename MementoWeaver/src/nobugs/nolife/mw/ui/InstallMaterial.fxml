@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.processor.InstallMaterialProcessor">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.processor.InstallProcessor">
   <children>
     <Button fx:id="exitButton" layoutX="523.0" layoutY="361.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
     <Button id="exitButton" fx:id="installButton" layoutX="429.0" layoutY="361.0" mnemonicParsing="false" onAction="#install" text="Install" />

@@ -18,10 +18,8 @@ public class MainMenuProcessor extends AnchorPane implements MWProcessor {
 	// publicフィールドの場合は@FXMLの記述は不要
 
 	// イベントハンドラ
-	@FXML	protected void install(ActionEvent e) {
-		appl.fwdInstallMaterial();
-	}
-	@FXML	protected void generate(ActionEvent e) {} // TODO not implemented yet
+	@FXML	protected void install(ActionEvent e) {appl.fwdInstallMaterial();}
+	@FXML	protected void generate(ActionEvent e) {appl.fwdStagingMaterial();}
 	@FXML	protected void modify(ActionEvent e) {} // TODO not implemented yet
 	@FXML	protected void exit(ActionEvent e) {Platform.exit();}
 
