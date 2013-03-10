@@ -4,7 +4,7 @@ import nobugs.nolife.mw.persistence.Material;
 
 public class MaterialUtil {
 
-	public static String getFileBasename(Material m) {
+	public static String getBaseFileName(Material m) {
 		String materialId = m.getMaterialId();
 		StringBuffer materialName = new StringBuffer();
 		materialName.append(materialId.substring(0, 8));
@@ -14,7 +14,7 @@ public class MaterialUtil {
 	}
 
 	public static String getFileName(Material m) {
-		StringBuffer materialName = new StringBuffer(getFileBasename(m));
+		StringBuffer materialName = new StringBuffer(getBaseFileName(m));
 		if (m.getMaterialType().equals(Constants.MATERIAL_TYPE_JPG)) {
 			materialName.append(".jpg");
 		} else if(m.getMaterialType().equals(Constants.MATERIAL_TYPE_MOV)) {
@@ -26,7 +26,7 @@ public class MaterialUtil {
 	}
 
 	public static String getPhotoFileName(Material m) {
-		StringBuffer materialName = new StringBuffer(getFileBasename(m));
+		StringBuffer materialName = new StringBuffer(getBaseFileName(m));
 		if(m.getMaterialType().equals(Constants.MATERIAL_TYPE_MOV)) {
 			materialName.insert(0, "ff");
 		}
