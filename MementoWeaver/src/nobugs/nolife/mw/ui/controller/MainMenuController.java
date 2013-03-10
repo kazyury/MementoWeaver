@@ -1,4 +1,4 @@
-package nobugs.nolife.mw.processor;
+package nobugs.nolife.mw.ui.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -10,7 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 
-public class MainMenuProcessor extends AnchorPane implements MWProcessor {
+public class MainMenuController extends AnchorPane implements MWSceneController {
 	private AppMain appl;
 	
 	// 入力フィールドに対応するインスタンスを保持する変数
@@ -29,7 +29,7 @@ public class MainMenuProcessor extends AnchorPane implements MWProcessor {
 	}
 
 	@Override
-	public void setApplication(AppMain appMain) {
+	public void setApplication(AppMain appMain, Object o) {
 		appl = appMain;
 	}
 }

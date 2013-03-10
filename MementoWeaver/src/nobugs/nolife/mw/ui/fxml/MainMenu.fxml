@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.processor.MainMenuProcessor">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.ui.controller.MainMenuController">
   <children>
     <Button fx:id="installButton" layoutX="39.0" layoutY="103.0" mnemonicParsing="false" onAction="#install" prefHeight="33.0" prefWidth="216.0" text="Install Materials" />
     <Button fx:id="generateButton" layoutX="349.0" layoutY="103.0" mnemonicParsing="false" onAction="#generate" prefHeight="33.0" prefWidth="216.0" text="Generate Memento" />

@@ -1,4 +1,4 @@
-package nobugs.nolife.mw.processor;
+package nobugs.nolife.mw.ui.controller;
 
 import java.net.URL;
 import java.util.List;
@@ -27,7 +27,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-public class StagingProcessor extends AnchorPane implements MWProcessor {
+public class ListInstalledMaterialController extends AnchorPane implements MWSceneController {
 	private AppMain appl;
 	private List<Material> installedMaterials;
 
@@ -41,8 +41,7 @@ public class StagingProcessor extends AnchorPane implements MWProcessor {
 	@FXML protected void clicked(MouseEvent e) {
 		// 選択行のTableRecordを取得し、次の画面に渡す。
 		TableRecord record = tableView.getSelectionModel().getSelectedItem();
-		System.out.println(record.materialIdProperty().toString());
-		appl.fwdMaterialEditor(record.getMaterial(), record.getTaggedMaterialList());
+		appl.fwdMaterialEditor(record.getMaterial());
 		
 	}
 	@FXML protected void generate(ActionEvent e) {} // TODO not implemented yet
@@ -54,27 +53,22 @@ public class StagingProcessor extends AnchorPane implements MWProcessor {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 
 		// Material表を検索し、installedされている素材の一覧を取得する。
-		// TODO outer joinするべき
 		CriteriaQuery<Material> materialQuery= cb.createQuery(Material.class);
 		Root<Material> material = materialQuery.from(Material.class);
 		materialQuery.select(material).where(cb.equal(material.get("materialState"), Constants.MATERIAL_STATE_INSTALLED));
 
 		installedMaterials = em.createQuery(materialQuery).getResultList();
 		for (Material m:installedMaterials) {
-
 			// TaggedMaterial表を検索し、設定されているタグの一覧を取得する。
-			CriteriaQuery<TaggedMaterial> taggedMaterialQuery = cb.createQuery(TaggedMaterial.class);
-			Root<TaggedMaterial> taggedMaterialRoot = taggedMaterialQuery.from(TaggedMaterial.class);
-			taggedMaterialQuery.select(taggedMaterialRoot).where(cb.equal(taggedMaterialRoot.get("id").get("materialId"), m.getMaterialId()));
-
-			List<TaggedMaterial> taggedMaterialList = em.createQuery(taggedMaterialQuery).getResultList();
+			// -> Entity間で関連をはっているので、materialから辿ることができる。
+			List<TaggedMaterial> taggedMaterialList = m.getTaggedMaterials();
 			StringBuffer tags = new StringBuffer();
 			for(TaggedMaterial tm:taggedMaterialList) {
 				tags.append("["+tm.getId().getTag()+"]");
 			}
 
 			// observableArrayListにTableRecordを登録
-			tableRecord.add(new TableRecord(m.getMaterialId(), m.getMaterialType(), tags.toString(),m,taggedMaterialList));
+			tableRecord.add(new TableRecord(m.getMaterialId(), m.getMaterialType(), tags.toString(),m));
 		}
 
 		// tableViewの設定
@@ -86,7 +80,7 @@ public class StagingProcessor extends AnchorPane implements MWProcessor {
 	}
 
 	@Override
-	public void setApplication(AppMain appMain) {
+	public void setApplication(AppMain appMain, Object o) {
 		this.appl = appMain;
 	}
 
@@ -100,14 +94,12 @@ public class StagingProcessor extends AnchorPane implements MWProcessor {
 		private StringProperty type;
 		private StringProperty concatenatedTag;
 		private Material material;
-		private List<TaggedMaterial> taggedMaterialList;
 
-		private TableRecord(String id, String type, String tags, Material material, List<TaggedMaterial> taggedMaterialList) {
+		private TableRecord(String id, String type, String tags, Material material) {
 			this.materialId = new SimpleStringProperty(id);
 			this.type = new SimpleStringProperty(type);
 			this.concatenatedTag = new SimpleStringProperty(tags);
 			this.material = material;
-			this.taggedMaterialList = taggedMaterialList;
 		}
 
 		public StringProperty materialIdProperty(){return materialId;}
@@ -115,7 +107,6 @@ public class StagingProcessor extends AnchorPane implements MWProcessor {
 		public StringProperty concatenatedTagProperty(){return concatenatedTag;}
 		
 		public Material getMaterial() { return this.material; }
-		public List<TaggedMaterial> getTaggedMaterialList() { return this.taggedMaterialList; }
 
 	}
 

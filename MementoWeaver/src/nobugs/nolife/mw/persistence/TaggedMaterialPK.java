@@ -4,7 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 /**
- * The primary key class for the TAGGEDMATERIAL database table.
+ * The primary key class for the TAGGED_MATERIAL database table.
  * 
  */
 @Embeddable
@@ -12,7 +12,7 @@ public class TaggedMaterialPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(unique=true, nullable=false, length=14)
+	@Column(name="MATERIAL_ID", unique=true, nullable=false, length=14)
 	private String materialId;
 
 	@Column(unique=true, nullable=false, length=8)

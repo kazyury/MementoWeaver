@@ -5,11 +5,11 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the PREDEFINEDTAG database table.
+ * The persistent class for the PREDEFINED_TAG database table.
  * 
  */
 @Entity
-@Table(name="PREDEFINEDTAG",schema="MW")
+@Table(name="PREDEFINED_TAG", schema = "MW")
 public class PredefinedTag implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -1,51 +1,30 @@
-package nobugs.nolife.mw.processor;
+package nobugs.nolife.mw.processing;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Properties;
-import java.util.ResourceBundle;
 
 import javax.persistence.EntityManager;
 
-import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.derivatizer.Derivatizer;
 import nobugs.nolife.mw.derivatizer.DerivatizerFactory;
 import nobugs.nolife.mw.persistence.Material;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.PersistenceUtil;
 
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.DirectoryChooser;
-
-public class InstallProcessor extends AnchorPane implements MWProcessor{
-	private AppMain appl;
-	private Properties dirProperties = new Properties();
-	private String materialSourcePath = null; // プロパティファイルより
-	private String stagingAreaPath = null;    // プロパティファイルより
-	private File srcdir = null; // 素材ソース
-	private File todir = null;  // ステージングエリア
-
-	// 入力フィールドに対応するインスタンスを保持する変数
-	// 対応付けはFXMLファイルで定義する
-	// publicフィールドの場合は@FXMLの記述は不要
-	@FXML private TextField pathInput;
-
-	// イベントハンドラ
-	@FXML	protected void install(ActionEvent e) {
+public class InstallProcessor {
+	private File sourceDirectory;
+	private File targetDirectory;
+	
+	public void installProcess(String srcPath, String destPath){
+		sourceDirectory = new File(srcPath);
+		targetDirectory = new File(destPath);
+		
 		EntityManager em = PersistenceUtil.getMWEntityManager();
 
 		// 素材ソース、ステージングエリアのパスをチェック
@@ -65,9 +44,9 @@ public class InstallProcessor extends AnchorPane implements MWProcessor{
 				return false;
 			}
 		};
-
+		
 		// 素材ソース内のファイル毎の繰り返し
-		File[] materialList = srcdir.listFiles(filter);
+		File[] materialList = sourceDirectory.listFiles(filter);
 		for (File material:materialList) {
 			
 			// MaterialEntityの生成
@@ -93,7 +72,7 @@ public class InstallProcessor extends AnchorPane implements MWProcessor{
 			materialEntity.setCreatedMonth(Integer.parseInt(formatDate(lastModifiedDate,"MM")));
 			
 			// ステージングエリアにファイル名を変更してコピー
-			java.nio.file.Path dest = new File(todir,destBaseFilename+"."+suffix).toPath();
+			java.nio.file.Path dest = new File(targetDirectory,destBaseFilename+"."+suffix).toPath();
 			try {
 				Files.copy(material.toPath(), dest, StandardCopyOption.COPY_ATTRIBUTES);
 			} catch (IOException e1) {
@@ -113,64 +92,23 @@ public class InstallProcessor extends AnchorPane implements MWProcessor{
 		}
 		em.close();
 
-		// 今回のpathInputをプロパティにセットして保管
-		storeMaterialSourceCache();
+
 		
-		appl.fwdStagingMaterial();
 	}
-
-	@FXML	protected void browse(ActionEvent e) {
-		DirectoryChooser directoryChooser = new DirectoryChooser();
-		directoryChooser.setTitle("Choose digital camera photo path.");
-		File file = directoryChooser.showDialog(null);
-		if (file!=null) {
-			pathInput.setText(file.getPath());
-		}
-	}
-
-	@FXML	protected void exit(ActionEvent e) {
-		Platform.exit();
-	}
-
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// プロパティの読み込み
-		InputStream is = this.getClass().getResourceAsStream("/dir.properties");
-		try {
-			dirProperties.load(is);
-			is.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		materialSourcePath = dirProperties.getProperty("dir.materialSource");
-		stagingAreaPath = dirProperties.getProperty("dir.stagingArea");
-
-		// プロパティに指定された素材ソースを初期設定
-		pathInput.setText(materialSourcePath);
-	}
-
-	@Override
-	public void setApplication(AppMain appMain) {
-		appl = appMain;
-	}
-
 	private boolean isValidPathSet() {
 		// 素材ソース(pathInput)を取得
-		String src = pathInput.getText();
 
 		// pathInputが空若しくは存在しないパスならばエラーメッセージを表示してreturn
-		srcdir = new File(src);
-		if (!srcdir.isDirectory()) {
+		if (!sourceDirectory.isDirectory()) {
 			//TODO エラーメッセージの表示 javaFX1.3 では javafx.stage.Alertが有ったが2.2ではなくなっている。3で復活の予定らしいが。
-			System.out.println(src + " is not Directory.");
+			System.out.println(sourceDirectory.toString() + " is not Directory.");
 			return false;
 		}
 
 		// ステージングエリアが空若しくは存在しないパスならばエラーメッセージを表示してreturn
-		todir = new File(stagingAreaPath);
-		if (!todir.isDirectory()) {
+		if (!targetDirectory.isDirectory()) {
 			//TODO エラーメッセージの表示 javaFX1.3 では javafx.stage.Alertが有ったが2.2ではなくなっている。3で復活の予定らしいが。
-			System.out.println(stagingAreaPath + " is not Directory.");
+			System.out.println(targetDirectory.toString() + " is not Directory.");
 			return false;
 		}
 		return  true;
@@ -197,19 +135,4 @@ public class InstallProcessor extends AnchorPane implements MWProcessor{
 		DateFormat formatter = new SimpleDateFormat(pattern);
 		return formatter.format(date);
 	}
-
-	private void storeMaterialSourceCache() {
-		dirProperties.setProperty("dir.materialSource", pathInput.getText());
-		try {
-			// クラスパスに書き込むための小賢しい方法
-			File cache = new File(this.getClass().getResource("/dir.properties").toURI().getPath());
-			OutputStream out = new FileOutputStream(cache);
-			dirProperties.store(out, "cached material source path");
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-
-
 }

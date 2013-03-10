@@ -3,8 +3,6 @@
 	<persistence-unit name="MementoWeaver" transaction-type="RESOURCE_LOCAL">
 		<class>nobugs.nolife.mw.persistence.Material</class>
 		<class>nobugs.nolife.mw.persistence.Memento</class>
-		<class>nobugs.nolife.mw.persistence.MementoContents</class>
-		<class>nobugs.nolife.mw.persistence.MementoContentsPK</class>
 		<class>nobugs.nolife.mw.persistence.PredefinedTag</class>
 		<class>nobugs.nolife.mw.persistence.TaggedMaterial</class>
 		<class>nobugs.nolife.mw.persistence.TaggedMaterialPK</class>

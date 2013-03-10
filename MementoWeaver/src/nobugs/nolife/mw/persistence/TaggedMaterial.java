@@ -2,14 +2,15 @@ package nobugs.nolife.mw.persistence;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
- * The persistent class for the TAGGEDMATERIAL database table.
+ * The persistent class for the TAGGED_MATERIAL database table.
  * 
  */
 @Entity
-@Table(name="TAGGEDMATERIAL",schema="MW")
+@Table(name="TAGGED_MATERIAL", schema = "MW")
 public class TaggedMaterial implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -19,8 +20,27 @@ public class TaggedMaterial implements Serializable {
 	@Column(length=256)
 	private String memo;
 
-	@Column(nullable=false, length=1)
+	@Column(name="TAG_STATE", length=1)
 	private String tagState;
+
+	//bi-directional many-to-many association to Memento
+	@ManyToMany
+	@JoinTable(
+		name="MEMENTO_CONTENTS"
+		, joinColumns={
+			@JoinColumn(name="MATERIAL_ID", referencedColumnName="MATERIAL_ID", nullable=false),
+			@JoinColumn(name="TAG", referencedColumnName="TAG", nullable=false)
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="MEMENTO_ID", nullable=false)
+			}
+		)
+	private List<Memento> mementos;
+
+	//bi-directional many-to-one association to Material
+	@ManyToOne
+	@JoinColumn(name="MATERIAL_ID", nullable=false, insertable=false, updatable=false)
+	private Material material;
 
 	public TaggedMaterial() {
 	}
@@ -47,6 +67,22 @@ public class TaggedMaterial implements Serializable {
 
 	public void setTagState(String tagState) {
 		this.tagState = tagState;
+	}
+
+	public List<Memento> getMementos() {
+		return this.mementos;
+	}
+
+	public void setMementos(List<Memento> mementos) {
+		this.mementos = mementos;
+	}
+
+	public Material getMaterial() {
+		return this.material;
+	}
+
+	public void setMaterial(Material material) {
+		this.material = material;
 	}
 
 }
