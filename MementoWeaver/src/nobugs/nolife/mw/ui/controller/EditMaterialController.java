@@ -1,10 +1,8 @@
 package nobugs.nolife.mw.ui.controller;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -13,7 +11,6 @@ import nobugs.nolife.mw.persistence.Material;
 import nobugs.nolife.mw.persistence.TaggedMaterial;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.MaterialUtil;
-import nobugs.nolife.mw.util.PropertyUtil;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,7 +24,6 @@ import javafx.scene.layout.AnchorPane;
 public class EditMaterialController extends AnchorPane implements MWSceneController{
 	private AppMain appl;
 	private Material material;
-	private PropertyUtil propertyUtil = new PropertyUtil();
 
 	// 入力フィールドに対応するインスタンスを保持する変数
 	// 対応付けはFXMLファイルで定義する
@@ -40,10 +36,12 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 
 	// イベントハンドラ
 	@FXML	protected void rotateLeft(ActionEvent e) {
-		// TODO not implemented.
+		MaterialUtil.rotatePhoto(material,270);
+		setImageView();
 	}
 	@FXML	protected void rotateRight(ActionEvent e) {
-		// TODO not implemented.
+		MaterialUtil.rotatePhoto(material,90);
+		setImageView();
 	}
 	@FXML	protected void appendTag(ActionEvent e) {
 		// 押されたボタンのIDをタグとして使用する
@@ -73,17 +71,8 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 		appl = appMain;
 		material = (Material)o;
 		// imageViewへの表示
-		String stagingArea = propertyUtil.getStagingAreaName();
-		String imageFileName = MaterialUtil.getPhotoFileName(material);
+		setImageView();
 
-		FileSystem fs = FileSystems.getDefault();
-		String fullpath = fs.getPath(stagingArea, imageFileName).toString();
-		try {
-			imageView.setImage(new Image(new FileInputStream(fullpath)));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		// もし、動画素材ならば回転操作はDisable
 		if (material.getMaterialType().equals(Constants.MATERIAL_TYPE_MOV)) {
 			rotateLeft.setDisable(true);
@@ -115,6 +104,19 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 		} else {
 			memoTextArea.setText("タグ毎に異なるメモが登録されています。メメントの修正で個別のメモを修正してください。");
 			memoTextArea.setDisable(true);
+		}
+	}
+	
+	private void setImageView() {
+		String fullpath = MaterialUtil.getInstalledPhotoPath(material).toString();
+		FileInputStream is = null;
+		try {
+			is = new FileInputStream(fullpath);
+			imageView.setImage(new Image(is));
+			is.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
