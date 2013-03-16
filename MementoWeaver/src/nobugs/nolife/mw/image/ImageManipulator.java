@@ -28,9 +28,23 @@ public class ImageManipulator {
 		BufferedImage rotatedImage = new BufferedImage(sourceImage.getHeight(), sourceImage.getWidth(), sourceImage.getType());
 
 		AffineTransform affine = new AffineTransform();
-// 苦労した...。
-		affine.translate(-(sourceImage.getWidth()-sourceImage.getHeight())/2, (sourceImage.getWidth()-sourceImage.getHeight())/2);
-		affine.rotate(Math.toRadians(degree), sourceImage.getWidth()/2d, sourceImage.getHeight()/2d);
+
+		//	 オリジナルの解(3時間苦労した版)
+		//	affine.translate(-(sourceImage.getWidth()-sourceImage.getHeight())/2, (sourceImage.getWidth()-sourceImage.getHeight())/2);
+		//	affine.rotate(Math.toRadians(degree), sourceImage.getWidth()/2d, sourceImage.getHeight()/2d);
+
+		int h = sourceImage.getHeight();
+		int w = sourceImage.getWidth();
+		if(degree==90){
+			affine.rotate(Math.toRadians(degree), h/2, h/2);
+		} else if(degree==270){
+			affine.rotate(Math.toRadians(degree), w/2, w/2);
+		} else {
+			// TODO 例外スロー
+			System.out.println("degree should be 90 or 270.");
+			return;
+		}
+
 		AffineTransformOp operator = new AffineTransformOp(affine,AffineTransformOp.TYPE_BICUBIC);
 		operator.filter(sourceImage, rotatedImage);
 

@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Sun Mar 10 20:38:20 JST 2013:
- Derby バージョン The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): インスタンス a816c00e-013d-5418-231b-000001684d70 を
-クラスローダー sun.misc.Launcher$AppClassLoader@709fa12f によってデータベースディレクトリ C:\Users\kazyury\MyDB  上でブート中 
+Sun Mar 17 00:28:51 JST 2013:
+ Derby バージョン The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): インスタンス a816c00e-013d-73d1-532b-000001c99780 を
+クラスローダー sun.misc.Launcher$AppClassLoader@f4e6d によってデータベースディレクトリ C:\Users\kazyury\MyDB  上でブート中 
 
 
 java.vendor=Oracle Corporation
