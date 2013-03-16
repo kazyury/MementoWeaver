@@ -29,10 +29,6 @@ public class ImageManipulator {
 
 		AffineTransform affine = new AffineTransform();
 
-		//	 ƒIƒŠƒWƒiƒ‹‚Ì‰ð(3ŽžŠÔ‹ê˜J‚µ‚½”Å)
-		//	affine.translate(-(sourceImage.getWidth()-sourceImage.getHeight())/2, (sourceImage.getWidth()-sourceImage.getHeight())/2);
-		//	affine.rotate(Math.toRadians(degree), sourceImage.getWidth()/2d, sourceImage.getHeight()/2d);
-
 		int h = sourceImage.getHeight();
 		int w = sourceImage.getWidth();
 		if(degree==90){
