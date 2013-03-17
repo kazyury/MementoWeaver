@@ -102,6 +102,7 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 
 		List<TaggedMaterial> taggedMaterialList = material.getTaggedMaterials();
 		// タグが存在するならばtagTextFieldに設定
+		// TODO tagTextFieldとの突合せではなく、実際のDBにあるか否かでチェックしなければならないか、後で検証（Publishedなタグをもう一度追加されたり)
 		String tags = StringUtil.joinTagString(taggedMaterialList);
 		tagTextField.appendText(tags);
 
