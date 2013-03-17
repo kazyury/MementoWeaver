@@ -11,9 +11,9 @@ import javax.persistence.criteria.Root;
 
 import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.persistence.Material;
-import nobugs.nolife.mw.persistence.TaggedMaterial;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.PersistenceUtil;
+import nobugs.nolife.mw.util.StringUtil;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -61,14 +61,10 @@ public class ListInstalledMaterialController extends AnchorPane implements MWSce
 		for (Material m:installedMaterials) {
 			// TaggedMaterial表を検索し、設定されているタグの一覧を取得する。
 			// -> Entity間で関連をはっているので、materialから辿ることができる。
-			List<TaggedMaterial> taggedMaterialList = m.getTaggedMaterials();
-			StringBuffer tags = new StringBuffer();
-			for(TaggedMaterial tm:taggedMaterialList) {
-				tags.append("["+tm.getId().getTag()+"]");
-			}
+			String tags = StringUtil.joinTagString(m.getTaggedMaterials());
 
 			// observableArrayListにTableRecordを登録
-			tableRecord.add(new TableRecord(m.getMaterialId(), m.getMaterialType(), tags.toString(),m));
+			tableRecord.add(new TableRecord(m.getMaterialId(), m.getMaterialType(), tags,m));
 		}
 
 		// tableViewの設定

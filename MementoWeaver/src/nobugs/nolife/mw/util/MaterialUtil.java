@@ -125,10 +125,23 @@ public class MaterialUtil {
 		 */
 		for(TaggedMaterial tm:m.getTaggedMaterials()){
 			String tag = tm.getId().getTag();
-			// tagListに含まれる場合は、update/含まれない場合にはNOT_IN_USEに状態を変更
+			/* tagListに含まれる場合は、update/含まれない場合にはNOT_IN_USEに状態を変更
+			 * 状態遷移マトリックスは↓
+			 *            |        TagList
+			 * -----------+-------------------------
+			 * TAG_STATE  | 含まれている	含まれて居ない
+			 * -----------+-------------------------
+			 * Staged     | (NoChange)	NotInUse
+			 * Published  | (NoChange)	NotInUse
+			 * NotInUse   | Staged		(NoChange)
+			 * -----------+-------------------------
+			 */
 			if(tagList.contains(tag)){
 				handler.updateAllMemo(tm); // ブロック呼び出し1
 				tagList.remove(tag);
+				if(tm.getTagState().equals(Constants.TAG_STATE_NOT_IN_USE)){
+					tm.setTagState(Constants.TAG_STATE_STAGED);
+				}
 			} else {
 				tm.setTagState(Constants.TAG_STATE_NOT_IN_USE);
 			}

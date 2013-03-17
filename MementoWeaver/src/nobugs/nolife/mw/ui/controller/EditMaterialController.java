@@ -64,7 +64,7 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 		// タグ文字列の分離
 		String[] tagnames = StringUtil.splitTagString(tagTextField.getText());
 		
-		// TaggedMaterialの更新
+		// TaggedMaterialの更新(メモ更新を制限している場合には、デフォルトメモを使用する)
 		if (isSameMemoOnly) {
 			String memo = memoTextArea.getText();
 			MaterialUtil.updateTagInfo(material, tagnames, memo);
@@ -100,14 +100,15 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 			rotateRight.setDisable(true);
 		}
 
-		
 		List<TaggedMaterial> taggedMaterialList = material.getTaggedMaterials();
+		// タグが存在するならばtagTextFieldに設定
+		String tags = StringUtil.joinTagString(taggedMaterialList);
+		tagTextField.appendText(tags);
+
+		// メモの状態に応じて活性/非活性を制御
 		boolean isFirsttime = true;// ループ初回判定用
 		String previousMemo = "";
 		for (TaggedMaterial tm:taggedMaterialList) {
-			// タグが存在するならばtagTextFieldに設定
-			tagTextField.appendText("["+tm.getId().getTag()+"]");
-			
 			if (isFirsttime == true) {
 				previousMemo = tm.getMemo();
 				isFirsttime = false;

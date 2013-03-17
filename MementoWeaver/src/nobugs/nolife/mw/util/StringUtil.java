@@ -13,7 +13,9 @@ public class StringUtil {
 	public static String joinTagString(List<TaggedMaterial> taggedMaterialList) {
 		StringBuffer joinedTags=new StringBuffer();
 		for (TaggedMaterial tm:taggedMaterialList) {
-			joinedTags.append("["+tm.getId().getTag()+"]");
+			if(!tm.getTagState().equals(Constants.TAG_STATE_NOT_IN_USE)){
+				joinedTags.append("["+tm.getId().getTag()+"]");
+			}
 		}
 		return joinedTags.toString();
 	}
