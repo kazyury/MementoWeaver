@@ -9,8 +9,11 @@ import java.util.ResourceBundle;
 import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.persistence.Material;
 import nobugs.nolife.mw.persistence.TaggedMaterial;
+import nobugs.nolife.mw.processing.UpdateTagProcessor;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.MaterialUtil;
+import nobugs.nolife.mw.util.PathUtil;
+import nobugs.nolife.mw.util.StringUtil;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +26,10 @@ import javafx.scene.layout.AnchorPane;
 
 public class EditMaterialController extends AnchorPane implements MWSceneController{
 	private AppMain appl;
+	/** 描画する素材 */
 	private Material material;
+	/** 素材内のメモが全て同一か? */
+	private boolean isSameMemoOnly = true;
 
 	// 入力フィールドに対応するインスタンスを保持する変数
 	// 対応付けはFXMLファイルで定義する
@@ -55,7 +61,22 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 		}
 	}
 	@FXML	protected void apply(ActionEvent e) {
-		// TODO not implemented.	
+		// タグ文字列の分離
+		String[] tagnames = StringUtil.splitTagString(tagTextField.getText());
+		
+		// TaggedMaterialの更新
+		if (isSameMemoOnly) {
+			String memo = memoTextArea.getText();
+			MaterialUtil.updateTagInfo(material, tagnames, memo);
+		} else {
+			MaterialUtil.updateTagInfo(material, tagnames);
+		}
+		
+		// タグ情報を更新して画面を閉じる
+		UpdateTagProcessor processor = new UpdateTagProcessor();
+		processor.updateTagProcess(material);
+		appl.fwdStagingMaterial();
+		
 	}
 	@FXML	protected void cancel(ActionEvent e) {
 		appl.fwdStagingMaterial();
@@ -81,7 +102,6 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 
 		
 		List<TaggedMaterial> taggedMaterialList = material.getTaggedMaterials();
-		boolean isSameMemoOnly = true; // 複数のメモが全て同一か否かのFL
 		boolean isFirsttime = true;// ループ初回判定用
 		String previousMemo = "";
 		for (TaggedMaterial tm:taggedMaterialList) {
@@ -108,7 +128,7 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 	}
 	
 	private void setImageView() {
-		String fullpath = MaterialUtil.getInstalledPhotoPath(material).toString();
+		String fullpath = PathUtil.getInstalledPhotoPath(material).toString();
 		FileInputStream is = null;
 		try {
 			is = new FileInputStream(fullpath);

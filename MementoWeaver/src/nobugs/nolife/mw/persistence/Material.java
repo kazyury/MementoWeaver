@@ -3,6 +3,8 @@ package nobugs.nolife.mw.persistence;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.MERGE;
 
 
 /**
@@ -31,7 +33,7 @@ public class Material implements Serializable {
 	private String materialType;
 
 	//bi-directional many-to-one association to TaggedMaterial
-	@OneToMany(mappedBy="material")
+	@OneToMany(mappedBy="material", cascade = { PERSIST, MERGE })
 	private List<TaggedMaterial> taggedMaterials;
 
 	public Material() {

@@ -9,12 +9,16 @@ import java.util.Properties;
 
 public class PropertyUtil {
 	private Properties dirProperties = new Properties();
+	private Properties bodProperties = new Properties();
 	
 	public PropertyUtil() {
-		InputStream is = this.getClass().getResourceAsStream("/dir.properties");
+		InputStream dirstream = this.getClass().getResourceAsStream("/dir.properties");
+		InputStream bodstream = this.getClass().getResourceAsStream("/bod.properties");
 		try {
-			dirProperties.load(is);
-			is.close();
+			dirProperties.load(dirstream);
+			bodProperties.load(bodstream);
+			dirstream.close();
+			bodstream.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -26,6 +30,19 @@ public class PropertyUtil {
 
 	public String getStagingAreaName(){
 		return dirProperties.getProperty("dir.stagingArea");
+	}
+	
+	/**
+	 * keyで識別されるユーザーのyyyymmdd時点における計算上の年齢を返却する
+	 * @param key
+	 * @param yyyymmdd
+	 * @return
+	 */
+	public int calcAge(String key, String yyyymmdd){
+		int age = 0;
+		// TODO 年齢計算の実装
+		System.out.println("年齢計算のつもり");
+		return age;
 	}
 
 	public void storeMaterialSourceCache(String newPath) {

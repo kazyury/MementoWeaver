@@ -13,6 +13,11 @@ public class Constants {
 	public static String MATERIAL_STATE_STAGED="2";
 	public static String MATERIAL_STATE_IN_USE="3";
 
+	// TaggedMaterial State
+	public static String TAG_STATE_STAGED="1";
+	public static String TAG_STATE_PUBLISHED="2";
+	public static String TAG_STATE_NOT_IN_USE="3";
+	
 	// Derivatizer
 	public static double THUMBNAIL_LONG_SIDE_PIXELS=240.0;
 	public static String THUMBNAIL_SUBPATH="thumbnail";

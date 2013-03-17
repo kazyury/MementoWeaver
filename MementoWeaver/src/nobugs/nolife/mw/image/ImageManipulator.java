@@ -13,6 +13,11 @@ import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 
+/**
+ * 素材画像の操作に責務を持つ
+ * @author kazyury
+ *
+ */
 public class ImageManipulator {
 	/**
 	 * sourcePathで指定された画像ファイルをdegree度数分だけ回転する。degreeは90/270のみを想定している。
