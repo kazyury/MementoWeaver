@@ -110,18 +110,21 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 		boolean isFirsttime = true;// ループ初回判定用
 		String previousMemo = "";
 		for (TaggedMaterial tm:taggedMaterialList) {
-			if (isFirsttime == true) {
-				previousMemo = tm.getMemo();
-				isFirsttime = false;
-			} else {
-				if(!previousMemo.equals(tm.getMemo())){
-					isSameMemoOnly=false;
+			// Stagedだけを対象に
+			if(tm.getTagState().equals(Constants.TAG_STATE_STAGED)){
+				if (isFirsttime == true) {
+					previousMemo = tm.getMemo();
+					isFirsttime = false;
+				} else {
+					if(!previousMemo.equals(tm.getMemo())){
+						isSameMemoOnly=false;
+					}
 				}
 			}
 		}
 		// メモが存在するならばmemoTextAreaに設定
 		// 異なるメモが格納されている場合には、[複数の異なるメモがあります。メメントの修正でコメントを修正してください。]ってことにする。
-		if(isSameMemoOnly==true) {
+		if(isSameMemoOnly) {
 			memoTextArea.setText(previousMemo);
 		} else {
 			memoTextArea.setText("タグ毎に異なるメモが登録されています。メメントの修正で個別のメモを修正してください。");

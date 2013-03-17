@@ -127,21 +127,23 @@ public class MaterialUtil {
 			String tag = tm.getId().getTag();
 			/* tagListに含まれる場合は、update/含まれない場合にはNOT_IN_USEに状態を変更
 			 * 状態遷移マトリックスは↓
-			 *            |        TagList
-			 * -----------+-------------------------
-			 * TAG_STATE  | 含まれている	含まれて居ない
-			 * -----------+-------------------------
-			 * Staged     | (NoChange)	NotInUse
-			 * Published  | (NoChange)	NotInUse
-			 * NotInUse   | Staged		(NoChange)
-			 * -----------+-------------------------
+			 *    tm      |        TagList          |
+			 * -----------+-------------------------+-----------------
+			 * TAG_STATE  | 含まれている	含まれて居ない    |	memo
+			 * -----------+-------------------------+-----------------
+			 * Staged     | (NoChange)	NotInUse    | 更新する
+			 * Published  | (NoChange)	NotInUse    | 更新しない
+			 * NotInUse   | Staged		(NoChange)  | 更新しない
+			 * -----------+-------------------------+-----------------
 			 */
 			if(tagList.contains(tag)){
-				handler.updateAllMemo(tm); // ブロック呼び出し1
-				tagList.remove(tag);
+				if(tm.getTagState().equals(Constants.TAG_STATE_STAGED)){
+					handler.updateAllMemo(tm); // ブロック呼び出し1
+				}
 				if(tm.getTagState().equals(Constants.TAG_STATE_NOT_IN_USE)){
 					tm.setTagState(Constants.TAG_STATE_STAGED);
 				}
+				tagList.remove(tag);
 			} else {
 				tm.setTagState(Constants.TAG_STATE_NOT_IN_USE);
 			}
