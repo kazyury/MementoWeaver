@@ -3,6 +3,7 @@ package nobugs.nolife.mw.util;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import nobugs.nolife.mw.image.ImageManipulator;
 import nobugs.nolife.mw.persistence.Material;
@@ -15,6 +16,7 @@ import nobugs.nolife.mw.persistence.TaggedMaterialPK;
  *
  */
 public class MaterialUtil {
+	private static Logger logger = Logger.getGlobal();
 
 	/** 
 	 * ‰æ‘œ‚ğ‰ñ“]‚µ‚Ä•ÛŠÇ‚·‚éBÃ~‰æ‘fŞ–{‘Ì‚ÆƒTƒ€ƒlƒCƒ‹‚ª‘ÎÛ‚Æ‚È‚éB
@@ -23,7 +25,7 @@ public class MaterialUtil {
 	 */
 	public static void rotatePhoto(Material m,int degree){
 		if(m.getMaterialType().equals(Constants.MATERIAL_TYPE_MOV)) {
-			System.out.println("“®‰æ‘fŞ‚Í‰ñ“]‚É‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"); // TODO —áŠO‘—o
+			logger.warning("“®‰æ‘fŞ‚Í‰ñ“]‚É‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"); // TODO —áŠO‘—o
 			return;
 		}
 
@@ -39,12 +41,21 @@ public class MaterialUtil {
 	}
 
 	/**
-	 * yyyymmddŒ`®‚Å‘fŞ‚ÌB‰e“ú‚ğ•Ô‹p‚·‚é
+	 * yyyymmddŒ`®‚Å‘fŞ‚ÌB‰e”NŒ“ú‚ğ•Ô‹p‚·‚é
 	 * @param m
 	 * @return
 	 */
 	public static String getMaterialDate(Material m){
 		return m.getMaterialId().substring(0, 8);
+	}
+
+	/**
+	 * yyyymmŒ`®‚Å‘fŞ‚ÌB‰e”NŒ‚ğ•Ô‹p‚·‚é
+	 * @param m
+	 * @return
+	 */
+	public static String getMaterialMonth(Material m){
+		return m.getMaterialId().substring(0, 6);
 	}
 
 	/**
@@ -116,7 +127,7 @@ public class MaterialUtil {
 		for(String tag:tags){
 			tagList.add(tag);
 		}
-		System.out.println("tagList is "+tagList.toString());
+		logger.fine("tagList is "+tagList.toString());
 		/*
 		 * taggedMaterial |___|___|___|___|___|
 		 * tagList            |___|___|___|___|___|
@@ -138,9 +149,10 @@ public class MaterialUtil {
 			 */
 			if(tagList.contains(tag)){
 				if(tm.getTagState().equals(Constants.TAG_STATE_STAGED)){
+					m.setMaterialState(Constants.MATERIAL_STATE_STAGED); // ‘fŞ‚Ìó‘Ô‚àSTAGED‚É•ÏX
 					handler.updateAllMemo(tm); // ƒuƒƒbƒNŒÄ‚Ño‚µ1
-				}
-				if(tm.getTagState().equals(Constants.TAG_STATE_NOT_IN_USE)){
+				} else if(tm.getTagState().equals(Constants.TAG_STATE_NOT_IN_USE)){
+					m.setMaterialState(Constants.MATERIAL_STATE_STAGED); // ‘fŞ‚Ìó‘Ô‚àSTAGED‚É•ÏX
 					tm.setTagState(Constants.TAG_STATE_STAGED);
 				}
 				tagList.remove(tag);
@@ -179,7 +191,7 @@ public class MaterialUtil {
 		String tag = tm.getId().getTag();
 
 		if(tag.equals("kazunori")||tag.equals("hiroko")||tag.equals("taito")){
-			System.out.println("chronicle rule applied");
+			logger.info("tag["+tag+"]‚Ì‚½‚ßƒNƒƒjƒNƒ‹Eƒ‹[ƒ‹‚ª“K—p‚³‚ê‚Ü‚·");
 			tm.setMemo(prop.calcAge(tag, MaterialUtil.getMaterialDate(m))+"Î‚ÌÑ‘œ");
 		} else {
 			tm.setMemo(memo);

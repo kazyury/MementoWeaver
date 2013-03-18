@@ -1,10 +1,12 @@
 package nobugs.nolife.mw.util;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import nobugs.nolife.mw.persistence.TaggedMaterial;
 
 public class StringUtil {
+	private static Logger logger = Logger.getGlobal();
 	/**
 	 * 連結したタグ名を返却する。連結タグ名の形式は[タグ名][タグ名]...
 	 * @param taggedMaterialList
@@ -30,7 +32,7 @@ public class StringUtil {
 			return joinedTagString.substring(1, joinedTagString.lastIndexOf("]")).split("\\]\\[");
 		} else {
 			// TODO 例外スロー
-			System.out.println("Joined tag string is not valid.");
+			logger.warning("Joined tag string is not valid.");
 			return null;
 		}
 	}

@@ -44,7 +44,11 @@ public class ListInstalledMaterialController extends AnchorPane implements MWSce
 		appl.fwdMaterialEditor(record.getMaterial());
 		
 	}
-	@FXML protected void generate(ActionEvent e) {} // TODO not implemented yet
+	
+	@FXML protected void generate(ActionEvent e) {
+		appl.fwdGenerateConfirm();
+	}
+
 	@FXML protected void exit(ActionEvent e) {Platform.exit();}
 
 	@Override
@@ -55,7 +59,7 @@ public class ListInstalledMaterialController extends AnchorPane implements MWSce
 		// Material•\‚ğŒŸõ‚µAinstalled‚³‚ê‚Ä‚¢‚é‘fŞ‚Ìˆê——‚ğæ“¾‚·‚éB
 		CriteriaQuery<Material> materialQuery= cb.createQuery(Material.class);
 		Root<Material> material = materialQuery.from(Material.class);
-		materialQuery.select(material).where(cb.equal(material.get("materialState"), Constants.MATERIAL_STATE_INSTALLED));
+		materialQuery.select(material).where(cb.notEqual(material.get("materialState"), Constants.MATERIAL_STATE_IN_USE));
 
 		installedMaterials = em.createQuery(materialQuery).getResultList();
 		for (Material m:installedMaterials) {

@@ -3,6 +3,7 @@ package nobugs.nolife.mw.util;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.logging.Logger;
 
 import nobugs.nolife.mw.persistence.Material;
 
@@ -12,6 +13,7 @@ import nobugs.nolife.mw.persistence.Material;
  *
  */
 public class PathUtil {
+	private static Logger logger = Logger.getGlobal();
 
 	public static String getBaseFileName(Material m) {
 		String materialId = m.getMaterialId();
@@ -29,7 +31,7 @@ public class PathUtil {
 		} else if(m.getMaterialType().equals(Constants.MATERIAL_TYPE_MOV)) {
 			materialName.append(".mov");
 		} else {
-			System.out.println("素材タイプ不正");
+			logger.warning("素材タイプ不正"); // TODO 例外
 		}
 		return materialName.toString();
 	}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.ui.controller.GenerateConfirmController">
+  <children>
+    <Button fx:id="continueButton" layoutX="416.0" layoutY="367.0" mnemonicParsing="false" text="Continue" />
+    <Button fx:id="canecelButton" layoutX="509.0" layoutY="367.0" mnemonicParsing="false" text="Cancel" />
+    <Label layoutX="32.0" layoutY="41.0" prefWidth="536.0" text="以下のメメントが生成されます。よろしいですか？" />
+    <ListView id="generateCandidateListView" fx:id="generateListView" layoutX="32.0" layoutY="55.0" prefHeight="278.0" prefWidth="536.0" />
+  </children>
+</AnchorPane>

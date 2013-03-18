@@ -2,8 +2,10 @@ package nobugs.nolife.mw.derivatizer;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.logging.Logger;
 
 public class DerivatizerFactory {
+	private static Logger logger = Logger.getGlobal();
 
 	public static Derivatizer getDerivatizer(Path path) {
 		int pos = path.toString().lastIndexOf(".");
@@ -16,7 +18,8 @@ public class DerivatizerFactory {
 			return new QuicktimeDerivatizer(path);
 		
 		} else {
-			System.out.println("Not supported :["+suffix+"]");
+			logger.warning("Not supported :["+suffix+"]");
+			// TODO ó·äOÉXÉçÅ[
 			return null;
 		}
 

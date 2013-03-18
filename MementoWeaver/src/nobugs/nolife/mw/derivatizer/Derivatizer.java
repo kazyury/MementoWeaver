@@ -11,19 +11,21 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
 import nobugs.nolife.mw.util.Constants;
 
 public abstract class Derivatizer {
+	private static Logger logger = Logger.getGlobal();
 	public abstract void derivate();
 
 	protected void createThumbnail(File path){
 		createThumbnail(path.toPath());
 	}
 	protected void createThumbnail(Path path){
-		System.out.println(path.toString()+"のサムネイル作成を開始します。");
+		logger.info(path.toString()+"のサムネイル作成を開始します。");
 		
 		BufferedImage sourceImage = null;
 		BufferedImage thumbnailImage = null;

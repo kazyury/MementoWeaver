@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class PropertyUtil {
+	private static Logger logger = Logger.getGlobal();
 	private Properties dirProperties = new Properties();
 	private Properties bodProperties = new Properties();
 	
@@ -41,7 +43,6 @@ public class PropertyUtil {
 	public int calcAge(String key, String yyyymmdd){
 		int age = 0;
 		// TODO 年齢計算の実装
-		System.out.println("年齢計算のつもり");
 		return age;
 	}
 

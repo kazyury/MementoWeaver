@@ -8,10 +8,12 @@ import java.io.InputStreamReader;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.logging.Logger;
 
 import nobugs.nolife.mw.util.Constants;
 
 public class QuicktimeDerivatizer extends Derivatizer {
+	private static Logger logger = Logger.getGlobal();
 	private Path path;
 
 	public QuicktimeDerivatizer(File path){	this.path = path.toPath(); }
@@ -39,7 +41,7 @@ public class QuicktimeDerivatizer extends Derivatizer {
 		Runtime rt = Runtime.getRuntime();
 		// ffmpeg は 最初に -i オプションを指定しないとCodecを認識できないらしい。
 		String command = Constants.FFMPEG_PATH+" -i " + path.toString()+Constants.FFMPEG_OPTS+snapshotFilePath.toString();
-		System.out.println(command);
+		logger.info(command+"を実行します");
 		try {
 			// rt.execだけだとffmpegが終わる前にサムネイル作成が走り始めてしまうっぽい。
 			//			rt.exec(command);
@@ -49,7 +51,7 @@ public class QuicktimeDerivatizer extends Derivatizer {
 			BufferedReader br = new BufferedReader(isr);
 			String result;
 			while ((result = br.readLine()) != null) {
-				System.out.println(result);
+				logger.fine(result);
 			}
 
 		} catch (IOException e) {

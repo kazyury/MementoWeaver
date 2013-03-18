@@ -8,6 +8,7 @@ import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
@@ -18,6 +19,8 @@ import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.PersistenceUtil;
 
 public class InstallProcessor {
+	private static Logger logger = Logger.getGlobal();
+
 	private File sourceDirectory;
 	private File targetDirectory;
 	
@@ -29,7 +32,7 @@ public class InstallProcessor {
 
 		// 素材ソース、ステージングエリアのパスをチェック
 		if (!isValidPathSet()) {
-			System.out.println("checkFilePath() fails.");
+			logger.warning("checkFilePath() fails.");
 			return; // TODO 例外スロー
 		}
 
@@ -59,7 +62,7 @@ public class InstallProcessor {
 			} else if (suffix.equals("mov")){
 				materialEntity.setMaterialType(Constants.MATERIAL_TYPE_MOV);
 			} else {
-				System.out.println("Unsupported file type");
+				logger.warning("Unsupported file type");
 				return; // TODO 例外を投げるようにするべき。
 			}
 
@@ -101,14 +104,14 @@ public class InstallProcessor {
 		// pathInputが空若しくは存在しないパスならばエラーメッセージを表示してreturn
 		if (!sourceDirectory.isDirectory()) {
 			//TODO エラーメッセージの表示 javaFX1.3 では javafx.stage.Alertが有ったが2.2ではなくなっている。3で復活の予定らしいが。
-			System.out.println(sourceDirectory.toString() + " is not Directory.");
+			logger.warning(sourceDirectory.toString() + " is not Directory.");
 			return false;
 		}
 
 		// ステージングエリアが空若しくは存在しないパスならばエラーメッセージを表示してreturn
 		if (!targetDirectory.isDirectory()) {
 			//TODO エラーメッセージの表示 javaFX1.3 では javafx.stage.Alertが有ったが2.2ではなくなっている。3で復活の予定らしいが。
-			System.out.println(targetDirectory.toString() + " is not Directory.");
+			logger.warning(targetDirectory.toString() + " is not Directory.");
 			return false;
 		}
 		return  true;
@@ -126,7 +129,8 @@ public class InstallProcessor {
 			suffix = "jpg";
 		}
 		if (!suffix.equals("mov") && !suffix.equals("jpg")){
-			System.out.println("Unsupported file type");
+			logger.warning("Unsupported file type");
+			// TODO 例外対応
 		}
 		return suffix;
 	}

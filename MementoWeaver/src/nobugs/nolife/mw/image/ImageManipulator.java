@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageInputStream;
@@ -19,6 +20,8 @@ import javax.imageio.stream.ImageInputStream;
  *
  */
 public class ImageManipulator {
+	private static Logger logger = Logger.getGlobal();
+
 	/**
 	 * sourcePathで指定された画像ファイルをdegree度数分だけ回転する。degreeは90/270のみを想定している。
 	 * @param sourcePath
@@ -42,7 +45,7 @@ public class ImageManipulator {
 			affine.rotate(Math.toRadians(degree), w/2, w/2);
 		} else {
 			// TODO 例外スロー
-			System.out.println("degree should be 90 or 270.");
+			logger.warning("degree should be 90 or 270.");
 			return;
 		}
 
