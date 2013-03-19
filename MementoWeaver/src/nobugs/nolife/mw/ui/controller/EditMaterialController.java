@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import nobugs.nolife.mw.AppMain;
+import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.persistence.Material;
 import nobugs.nolife.mw.persistence.TaggedMaterial;
 import nobugs.nolife.mw.processing.UpdateTagProcessor;
@@ -41,11 +42,11 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 	@FXML private Button rotateRight;
 
 	// イベントハンドラ
-	@FXML	protected void rotateLeft(ActionEvent e) {
+	@FXML	protected void rotateLeft(ActionEvent e) throws MWException {
 		MaterialUtil.rotatePhoto(material,270);
 		setImageView();
 	}
-	@FXML	protected void rotateRight(ActionEvent e) {
+	@FXML	protected void rotateRight(ActionEvent e) throws MWException {
 		MaterialUtil.rotatePhoto(material,90);
 		setImageView();
 	}
@@ -60,7 +61,7 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 			tagTextField.setText(tagTextField.getText()+"["+tagname+"]");
 		}
 	}
-	@FXML	protected void apply(ActionEvent e) {
+	@FXML	protected void apply(ActionEvent e) throws MWException {
 		// タグ文字列の分離
 		String[] tagnames = StringUtil.splitTagString(tagTextField.getText());
 		
@@ -75,11 +76,11 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 		// タグ情報を更新して画面を閉じる
 		UpdateTagProcessor processor = new UpdateTagProcessor();
 		processor.updateTagProcess(material);
-		appl.fwdStagingMaterial();
+		appl.fwdListInstalledMaterial();
 		
 	}
-	@FXML	protected void cancel(ActionEvent e) {
-		appl.fwdStagingMaterial();
+	@FXML	protected void cancel(ActionEvent e) throws MWException {
+		appl.fwdListInstalledMaterial();
 	}
 
 	@Override
@@ -88,7 +89,7 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 	}
 
 	@Override
-	public void setApplication(AppMain appMain, Object o) {
+	public void setApplication(AppMain appMain, Object o) throws MWException {
 		appl = appMain;
 		material = (Material)o;
 		// imageViewへの表示
@@ -132,7 +133,7 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 		}
 	}
 	
-	private void setImageView() {
+	private void setImageView() throws MWException {
 		String fullpath = PathUtil.getInstalledPhotoPath(material).toString();
 		FileInputStream is = null;
 		try {
@@ -140,8 +141,7 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 			imageView.setImage(new Image(is));
 			is.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new MWException("ImageViewへのイメージ描画で例外が発生しました", e.getCause());
 		}
 	}
 }

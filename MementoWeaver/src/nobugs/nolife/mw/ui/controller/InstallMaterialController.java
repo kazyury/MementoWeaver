@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import nobugs.nolife.mw.AppMain;
+import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.processing.InstallProcessor;
 import nobugs.nolife.mw.util.PropertyUtil;
 
@@ -27,14 +28,14 @@ public class InstallMaterialController extends AnchorPane implements MWSceneCont
 	@FXML private TextField pathInput;
 
 	// イベントハンドラ
-	@FXML	protected void install(ActionEvent e) {
+	@FXML	protected void install(ActionEvent e) throws MWException {
 		InstallProcessor processor = new InstallProcessor();
 		processor.installProcess(pathInput.getText(), stagingAreaPath);
 
 		// 今回のpathInputをプロパティにセットして保管
 		propertyUtil.storeMaterialSourceCache(pathInput.getText());
 
-		appl.fwdStagingMaterial();
+		appl.fwdListInstalledMaterial();
 	}
 
 	@FXML	protected void browse(ActionEvent e) {

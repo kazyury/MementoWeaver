@@ -15,16 +15,18 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.util.Constants;
 
 public abstract class Derivatizer {
 	private static Logger logger = Logger.getGlobal();
-	public abstract void derivate();
+	public abstract void derivate() throws MWException;
 
-	protected void createThumbnail(File path){
+	protected void createThumbnail(File path) throws MWException{
 		createThumbnail(path.toPath());
 	}
-	protected void createThumbnail(Path path){
+	
+	protected void createThumbnail(Path path) throws MWException{
 		logger.info(path.toString()+"のサムネイル作成を開始します。");
 		
 		BufferedImage sourceImage = null;
@@ -52,8 +54,8 @@ public abstract class Derivatizer {
 			ImageIO.write(thumbnailImage, "jpeg", out);
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new MWException("サムネイルの作成で例外が発生しました"+e.getMessage());
 		}
 	}
 

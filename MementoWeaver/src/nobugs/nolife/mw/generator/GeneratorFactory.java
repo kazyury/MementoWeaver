@@ -4,13 +4,14 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
+import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.persistence.PredefinedTag;
 import nobugs.nolife.mw.util.PersistenceUtil;
 
 public class GeneratorFactory {
 	private static Logger logger = Logger.getGlobal();
 	
-	public static Generator getGenerator(String tag){
+	public static Generator getGenerator(String tag) throws MWException{
 		EntityManager em = PersistenceUtil.getMWEntityManager();
 		PredefinedTag pt = em.find(PredefinedTag.class, tag);
 		em.close();
@@ -23,8 +24,7 @@ public class GeneratorFactory {
 			klass = Class.forName(pt.getFqcn());
 			generator = (Generator) klass.newInstance();
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new MWException("ó·äOÇ™î≠ê∂ÇµÇ‹ÇµÇΩ",e.getCause());
 		}
 		return generator;
 	}

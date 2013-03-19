@@ -10,6 +10,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
+import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.util.Constants;
 
 public class QuicktimeDerivatizer extends Derivatizer {
@@ -20,7 +21,7 @@ public class QuicktimeDerivatizer extends Derivatizer {
 	public QuicktimeDerivatizer(Path path){	this.path = path; }
 
 	@Override
-	public void derivate() {
+	public void derivate() throws MWException {
 		// 動画スナップショットの作成
 		Path snapshotPath = createSnapshot();
 		// 動画スナップショットのサムネイル(動画サムネイル)の作成
@@ -30,8 +31,9 @@ public class QuicktimeDerivatizer extends Derivatizer {
 	/** スナップショットを作成する.
 	 * 
 	 * @return 作成したスナップショットのPathオブジェクト
+	 * @throws MWException 
 	 */
-	private Path createSnapshot() {
+	private Path createSnapshot() throws MWException {
 		String filename = path.getFileName().toString();
 		int pos = filename.lastIndexOf(".");
 		String basename = filename.substring(0,pos);
@@ -55,8 +57,7 @@ public class QuicktimeDerivatizer extends Derivatizer {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new MWException("例外が発生しました",e.getCause());
 		}
 		return snapshotFilePath;
 

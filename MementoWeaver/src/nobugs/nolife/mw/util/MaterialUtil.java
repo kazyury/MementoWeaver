@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.image.ImageManipulator;
 import nobugs.nolife.mw.persistence.Material;
 import nobugs.nolife.mw.persistence.TaggedMaterial;
@@ -22,11 +23,11 @@ public class MaterialUtil {
 	 * ‰æ‘œ‚ğ‰ñ“]‚µ‚Ä•ÛŠÇ‚·‚éBÃ~‰æ‘fŞ–{‘Ì‚ÆƒTƒ€ƒlƒCƒ‹‚ª‘ÎÛ‚Æ‚È‚éB
 	 * @param m
 	 * @param degree:‰ñ“]Šp
+	 * @throws MWException 
 	 */
-	public static void rotatePhoto(Material m,int degree){
+	public static void rotatePhoto(Material m,int degree) throws MWException{
 		if(m.getMaterialType().equals(Constants.MATERIAL_TYPE_MOV)) {
-			logger.warning("“®‰æ‘fŞ‚Í‰ñ“]‚É‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"); // TODO —áŠO‘—o
-			return;
+			throw new MWException("“®‰æ‘fŞ‚Í‰ñ“]‚É‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ");
 		}
 
 		try {
@@ -35,8 +36,7 @@ public class MaterialUtil {
 			// ƒTƒ€ƒlƒCƒ‹‚ğ‰ñ“]‚·‚éB
 			ImageManipulator.rotate(PathUtil.getInstalledThumbnailPath(m), degree);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new MWException("—áŠO‚ª”­¶‚µ‚Ü‚µ‚½",e.getCause());
 		}
 	}
 

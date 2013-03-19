@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import nobugs.nolife.mw.AppMain;
+import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.persistence.Material;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.PersistenceUtil;
@@ -38,14 +39,14 @@ public class ListInstalledMaterialController extends AnchorPane implements MWSce
 	private ObservableList<TableRecord> tableRecord = FXCollections.observableArrayList();
 
 	// テーブルビューのクリック
-	@FXML protected void clicked(MouseEvent e) {
+	@FXML protected void clicked(MouseEvent e) throws MWException {
 		// 選択行のTableRecordを取得し、次の画面に渡す。
 		TableRecord record = tableView.getSelectionModel().getSelectedItem();
 		appl.fwdMaterialEditor(record.getMaterial());
 		
 	}
 	
-	@FXML protected void generate(ActionEvent e) {
+	@FXML protected void generate(ActionEvent e) throws MWException {
 		appl.fwdGenerateConfirm();
 	}
 

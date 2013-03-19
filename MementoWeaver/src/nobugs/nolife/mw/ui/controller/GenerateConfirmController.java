@@ -5,8 +5,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import nobugs.nolife.mw.AppMain;
+import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.processing.MementoGenerateProcessor;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,7 +26,7 @@ public class GenerateConfirmController extends AnchorPane implements MWSceneCont
 	private ObservableList<String> listRecords = FXCollections.observableArrayList();
 	
 	// イベントハンドラ
-	@FXML protected void exit(ActionEvent e) {Platform.exit();}
+	@FXML protected void cancel(ActionEvent e) throws MWException {appl.fwdListInstalledMaterial();}
 	@FXML protected void generate(ActionEvent e) {
 		// TODO 次の画面への遷移
 	}
@@ -35,8 +35,12 @@ public class GenerateConfirmController extends AnchorPane implements MWSceneCont
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
 		logger.fine("生成されるメメント名をObservableListに登録します");
-		for(String mementoName:processor.listAffectedMemento()){
-			listRecords.add(mementoName);
+		try {
+			for(String mementoName:processor.listAffectedMemento()){
+				listRecords.add(mementoName);
+			}
+		} catch (MWException e) {
+			e.printStackTrace();
 		}
 
 		logger.fine("ListView#setItemsでObservableListとListViewを関連付けます");

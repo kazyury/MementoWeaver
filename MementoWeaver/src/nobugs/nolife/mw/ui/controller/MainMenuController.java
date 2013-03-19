@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import nobugs.nolife.mw.AppMain;
+import nobugs.nolife.mw.MWException;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,8 +19,8 @@ public class MainMenuController extends AnchorPane implements MWSceneController 
 	// publicフィールドの場合は@FXMLの記述は不要
 
 	// イベントハンドラ
-	@FXML	protected void install(ActionEvent e) {appl.fwdInstallMaterial();}
-	@FXML	protected void generate(ActionEvent e) {appl.fwdStagingMaterial();}
+	@FXML	protected void install(ActionEvent e) throws MWException {appl.fwdInstallMaterial();}
+	@FXML	protected void generate(ActionEvent e) throws MWException {appl.fwdListInstalledMaterial();}
 	@FXML	protected void modify(ActionEvent e) {} // TODO not implemented yet
 	@FXML	protected void exit(ActionEvent e) {Platform.exit();}
 

@@ -3,6 +3,7 @@ package nobugs.nolife.mw.util;
 import java.util.List;
 import java.util.logging.Logger;
 
+import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.persistence.TaggedMaterial;
 
 public class StringUtil {
@@ -26,14 +27,13 @@ public class StringUtil {
 	 * 連結したタグ名をString配列に分解して返却する。
 	 * @param joinedTagString
 	 * @return
+	 * @throws MWException 
 	 */
-	public static String[] splitTagString(String joinedTagString){
+	public static String[] splitTagString(String joinedTagString) throws MWException{
 		if(joinedTagString.startsWith("[") && joinedTagString.endsWith("]")){
 			return joinedTagString.substring(1, joinedTagString.lastIndexOf("]")).split("\\]\\[");
 		} else {
-			// TODO 例外スロー
-			logger.warning("Joined tag string is not valid.");
-			return null;
+			throw new MWException("Joined tag string is not valid.");
 		}
 	}
 }

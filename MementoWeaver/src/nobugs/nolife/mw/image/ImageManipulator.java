@@ -14,6 +14,8 @@ import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 
+import nobugs.nolife.mw.MWException;
+
 /**
  * ëfçﬁâÊëúÇÃëÄçÏÇ…ê”ñ±ÇéùÇ¬
  * @author kazyury
@@ -27,8 +29,9 @@ public class ImageManipulator {
 	 * @param sourcePath
 	 * @param degree
 	 * @throws IOException 
+	 * @throws MWException 
 	 */
-	public static void rotate(Path sourcePath, int degree) throws IOException{
+	public static void rotate(Path sourcePath, int degree) throws IOException, MWException{
 		ImageInputStream is = new FileImageInputStream(sourcePath.toFile());
 		BufferedImage sourceImage = ImageIO.read(is);
 
@@ -44,9 +47,7 @@ public class ImageManipulator {
 		} else if(degree==270){
 			affine.rotate(Math.toRadians(degree), w/2, w/2);
 		} else {
-			// TODO ó·äOÉXÉçÅ[
-			logger.warning("degree should be 90 or 270.");
-			return;
+			throw new MWException("degree should be 90 or 270.");
 		}
 
 		AffineTransformOp operator = new AffineTransformOp(affine,AffineTransformOp.TYPE_BICUBIC);

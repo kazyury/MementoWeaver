@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
+import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.derivatizer.Derivatizer;
 import nobugs.nolife.mw.derivatizer.DerivatizerFactory;
 import nobugs.nolife.mw.persistence.Material;
@@ -24,7 +25,7 @@ public class InstallProcessor {
 	private File sourceDirectory;
 	private File targetDirectory;
 	
-	public void installProcess(String srcPath, String destPath){
+	public void installProcess(String srcPath, String destPath) throws MWException{
 		sourceDirectory = new File(srcPath);
 		targetDirectory = new File(destPath);
 		
@@ -32,8 +33,7 @@ public class InstallProcessor {
 
 		// 素材ソース、ステージングエリアのパスをチェック
 		if (!isValidPathSet()) {
-			logger.warning("checkFilePath() fails.");
-			return; // TODO 例外スロー
+			throw new MWException("checkFilePath() fails.");
 		}
 
 		// ファイルリストの取得。.jpeg, .jpg, .mov を対象とする(大文字小文字は無視)
@@ -62,8 +62,7 @@ public class InstallProcessor {
 			} else if (suffix.equals("mov")){
 				materialEntity.setMaterialType(Constants.MATERIAL_TYPE_MOV);
 			} else {
-				logger.warning("Unsupported file type");
-				return; // TODO 例外を投げるようにするべき。
+				throw new MWException("Unsupported file type");
 			}
 
 			// ファイルタイムスタンプの取得と設定
@@ -79,9 +78,7 @@ public class InstallProcessor {
 			try {
 				Files.copy(material.toPath(), dest, StandardCopyOption.COPY_ATTRIBUTES);
 			} catch (IOException e1) {
-				//TODO ここは握りつぶさないほうがいいかな。
-				e1.printStackTrace();
-				return;
+				throw new MWException("ステージングエリアへのファイルコピーで例外が発生しました", e1.getCause());
 			}
 			// DerivationManager(Derivatizer)に派生ファイルの作成を要求
 			Derivatizer derivatizer = DerivatizerFactory.getDerivatizer(dest);
@@ -120,8 +117,9 @@ public class InstallProcessor {
 	/**
 	 * @param material
 	 * @return
+	 * @throws MWException 
 	 */
-	private String fileTypeOf(File material) {
+	private String fileTypeOf(File material) throws MWException {
 		int pos = material.getPath().lastIndexOf(".");
 		String suffix = material.getPath().toLowerCase().substring(pos+1);
 		
@@ -129,8 +127,7 @@ public class InstallProcessor {
 			suffix = "jpg";
 		}
 		if (!suffix.equals("mov") && !suffix.equals("jpg")){
-			logger.warning("Unsupported file type");
-			// TODO 例外対応
+			throw new MWException("Unsupported file type");
 		}
 		return suffix;
 	}

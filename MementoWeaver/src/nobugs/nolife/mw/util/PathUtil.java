@@ -5,6 +5,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
+import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.persistence.Material;
 
 /**
@@ -24,14 +25,14 @@ public class PathUtil {
 		return materialName.toString();
 	}
 
-	public static String getFileName(Material m) {
+	public static String getFileName(Material m) throws MWException {
 		StringBuffer materialName = new StringBuffer(getBaseFileName(m));
 		if (m.getMaterialType().equals(Constants.MATERIAL_TYPE_JPG)) {
 			materialName.append(".jpg");
 		} else if(m.getMaterialType().equals(Constants.MATERIAL_TYPE_MOV)) {
 			materialName.append(".mov");
 		} else {
-			logger.warning("素材タイプ不正"); // TODO 例外
+			throw new MWException("素材タイプが不正です");
 		}
 		return materialName.toString();
 	}
@@ -41,8 +42,9 @@ public class PathUtil {
 	 * (静止画素材の場合はgetFileNameと同値.動画素材の場合はスナップショットのファイル名)
 	 * @param m
 	 * @return
+	 * @throws MWException 
 	 */
-	public static String getPhotoFileName(Material m) {
+	public static String getPhotoFileName(Material m) throws MWException {
 		if (m.getMaterialType().equals(Constants.MATERIAL_TYPE_JPG)) {
 			return getFileName(m);
 		}
@@ -56,8 +58,9 @@ public class PathUtil {
 	 * Materialのフルパスを返却する。
 	 * @param m
 	 * @return
+	 * @throws MWException 
 	 */
-	public static Path getInstalledFilePath(Material m) {
+	public static Path getInstalledFilePath(Material m) throws MWException {
 		PropertyUtil prop = new PropertyUtil();
 		FileSystem fs = FileSystems.getDefault();
 		return fs.getPath(prop.getStagingAreaName(), getFileName(m));
@@ -68,8 +71,9 @@ public class PathUtil {
 	 * (静止画素材の場合はgetInstalledFilePathと同値.動画素材の場合はスナップショットのフルパス)
 	 * @param m
 	 * @return
+	 * @throws MWException 
 	 */
-	public static Path getInstalledPhotoPath(Material m) {
+	public static Path getInstalledPhotoPath(Material m) throws MWException {
 		if (m.getMaterialType().equals(Constants.MATERIAL_TYPE_JPG)) {
 			return getInstalledFilePath(m);
 		}
@@ -83,8 +87,9 @@ public class PathUtil {
 	 * 動画素材の場合はスナップショットのサムネイルのパスを返却する。
 	 * @param m
 	 * @return
+	 * @throws MWException 
 	 */
-	public static Path getInstalledThumbnailPath(Material m) {
+	public static Path getInstalledThumbnailPath(Material m) throws MWException {
 		PropertyUtil prop = new PropertyUtil();
 		FileSystem fs = FileSystems.getDefault();
 		return fs.getPath(prop.getStagingAreaName(),"thumbnail",getPhotoFileName(m));

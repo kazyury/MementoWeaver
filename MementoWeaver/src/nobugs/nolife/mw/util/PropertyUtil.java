@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import nobugs.nolife.mw.MWException;
+
 public class PropertyUtil {
 	private static Logger logger = Logger.getGlobal();
 	private Properties dirProperties = new Properties();
@@ -46,7 +48,7 @@ public class PropertyUtil {
 		return age;
 	}
 
-	public void storeMaterialSourceCache(String newPath) {
+	public void storeMaterialSourceCache(String newPath) throws MWException {
 		dirProperties.setProperty("dir.materialSource", newPath);
 		try {
 			// クラスパスに書き込むための小賢しい方法
@@ -54,8 +56,7 @@ public class PropertyUtil {
 			OutputStream out = new FileOutputStream(cache);
 			dirProperties.store(out, "cached material source path");
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			throw new MWException("例外が発生しました",e1.getCause());
 		}
 	}
 }
