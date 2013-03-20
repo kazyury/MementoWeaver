@@ -59,6 +59,15 @@ public class MaterialUtil {
 	}
 
 	/**
+	 * yyyy形式で素材の撮影年を返却する
+	 * @param m
+	 * @return
+	 */
+	public static String getMaterialYear(Material m) {
+		return m.getMaterialId().substring(0, 4);
+	}
+
+	/**
 	 * タグ付素材の情報を更新する。
 	 * 追加タグのメモについては、chronicleメモ以外の先頭1件を用いる。
 	 * @param m

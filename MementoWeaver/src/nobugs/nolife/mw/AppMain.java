@@ -47,6 +47,7 @@ public class AppMain extends Application {
 		forward("ui/fxml/EditMaterial.fxml",(Object)material);
 	}
 	public void fwdGenerateConfirm() throws MWException { forward("ui/fxml/GenerateConfirm.fxml"); }
+	public void fwdGenerateResult() throws MWException { forward("ui/fxml/GeneratedResult.fxml"); }
 
 	
 	/**

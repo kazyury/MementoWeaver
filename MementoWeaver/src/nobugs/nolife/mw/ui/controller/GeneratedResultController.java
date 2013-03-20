@@ -6,24 +6,24 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import nobugs.nolife.mw.AppMain;
-import nobugs.nolife.mw.generator.Generator;
+import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.processing.MementoGenerateProcessor;
 import javafx.scene.layout.AnchorPane;
 
 public class GeneratedResultController extends AnchorPane implements MWSceneController {
 	private static Logger logger = Logger.getGlobal();
 	private AppMain appl;
-	private MementoGenerateProcessor processor = new MementoGenerateProcessor();
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) { /* nothing to do */	}
 
 	@Override
-	public void setApplication(AppMain appMain, Object bulk) {
+	public void setApplication(AppMain appMain, Object bulk) throws MWException {
 		this.appl = appMain;
-		@SuppressWarnings("unchecked")
-		List<Generator> generatorList = (List<Generator>)bulk;
-		processor.generateProcess(generatorList);
+
+		MementoGenerateProcessor processor = new MementoGenerateProcessor();
+		List<String> generatedMemento = processor.generateProcess();
+		// TODO ê∂ê¨ÇµÇΩÉÅÉÅÉìÉgÇÃâÊñ ï\é¶
 
 	}
 

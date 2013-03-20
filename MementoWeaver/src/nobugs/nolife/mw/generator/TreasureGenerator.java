@@ -1,19 +1,30 @@
 package nobugs.nolife.mw.generator;
 
+import java.util.List;
+
+import javax.persistence.TypedQuery;
+
 import nobugs.nolife.mw.persistence.Material;
+import nobugs.nolife.mw.persistence.TaggedMaterial;
 
 public class TreasureGenerator extends Generator {
 
 	@Override
-	public void generate() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public String affectedMemento(Material m, String tag) {
+	protected String affectedMemento(Material m, String tag) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	protected TypedQuery<TaggedMaterial> queryBelongingSameMementoWith(
+			Material m) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String generateMemento(List<TaggedMaterial> updateTargetList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
