@@ -136,7 +136,7 @@ public class MaterialUtil {
 		for(String tag:tags){
 			tagList.add(tag);
 		}
-		logger.fine("tagList is "+tagList.toString());
+		logger.info("tagList is "+tagList.toString());
 		/*
 		 * taggedMaterial |___|___|___|___|___|
 		 * tagList            |___|___|___|___|___|
@@ -157,10 +157,15 @@ public class MaterialUtil {
 			 * -----------+-------------------------+-----------------
 			 */
 			if(tagList.contains(tag)){
+				logger.info("tagList["+tagList.toString()+"]にtag["+tag+"]が含まれています。");
+				
 				if(tm.getTagState().equals(Constants.TAG_STATE_STAGED)){
+					logger.info("元のタグ状態がSTAGEDのため、素材の状態をSTAGEDに変更します");
 					m.setMaterialState(Constants.MATERIAL_STATE_STAGED); // 素材の状態もSTAGEDに変更
 					handler.updateAllMemo(tm); // ブロック呼び出し1
+
 				} else if(tm.getTagState().equals(Constants.TAG_STATE_NOT_IN_USE)){
+					logger.info("元のタグ状態がNOT-IN-USEのため、素材の状態をSTAGEDに変更します");
 					m.setMaterialState(Constants.MATERIAL_STATE_STAGED); // 素材の状態もSTAGEDに変更
 					tm.setTagState(Constants.TAG_STATE_STAGED);
 				}
@@ -183,6 +188,7 @@ public class MaterialUtil {
 			tm.setTagState(Constants.TAG_STATE_STAGED);
 
 			m.getTaggedMaterials().add(tm);
+			m.setMaterialState(Constants.MATERIAL_STATE_STAGED);
 		}
 	}
 
@@ -195,12 +201,12 @@ public class MaterialUtil {
 	 * @return
 	 */
 	private static TaggedMaterial updateMemo(TaggedMaterial tm, String memo) {
-		PropertyUtil prop = new PropertyUtil();
 		Material m = tm.getMaterial();
 		String tag = tm.getId().getTag();
 
 		if(tag.equals("kazunori")||tag.equals("hiroko")||tag.equals("taito")){
 			logger.info("tag["+tag+"]のためクロニクル・ルールが適用されます");
+			PropertyUtil prop = new PropertyUtil();
 			tm.setMemo(prop.calcAge(tag, MaterialUtil.getMaterialDate(m))+"歳の肖像");
 		} else {
 			tm.setMemo(memo);
