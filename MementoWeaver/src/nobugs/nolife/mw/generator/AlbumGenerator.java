@@ -9,7 +9,6 @@ public class AlbumGenerator extends Generator {
 	@Override
 	public void generate() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

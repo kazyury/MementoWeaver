@@ -20,28 +20,38 @@ public class MementoGenerateProcessor {
 	private EntityManager em = PersistenceUtil.getMWEntityManager();
 
 
-	public void generate() throws MWException{
-		whileOnTargetTag(new TargetTagHandler() {
-
-			@Override
-			public void process(Generator generator, Material m, String tag) {
-				generator.generate();
-			}
-		});
+	public void generateProcess(List<Generator> generatorList) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public List<String> listAffectedMemento() throws MWException{
-		final List<String> affectedMementoList = new ArrayList<>();
+
+	public List<Generator> getGeneratorList() throws MWException{
+		final List<Generator> generatorList = new ArrayList<>();
 		whileOnTargetTag(new TargetTagHandler() {
 			@Override
 			public void process(Generator generator, Material m, String tag) {
-				String affected = generator.affectedMemento(m, tag);
-				if (!affectedMementoList.contains(affected) && affected!=null){
-					affectedMementoList.add(affected);
+				generator.prepare(m,tag);
+				if (!generatorList.contains(generator) && generator!=null){
+					generatorList.add(generator);
 				}
 			}
 		});
-		return affectedMementoList;
+		return generatorList;
+	}
+
+//	public List<String> listAffectedMemento() throws MWException{
+//		final List<String> affectedMementoList = new ArrayList<>();
+//		whileOnTargetTag(new TargetTagHandler() {
+//			@Override
+//			public void process(Generator generator, Material m, String tag) {
+//				String affected = generator.affectedMemento(m, tag);
+//				if (!affectedMementoList.contains(affected) && affected!=null){
+//					affectedMementoList.add(affected);
+//				}
+//			}
+//		});
+//		return affectedMementoList;
 
 		//		List<String> affectedMementoList = new ArrayList<>();
 		//
@@ -69,7 +79,7 @@ public class MementoGenerateProcessor {
 		//		
 		//		logger.fine("‰e‹¿‚Ì‚ ‚éƒƒƒ“ƒg‚Í["+affectedMementoList+"]‚Å‚·");
 		//		return affectedMementoList;
-	}
+//	}
 
 	//---------------------------------------------------------------- closure
 	interface TargetTagHandler {

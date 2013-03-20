@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.MWException;
+import nobugs.nolife.mw.generator.Generator;
 import nobugs.nolife.mw.processing.MementoGenerateProcessor;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,11 +25,11 @@ public class GenerateConfirmController extends AnchorPane implements MWSceneCont
 
 	// ListViewと連動するObservableList
 	private ObservableList<String> listRecords = FXCollections.observableArrayList();
-	
+
 	// イベントハンドラ
 	@FXML protected void cancel(ActionEvent e) throws MWException {appl.fwdListInstalledMaterial();}
 	@FXML protected void generate(ActionEvent e) {
-		// TODO 次の画面への遷移
+		// TODO 次の画面への遷移時に、processor.getGeneratorList()も併せて渡す。
 	}
 
 	@Override
@@ -36,8 +37,13 @@ public class GenerateConfirmController extends AnchorPane implements MWSceneCont
 
 		logger.fine("生成されるメメント名をObservableListに登録します");
 		try {
-			for(String mementoName:processor.listAffectedMemento()){
-				listRecords.add(mementoName);
+			//			for(String mementoName:processor.listAffectedMemento()){
+			//				listRecords.add(mementoName);
+			//			}
+			for(Generator generator:processor.getGeneratorList()){
+				for(String memento:generator.preparedMemento()){
+					listRecords.add(memento);
+				}
 			}
 		} catch (MWException e) {
 			e.printStackTrace();
