@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<news>
+#foreach($record in $records)
+${processor.escape($record)}
+#end
+</news>

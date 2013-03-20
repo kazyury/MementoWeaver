@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<data>
+#foreach($material in $list)
+  <event
+    title='${name}: ${processor.calcAge(${name},${material})}歳の肖像'
+    start='${processor.formatChronicleDate($material)}' 
+    classname='chronicle'
+    icon='${this.predecessor()}materials/thumbnail/${material.getThumbBasename()}'
+    image='${this.predecessor()}materials/thumbnail/${material.getThumbBasename()}' >
+    ${processor.htmlEncode($material.getDescription())}
+  </event>
+#end
+</data>
+

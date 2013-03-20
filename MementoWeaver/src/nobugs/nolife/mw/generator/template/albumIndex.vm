@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="content-style-type" content="text/css">
+    <meta http-equiv="content-script-type" content="text/javascript">
+    <title>${title}</title>
+    <style type='text/css'>
+      @import '../js/dijit/themes/tundra/tundra.css';
+      @import '../js/dojo/resources/dojo.css';
+      @import '../css/hpcms.css';
+    </style>
+    <script type='text/javascript' src='../js/dojo/dojo.js' djConfig='parseOnLoad: true'></script>
+    <script type='text/javascript' src='../js/headline.js'></script>
+
+    <script type='text/javascript'>
+      dojo.require('dojo.parser');
+
+      dojo.addOnLoad(function(){headlinemenu_load('../chunk/headlineMenu1.xml')});
+      dojo.addOnLoad(function(){dojo.parser.parse();});
+    </script>
+  </head>
+
+  <body class="tundra body-albums">
+    <div id="headline_menu">
+      <!-- headlinemenu_load() でここにヘッドラインメニューが埋め込まれる。 -->
+    </div>
+    <div id="contents_base">
+      <div id="leftpane_menu">
+        <!-- ナビゲーションメニュー start -->
+        <!-- ナビゲーションメニュー end -->
+      </div>
+      <div id="contents_container">
+        <h1>Album Index</h1>
+        <table id="rounded-corner">
+          <thead>
+            <th scope="col" class="rounded-left-top"></th>
+            <th scope="col"> <img src="../img/01.gif"> </th>
+            <th scope="col"> <img src="../img/02.gif"> </th>
+            <th scope="col"> <img src="../img/03.gif"> </th>
+            <th scope="col"> <img src="../img/04.gif"> </th>
+            <th scope="col"> <img src="../img/05.gif"> </th>
+            <th scope="col"> <img src="../img/06.gif"> </th>
+            <th scope="col"> <img src="../img/07.gif"> </th>
+            <th scope="col"> <img src="../img/08.gif"> </th>
+            <th scope="col"> <img src="../img/09.gif"> </th>
+            <th scope="col"> <img src="../img/10.gif"> </th>
+            <th scope="col"> <img src="../img/11.gif"> </th>
+            <th scope="col" class="rounded-right-top"> <img src="../img/12.gif"> </th>
+          </thead>
+          <tfoot>
+            <tr>
+              <td colspan="12" class="rounded-left-bottom"></td>
+              <td class="rounded-right-bottom"></td>
+            </tr>
+          </tfoot>
+          <tbody>
+        #foreach($yyyy in $yyyys)
+            <tr>
+              <td>${yyyy}年</td>
+              <td>
+              #if($yyyymms.contains("${yyyy}01"))
+                <a href="${yyyy}01.html"> 1月</a>
+              #end
+              </td>
+              <td>
+              #if($yyyymms.contains("${yyyy}02"))
+                <a href="${yyyy}02.html"> 2月</a>
+              #end
+              </td>
+              <td>
+              #if($yyyymms.contains("${yyyy}03"))
+                <a href="${yyyy}03.html"> 3月</a>
+              #end
+              </td>
+              <td>
+              #if($yyyymms.contains("${yyyy}04"))
+                <a href="${yyyy}04.html"> 4月</a>
+              #end
+              </td>
+              <td>
+              #if($yyyymms.contains("${yyyy}05"))
+                <a href="${yyyy}05.html"> 5月</a>
+              #end
+              </td>
+              <td>
+              #if($yyyymms.contains("${yyyy}06"))
+                <a href="${yyyy}06.html"> 6月</a>
+              #end
+              </td>
+              <td>
+              #if($yyyymms.contains("${yyyy}07"))
+                <a href="${yyyy}07.html"> 7月</a>
+              #end
+              </td>
+              <td>
+              #if($yyyymms.contains("${yyyy}08"))
+                <a href="${yyyy}08.html"> 8月</a>
+              #end
+              </td>
+              <td>
+              #if($yyyymms.contains("${yyyy}09"))
+                <a href="${yyyy}09.html"> 9月</a>
+              #end
+              </td>
+              <td>
+              #if($yyyymms.contains("${yyyy}10"))
+                <a href="${yyyy}10.html">10月</a>
+              #end
+              </td>
+              <td>
+              #if($yyyymms.contains("${yyyy}11"))
+                <a href="${yyyy}11.html">11月</a>
+              #end
+              </td>
+              <td>
+              #if($yyyymms.contains("${yyyy}12"))
+                <a href="${yyyy}12.html">12月</a>
+              #end
+              </td>
+            </tr>
+        #end
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

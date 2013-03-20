@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="content-style-type" content="text/css">
+    <meta http-equiv="content-script-type" content="text/javascript">
+    <title>${title}</title>
+    <style type='text/css'>
+      @import '../js/dijit/themes/tundra/tundra.css';
+      @import '../js/dojo/resources/dojo.css';
+      @import '../css/hpcms.css';
+      @import '../js/highslide/highslide.css';
+    </style>
+    <script type='text/javascript' src='../js/highslide/highslide-with-gallery.js'></script>
+    <script type='text/javascript' src='../js/dojo/dojo.js' djConfig='parseOnLoad: true'></script>
+    <script type='text/javascript' src='../js/headline.js'></script>
+    <script type='text/javascript' src='../js/navmenu.js'></script>
+
+    <script type='text/javascript'>
+      dojo.require('dojo.parser');
+      dojo.require('dijit.Dialog');
+
+      hs.graphicsDir = '${this.predecessor()}js/highslide/graphics/';
+      hs.align = 'center';
+      hs.transitions = ['expand', 'crossfade'];
+      hs.outlineType = 'rounded-white';
+      hs.fadeInOut = true;
+      //hs.dimmingOpacity = 0.75;
+
+      // Add the controlbar
+      hs.addSlideshow({
+        //slideshowGroup: 'group1',
+        interval: 5000,
+        repeat: false,
+        useControls: true,
+        fixedControls: 'fit',
+        overlayOptions: {
+          opacity: .75,
+          position: 'bottom center',
+          hideOnMouseOut: true
+        }
+      });
+
+      function showMovie(path) {
+        dojo.byId('movieFrame').setAttribute('src',path);
+        dijit.byId('dialog1').show();
+      }
+
+      dojo.addOnLoad(function(){headlinemenu_load('../chunk/headlineMenu1.xml')});
+      dojo.addOnLoad(function(){navmenu_load('menu.xml')});
+      dojo.addOnLoad(function(){dojo.parser.parse();});
+    </script>
+    <!-- headerTemplate end -->
+  </head>
+  <body class="tundra body-prizes">
+    <div id="headline_menu">
+      <!-- headlinemenu_load() でここにヘッドラインメニューが埋め込まれる。 -->
+    </div>
+    <div id="contents_base">
+      <div id="leftpane_menu">
+        <!-- ナビゲーションメニュー start -->
+        <div class="leftmenu">
+          <ul id="navmenu">
+          <!-- navmenu_load() でここにナビゲーションメニューが埋め込まれる。 -->
+          </ul>
+          <br />
+          <ul>
+            <li><a href="../index.html">ホームに戻る</a></li>
+          </ul>
+        </div>
+        <!-- ナビゲーションメニュー end -->
+      </div>
+      <div id="contents_container">
+        <h1>${year}年の獲物</h1>
+        <a name="top"></a>
+        <div class="highslide-gallery">
+#set($yyyymm = '197501')
+#foreach($material in $list)
+  #if($yyyymm == ${material.yyyymm()})
+  #else
+          <h2 style="clear: both;">${material.year()}年${material.month()}月の獲物</h2>
+  #set($yyyymm = ${material.yyyymm()})
+  #end
+          <div class="album-container">
+            <div class="photo">
+  #if($material.getFileFormat() == "mov")
+              <a class="highslide" onclick="return hs.expand(this)" href="${this.predecessor()}materials/${material.getSnapBasename()}">
+  #elseif($material.getFileFormat() == "jpg")
+              <a class="highslide" onclick="return hs.expand(this)" href="${this.predecessor()}materials/${material.getBasename()}">
+  #end
+                <img src="${this.predecessor()}materials/thumbnail/${material.getThumbBasename()}" title="クリックすると大きくなります。" border="0"><br>
+              </a>
+              <div class='highslide-heading'>
+                ${material.year()}年${material.month()}月${material.date()}日 ${material.hour()}時${material.minute()}分${material.second()}秒
+              </div>
+              <div class='highslide-caption'>
+                ${material.getDescription()}
+              </div>
+            </div> <!-- end of photo -->
+            <div class="comment" >
+  #if($material.getFileFormat() == "mov")
+              <!-- 動画ファイルの場合のアペンド -->
+              <a href="#" onclick="showMovie('../materials/${material.getBasename()}');">ビデオはこちら。<br></a>
+  #end
+              ${material.getDescription()}
+            </div>
+          </div>
+#end
+        </div> <!-- end of highslide-gallery -->
+        <a name="bottom"></a>
+
+        <!-- これ以下はmovie Dialogの定義 -->
+        <div dojoType='dijit.Dialog' id='dialog1' title='自動では始まらないので、下のボタンを押してね。' >
+          <embed id='movieFrame' src="NO MOVIES" autostart="false" width="640" height="490"></embed>
+        </div> <!-- End of movie dialog div -->
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -9,5 +9,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.datatools.connectivity.jdt.DRIVERLIBRARY/Derby Embedded JDBC Driver"/>
+	<classpathentry kind="lib" path="lib/velocity-1.7-dep.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

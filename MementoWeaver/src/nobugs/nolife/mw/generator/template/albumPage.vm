@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="content-style-type" content="text/css">
+    <meta http-equiv="content-script-type" content="text/javascript">
+    <title>${title}</title>
+    <style type='text/css'>
+      @import '../js/dijit/themes/tundra/tundra.css';
+      @import '../js/dojo/resources/dojo.css';
+      @import '../css/hpcms.css';
+      @import '../js/highslide/highslide.css';
+    </style>
+    <script type='text/javascript' src='../js/highslide/highslide-with-gallery.js'></script>
+    <script type='text/javascript' src='../js/dojo/dojo.js' djConfig='parseOnLoad: true'></script>
+    <script type='text/javascript' src='../js/headline.js'></script>
+
+    <script type='text/javascript'>
+      dojo.require('dojo.parser');
+      dojo.require('dijit.Dialog');
+
+      function amenu_load() {
+        dojo.xhrGet({
+          url: 'albums.list',
+          handleAs: 'text',
+          load: amenu_build,
+          error: xhrError
+        });
+      }
+
+      // アルバムメニューを構築する。
+      function amenu_build(data, ioArgs){
+        var array = data.split("\r\n"); // CR+LFで保管されている前提
+        var myPosition = dojo.indexOf(array, '${year}${month}.html');
+        var prev_html = array[myPosition-1];
+        var next_html = array[myPosition+1];
+
+        if (prev_html) {
+          var anode = "<a href='${this.predecessor()}albums/" + prev_html + "'>前のアルバム</a>";
+          dojo.byId('amenu_prevhtml').innerHTML = anode ;
+        }
+        if (next_html) {
+          var anode = "<a href='${this.predecessor()}albums/" + next_html + "'>次のアルバム</a>";
+          dojo.byId('amenu_nexthtml').innerHTML = anode ;
+        }
+      }
+
+      hs.graphicsDir = '${this.predecessor()}js/highslide/graphics/';
+      hs.align = 'center';
+      hs.transitions = ['expand', 'crossfade'];
+      hs.outlineType = 'rounded-white';
+      hs.fadeInOut = true;
+      //hs.dimmingOpacity = 0.75;
+
+      // Add the controlbar
+      hs.addSlideshow({
+        //slideshowGroup: 'group1',
+        interval: 5000,
+        repeat: false,
+        useControls: true,
+        fixedControls: 'fit',
+        overlayOptions: {
+          opacity: .75,
+          position: 'bottom center',
+          hideOnMouseOut: true
+        }
+      });
+
+      function showMovie(path) {
+        dojo.byId('movieFrame').setAttribute('src',path);
+        dijit.byId('dialog1').show();
+      }
+
+      dojo.addOnLoad(function(){headlinemenu_load('../chunk/headlineMenu1.xml')});
+      dojo.addOnLoad(amenu_load);
+      dojo.addOnLoad(function(){dojo.parser.parse();});
+    </script>
+    <!-- headerTemplate end -->
+  </head>
+  <body class="tundra body-albums">
+    <div id="headline_menu">
+      <!-- headlinemenu_load() でここにヘッドラインメニューが埋め込まれる。 -->
+    </div>
+    <div id="contents_base">
+      <div id="leftpane_menu">
+        <!-- ナビゲーションメニュー start -->
+        <div class="leftmenu">
+          <ul>
+            <li><a href="${this.predecessor()}albums/index.html" >アルバム目次へ</a></li>
+            <li><a href="#top"   >このページの先頭</a></li>
+            <li><a href="#bottom">このページの一番下</a></li>
+            <li id="amenu_prevhtml"></li>
+            <li id="amenu_nexthtml"></li>
+          </ul>
+          <ul>
+            <li><a href="../index.html" target="_self">ホームに戻る</a></li>
+          </ul>	
+        </div>
+        <!-- ナビゲーションメニュー end -->
+      </div>
+      <div id="contents_container">
+        <a name="top"></a>
+        <div class="highslide-gallery">
+#set($yyyymmdd = '19750101')
+#foreach($material in $list)
+  #if($yyyymmdd == ${material.yyyymmdd()})
+  #else
+          <h1 style="clear: both;">${material.year()}-${material.month()}-${material.date()}</h1>
+  #set($yyyymmdd = ${material.yyyymmdd()})
+  #end
+          <div class="album-container">
+            <div class="photo">
+  #if($material.getFileFormat() == "mov")
+              <a class="highslide" onclick="return hs.expand(this)" href="${this.predecessor()}materials/${material.getSnapBasename()}">
+  #elseif($material.getFileFormat() == "jpg")
+              <a class="highslide" onclick="return hs.expand(this)" href="${this.predecessor()}materials/${material.getBasename()}">
+  #end
+                <img src="${this.predecessor()}materials/thumbnail/${material.getThumbBasename()}" title="クリックすると大きくなります。" border="0"><br>
+              </a>
+              <div class='highslide-heading'>
+                ${material.year()}年${material.month()}月${material.date()}日 ${material.hour()}時${material.minute()}分${material.second()}秒
+              </div>
+              <div class='highslide-caption'>
+                ${material.getDescription()}
+              </div>
+            </div> <!-- end of photo -->
+            <div class="comment" >
+  #if($material.getFileFormat() == "mov")
+              <!-- 動画ファイルの場合のアペンド -->
+              <a href="#" onclick="showMovie('../materials/${material.getBasename()}');">ビデオはこちら。<br></a>
+  #end
+              ${material.getDescription()}
+            </div>
+          </div>
+#end
+        </div> <!-- end of highslide-gallery -->
+        <a name="bottom"></a>
+
+        <!-- これ以下はmovie Dialogの定義 -->
+        <div dojoType='dijit.Dialog' id='dialog1' title='自動では始まらないので、下のボタンを押してね。' >
+          <embed id='movieFrame' src="NO MOVIES" autostart="false" width="640" height="490"></embed>
+        </div> <!-- End of movie dialog div -->
+
+      </div>
+    </div>
+  </body>
+</html>

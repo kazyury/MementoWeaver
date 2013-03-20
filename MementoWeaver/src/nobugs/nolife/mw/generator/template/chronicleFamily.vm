@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<data>
+  <event
+    classname='anniversary'
+    title='泰斗の生まれた日'
+    start='Mar 6 2002 00:00:00 GMT'
+    ></event>
+  <event
+    classname='anniversary'
+    title='和典の生まれた日'
+    start='Feb 18 1975 00:00:00 GMT'
+    ></event>
+  <event
+    classname='anniversary'
+    title='弘子の生まれた日'
+    start='Feb 5 1978 00:00:00 GMT'
+    ></event>
+  <event
+    classname='anniversary'
+    title='結婚記念日'
+    start='May 5 2000 00:00:00 GMT'
+    ></event>
+  <event
+    classname='anniversary'
+    title='日本縦断2009'
+    start='Jul 21 2009 00:00:00 GMT'
+    end='Aug 8 2009 00:00:00 GMT'
+    isDuration="true"
+    ></event>
+  <event
+    classname='anniversary'
+    title='うなねに引越し(だいたい)'
+    start='Nov 21 2003 00:00:00 GMT'
+    ></event>
+</data>
+

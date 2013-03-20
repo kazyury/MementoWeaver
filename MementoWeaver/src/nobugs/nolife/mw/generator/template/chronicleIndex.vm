@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <!-- headerTemplate start -->
+    <meta http-equiv="content-style-type" content="text/css">
+    <meta http-equiv="content-script-type" content="text/javascript">
+    <title>${title}</title>
+    <style type='text/css'>
+      @import '../js/dijit/themes/tundra/tundra.css';
+      @import '../js/dojo/resources/dojo.css';
+      @import '../css/hpcms.css';
+    </style>
+
+    <script>
+      Timeline_ajax_url='../js/timeline/timeline_ajax/simile-ajax-api.js';
+      Timeline_urlPrefix='../js/timeline/timeline_js/';
+      Timeline_parameters='bundle=true';
+    </script>
+    <script type='text/javascript' src='../js/dojo/dojo.js' djConfig='parseOnLoad: true'></script>
+    <script type='text/javascript' src='../js/timeline/timeline_js/timeline-api.js'> </script>
+    <script type='text/javascript' src='../js/headline.js'></script>
+
+    <script type='text/javascript'>
+      dojo.require('dojo.parser');
+
+      function onLoad() {
+        Timeline.loadXML('family.xml', function(xml, url){ eventSourceFamily.loadXML(xml, url)});
+        Timeline.loadXML('kazunori.xml', function(xml, url){ eventSourceKazunori.loadXML(xml, url)});
+        Timeline.loadXML('hiroko.xml', function(xml, url){ eventSourceHiroko.loadXML(xml, url)});
+        Timeline.loadXML('taito.xml', function(xml, url){ eventSourceTaito.loadXML(xml, url)});
+        showTimeLine()
+      }
+
+      function onResize() {
+        if (resizeTimerID == null) {
+          resizeTimerID = window.setTimeout(function() {
+            resizeTimerID = null;
+            tl.layout();
+          }, 500);
+        }
+      }
+
+/* タイムラインを表示 */
+      function showTimeLine() {
+        bandInfos[1].syncWith = 0;
+        bandInfos[2].syncWith = 0;
+        bandInfos[3].syncWith = 0;
+        bandInfos[1].highlight = true;
+        tl = Timeline.create(document.getElementById("my-timeline"), bandInfos, Timeline.HORIZONTAL);
+      }
+
+/* 今日に移動 */
+      function moveToToday() {
+        var now = new Date();
+        tl.getBand(0).setCenterVisibleDate(now);
+      }
+/* 最新に移動 */
+      function moveToNewest() {
+        var fLast = Date.parse(eventSourceFamily.getLatestDate());
+        var kLast = Date.parse(eventSourceKazunori.getLatestDate());
+        var hLast = Date.parse(eventSourceHiroko.getLatestDate());
+        var tLast = Date.parse(eventSourceTaito.getLatestDate());
+        var newest = [fLast, kLast, hLast, tLast].sort(function(a,b){return (parseInt(a) > parseInt(b)) ? 1 : -1;}).reverse()[0];
+        var d = new Date();
+        d.setTime(newest);
+        tl.getBand(0).setCenterVisibleDate(d);
+      }
+
+/* 最古に移動 */
+      function moveToOldest() {
+        var fFirst = Date.parse(eventSourceFamily.getEarliestDate());
+        var kFirst = Date.parse(eventSourceKazunori.getEarliestDate());
+        var hFirst = Date.parse(eventSourceHiroko.getEarliestDate());
+        var tFirst = Date.parse(eventSourceTaito.getEarliestDate());
+        var oldest = [fFirst, kFirst, hFirst, tFirst].sort(function(a,b){return (parseInt(a) > parseInt(b)) ? 1 : -1;})[0];
+        var d = new Date();
+        d.setTime(oldest);
+        tl.getBand(0).setCenterVisibleDate(d);
+      }
+
+/* 倍率を変える(年) */
+      function updateIntervalToYear() {
+        var now = new Date();
+        bandInfos[1] = Timeline.createBandInfo({
+            eventSource:    eventSourceKazunori,
+            date:           now, 
+            width:          "30%", 
+            intervalUnit:   Timeline.DateTime.YEAR, 
+            intervalPixels: 200
+          });
+        bandInfos[2] = Timeline.createBandInfo({
+            eventSource:    eventSourceHiroko,
+            date:           now, 
+            width:          "30%", 
+            intervalUnit:   Timeline.DateTime.YEAR, 
+            intervalPixels: 200
+          });
+        bandInfos[3] = Timeline.createBandInfo({
+            eventSource:    eventSourceTaito,
+            date:           now, 
+            width:          "30%", 
+            intervalUnit:   Timeline.DateTime.YEAR, 
+            intervalPixels: 200
+          });
+        showTimeLine();
+      }
+/* 倍率を変える(月) */
+      function updateIntervalToMonth() {
+        var now = new Date();
+        bandInfos[1] = Timeline.createBandInfo({
+            eventSource:    eventSourceKazunori,
+            date:           now, 
+            width:          "30%", 
+            intervalUnit:   Timeline.DateTime.MONTH, 
+            intervalPixels: 200
+          });
+        bandInfos[2] = Timeline.createBandInfo({
+            eventSource:    eventSourceHiroko,
+            date:           now, 
+            width:          "30%", 
+            intervalUnit:   Timeline.DateTime.MONTH, 
+            intervalPixels: 200
+          });
+        bandInfos[3] = Timeline.createBandInfo({
+            eventSource:    eventSourceTaito,
+            date:           now, 
+            width:          "30%", 
+            intervalUnit:   Timeline.DateTime.MONTH, 
+            intervalPixels: 200
+          });
+        showTimeLine();
+      }
+
+      var tl;
+      var now = new Date();
+      var eventSourceKazunori = new Timeline.DefaultEventSource();
+      var eventSourceHiroko   = new Timeline.DefaultEventSource();
+      var eventSourceTaito    = new Timeline.DefaultEventSource();
+      var eventSourceFamily   = new Timeline.DefaultEventSource();
+      var bandInfos = [
+        Timeline.createBandInfo({
+          eventSource:    eventSourceFamily,
+          date:           now,
+          width:          "10%", 
+          intervalUnit:   Timeline.DateTime.DECADE, 
+          intervalPixels: 300
+        }),
+        Timeline.createBandInfo({
+          eventSource:    eventSourceKazunori,
+          date:           now, 
+          width:          "30%", 
+          intervalUnit:   Timeline.DateTime.YEAR, 
+          intervalPixels: 200
+        }),
+        Timeline.createBandInfo({
+          eventSource:    eventSourceHiroko,
+          date:           now, 
+          width:          "30%", 
+          intervalUnit:   Timeline.DateTime.YEAR, 
+          intervalPixels: 200
+        }),
+        Timeline.createBandInfo({
+          eventSource:    eventSourceTaito,
+          date:           now, 
+          width:          "30%", 
+          intervalUnit:   Timeline.DateTime.YEAR, 
+          intervalPixels: 200
+        })
+      ];
+      var resizeTimerID = null;
+
+      dojo.addOnLoad(function(){headlinemenu_load('../chunk/headlineMenu1.xml')});
+      dojo.addOnLoad(function(){onLoad();});
+      dojo.addOnLoad(function(){dojo.parser.parse();});
+
+    </script>
+    <!-- headerTemplate end -->
+  </head>
+  <body class="tundra body-chronicles" onresize='onResize();'>
+    <div id="headline_menu">
+      <!-- headlinemenu_load() でここにヘッドラインメニューが埋め込まれる。 -->
+    </div>
+    <div id="contents_base">
+      <div id="leftpane_menu">
+        <!-- ナビゲーションメニュー start -->
+        <div class="leftmenu">
+          <ul>
+            <li><a href="#" onclick="moveToToday()">今日に移動</a></li>
+            <li><a href="#" onclick="moveToNewest()">最新に移動</a></li>
+            <li><a href="#" onclick="moveToOldest()">最古に移動</a></li>
+          </ul>
+          <br />
+          <ul>
+            <li><a href="#" onclick="updateIntervalToYear()">倍率を変える(年)</a></li>
+            <li><a href="#" onclick="updateIntervalToMonth()">倍率を変える(月)</a></li>
+          </ul>	
+          <br />
+          <ul>
+            <li><a href="../index.html" target="_self">ホームに戻る</a></li>
+          </ul>	
+        </div>
+        <!-- ナビゲーションメニュー end -->
+      </div>
+      <div id="contents_container">
+        <!-- contentsContainerTemplate start -->
+        <h1>Chronicle</h1>
+        <div id='my-timeline' style='margin: 20px auto 50px auto; height: 450px; border: 1px solid #aaa;'></div>
+        <!-- contentsContainerTemplate end -->
+      </div>
+    </div>
+  </body>
+</html>
