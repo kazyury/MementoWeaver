@@ -16,10 +16,13 @@ public class PropertyUtil {
 	private Properties bodProperties = new Properties();
 	
 	public PropertyUtil() {
+		logger.info("プロパティファイルの読み込みを開始します");
 		InputStream dirstream = this.getClass().getResourceAsStream("/dir.properties");
 		InputStream bodstream = this.getClass().getResourceAsStream("/bod.properties");
 		try {
+			logger.info("ディレクトリプロパティの読み込み中");
 			dirProperties.load(dirstream);
+			logger.info("BoDプロパティの読み込み中");
 			bodProperties.load(bodstream);
 			dirstream.close();
 			bodstream.close();
@@ -43,6 +46,7 @@ public class PropertyUtil {
 	 * @return
 	 */
 	public int calcAge(String key, String yyyymmdd){
+		logger.info("年齢計算を開始します key="+key+" 素材年月日="+yyyymmdd);
 		int age = 0;
 		// TODO 年齢計算の実装
 		return age;

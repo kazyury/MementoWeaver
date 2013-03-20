@@ -32,6 +32,7 @@ public class ImageManipulator {
 	 * @throws MWException 
 	 */
 	public static void rotate(Path sourcePath, int degree) throws IOException, MWException{
+		logger.fine(sourcePath.toString()+"の回転処理を開始");
 		ImageInputStream is = new FileImageInputStream(sourcePath.toFile());
 		BufferedImage sourceImage = ImageIO.read(is);
 
@@ -43,8 +44,10 @@ public class ImageManipulator {
 		int h = sourceImage.getHeight();
 		int w = sourceImage.getWidth();
 		if(degree==90){
+			logger.fine("90度の回転実行");
 			affine.rotate(Math.toRadians(degree), h/2, h/2);
 		} else if(degree==270){
+			logger.fine("270度の回転実行");
 			affine.rotate(Math.toRadians(degree), w/2, w/2);
 		} else {
 			throw new MWException("degree should be 90 or 270.");

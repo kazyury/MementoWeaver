@@ -14,9 +14,11 @@ public class DerivatizerFactory {
 		String suffix = path.toString().substring(pos+1);
 		
 		if (suffix.equals("jpg")) {
+			logger.fine("拡張子はjpgです。JpegDerivatizerを使用します");
 			return new JpegDerivatizer(path);
 		
 		} else if (suffix.equals("mov")){
+			logger.fine("拡張子はmovです。QuicktimeDerivatizerを使用します");
 			return new QuicktimeDerivatizer(path);
 		
 		} else {

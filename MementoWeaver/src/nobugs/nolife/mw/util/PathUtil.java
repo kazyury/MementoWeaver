@@ -3,7 +3,6 @@ package nobugs.nolife.mw.util;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.util.logging.Logger;
 
 import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.persistence.Material;
@@ -14,7 +13,6 @@ import nobugs.nolife.mw.persistence.Material;
  *
  */
 public class PathUtil {
-	private static Logger logger = Logger.getGlobal();
 
 	public static String getBaseFileName(Material m) {
 		String materialId = m.getMaterialId();
