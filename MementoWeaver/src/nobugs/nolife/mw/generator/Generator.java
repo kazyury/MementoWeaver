@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.persistence.Material;
 import nobugs.nolife.mw.persistence.TaggedMaterial;
 import nobugs.nolife.mw.util.PersistenceUtil;
@@ -22,16 +23,18 @@ public abstract class Generator {
 	/** Material mと同一メメントに属するTaggedMaterialを検索するためのTypedQueryを返却する */
 	protected abstract TypedQuery<TaggedMaterial> queryBelongingSameMementoWith(Material m);
 	
-	/** メメントを生成する */
-	protected abstract String generateMemento(List<TaggedMaterial> updateTargetList);
+	/** メメントを生成し、そのパスを返却する 
+	 * @throws MWException */
+	protected abstract String generateMemento(List<TaggedMaterial> updateTargetList) throws MWException;
 
 	// template method
 	/**
 	 * 渡されたMaterialを含むメメントを生成し、そのメメントに含まれるTaggedMaterialを返却する
 	 * @param m
 	 * @return
+	 * @throws MWException 
 	 */
-	public List<TaggedMaterial> generate(Material m){
+	public List<TaggedMaterial> generate(Material m) throws MWException{
 		logger.info("素材["+m.getMaterialId()+"]が属するメメントの作成を開始します");
 
 		TypedQuery<TaggedMaterial> query = queryBelongingSameMementoWith(m);
