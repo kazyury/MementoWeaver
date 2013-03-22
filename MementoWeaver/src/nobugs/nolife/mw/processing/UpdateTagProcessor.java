@@ -2,7 +2,7 @@ package nobugs.nolife.mw.processing;
 
 import javax.persistence.EntityManager;
 
-import nobugs.nolife.mw.persistence.Material;
+import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.util.PersistenceUtil;
 
 public class UpdateTagProcessor {

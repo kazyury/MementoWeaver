@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import nobugs.nolife.mw.persistence.Material;
+import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.ui.controller.MWSceneController;
 
 import javafx.application.Application;

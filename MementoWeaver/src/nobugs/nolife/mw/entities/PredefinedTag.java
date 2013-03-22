@@ -1,4 +1,4 @@
-package nobugs.nolife.mw.persistence;
+package nobugs.nolife.mw.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;

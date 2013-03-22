@@ -8,8 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import nobugs.nolife.mw.MWException;
-import nobugs.nolife.mw.persistence.Material;
-import nobugs.nolife.mw.persistence.TaggedMaterial;
+import nobugs.nolife.mw.entities.Material;
+import nobugs.nolife.mw.entities.TaggedMaterial;
 import nobugs.nolife.mw.util.PersistenceUtil;
 
 public abstract class Generator {

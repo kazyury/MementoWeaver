@@ -11,7 +11,7 @@ import javax.persistence.criteria.Root;
 
 import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.MWException;
-import nobugs.nolife.mw.persistence.Material;
+import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.PersistenceUtil;
 import nobugs.nolife.mw.util.StringUtil;

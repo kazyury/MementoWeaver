@@ -8,8 +8,8 @@ import java.util.ResourceBundle;
 
 import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.MWException;
-import nobugs.nolife.mw.persistence.Material;
-import nobugs.nolife.mw.persistence.TaggedMaterial;
+import nobugs.nolife.mw.entities.Material;
+import nobugs.nolife.mw.entities.TaggedMaterial;
 import nobugs.nolife.mw.processing.UpdateTagProcessor;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.MaterialUtil;

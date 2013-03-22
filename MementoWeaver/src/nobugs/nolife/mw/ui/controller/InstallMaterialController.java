@@ -7,7 +7,9 @@ import java.util.ResourceBundle;
 import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.processing.InstallProcessor;
-import nobugs.nolife.mw.util.PropertyUtil;
+import nobugs.nolife.mw.util.CacheManager;
+import nobugs.nolife.mw.util.Constants;
+import nobugs.nolife.mw.util.PathUtil;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,10 +19,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 
 public class InstallMaterialController extends AnchorPane implements MWSceneController{
+	private static String materialSourcePath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MATERIAL_SOURCE);
+	private static String stagingAreaPath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_STAGING_AREA);
 	private AppMain appl;
-	private String materialSourcePath = null; // プロパティファイルより
-	private String stagingAreaPath = null;    // プロパティファイルより
-	private PropertyUtil propertyUtil = new PropertyUtil();
 
 	// 入力フィールドに対応するインスタンスを保持する変数
 	// 対応付けはFXMLファイルで定義する
@@ -33,7 +34,7 @@ public class InstallMaterialController extends AnchorPane implements MWSceneCont
 		processor.installProcess(pathInput.getText(), stagingAreaPath);
 
 		// 今回のpathInputをプロパティにセットして保管
-		propertyUtil.storeMaterialSourceCache(pathInput.getText());
+		CacheManager.storeMaterialSourceCache(pathInput.getText());
 
 		appl.fwdListInstalledMaterial();
 	}
@@ -53,9 +54,6 @@ public class InstallMaterialController extends AnchorPane implements MWSceneCont
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// プロパティの読み込み
-		materialSourcePath = propertyUtil.getMaterialSourceName();
-		stagingAreaPath = propertyUtil.getStagingAreaName();
 		// プロパティに指定された素材ソースを初期設定
 		pathInput.setText(materialSourcePath);
 	}

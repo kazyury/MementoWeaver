@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import nobugs.nolife.mw.MWException;
+import nobugs.nolife.mw.entities.Material;
+import nobugs.nolife.mw.entities.TaggedMaterial;
+import nobugs.nolife.mw.entities.TaggedMaterialPK;
 import nobugs.nolife.mw.image.ImageManipulator;
-import nobugs.nolife.mw.persistence.Material;
-import nobugs.nolife.mw.persistence.TaggedMaterial;
-import nobugs.nolife.mw.persistence.TaggedMaterialPK;
 
 /**
  * Materialƒ†[ƒeƒBƒŠƒeƒB
@@ -50,11 +50,20 @@ public class MaterialUtil {
 	}
 
 	/**
-	 * yyyymmŒ`®‚Å‘fŞ‚ÌB‰e”NŒ‚ğ•Ô‹p‚·‚é
+	 * yyyymmŒ`®‚Å‘fŞ‚ÌB‰eŒ‚ğ•Ô‹p‚·‚é
 	 * @param m
 	 * @return
 	 */
 	public static String getMaterialMonth(Material m){
+		return m.getMaterialId().substring(2, 6);
+	}
+
+	/**
+	 * yyyymmŒ`®‚Å‘fŞ‚ÌB‰e”NŒ‚ğ•Ô‹p‚·‚é
+	 * @param m
+	 * @return
+	 */
+	public static String getMaterialYearMonth(Material m){
 		return m.getMaterialId().substring(0, 6);
 	}
 
@@ -206,8 +215,7 @@ public class MaterialUtil {
 
 		if(tag.equals("kazunori")||tag.equals("hiroko")||tag.equals("taito")){
 			logger.info("tag["+tag+"]‚Ì‚½‚ßƒNƒƒjƒNƒ‹Eƒ‹[ƒ‹‚ª“K—p‚³‚ê‚Ü‚·");
-			PropertyUtil prop = new PropertyUtil();
-			tm.setMemo(prop.calcAge(tag, MaterialUtil.getMaterialDate(m))+"Î‚ÌÑ‘œ");
+			tm.setMemo(AgeCalculator.calcAge(tag, MaterialUtil.getMaterialDate(m))+"Î‚ÌÑ‘œ");
 		} else {
 			tm.setMemo(memo);
 		}

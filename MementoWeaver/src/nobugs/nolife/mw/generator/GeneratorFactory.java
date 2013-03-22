@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 
 import nobugs.nolife.mw.MWException;
-import nobugs.nolife.mw.persistence.PredefinedTag;
+import nobugs.nolife.mw.entities.PredefinedTag;
 import nobugs.nolife.mw.util.PersistenceUtil;
 
 public class GeneratorFactory {

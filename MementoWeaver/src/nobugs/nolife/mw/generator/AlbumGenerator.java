@@ -8,16 +8,17 @@ import java.util.Map;
 import javax.persistence.TypedQuery;
 
 import nobugs.nolife.mw.MWException;
-import nobugs.nolife.mw.persistence.Material;
-import nobugs.nolife.mw.persistence.TaggedMaterial;
+import nobugs.nolife.mw.entities.Material;
+import nobugs.nolife.mw.entities.TaggedMaterial;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.MaterialUtil;
+import nobugs.nolife.mw.util.PathUtil;
 
 public class AlbumGenerator extends Generator {
 
 	@Override
 	protected String affectedMemento(Material m, String tag) {
-		return MaterialUtil.getMaterialMonth(m)+".html"; // albumsの場合はyyyymm.html
+		return MaterialUtil.getMaterialYearMonth(m)+".html"; // albumsの場合はyyyymm.html
 	}
 
 	/** Material mと同一メメントに属するTaggedMaterialを検索するためのTypedQueryを返却する */
@@ -26,7 +27,7 @@ public class AlbumGenerator extends Generator {
 		TypedQuery<TaggedMaterial> query = em.createQuery(
 				"SELECT tm FROM Material m , m.taggedMaterials tm " +
 				"WHERE tm.id.tag = 'album' AND tm.id.materialId like :yyyymm AND tm.tagState <> :tagState",TaggedMaterial.class);
-		query.setParameter("yyyymm", MaterialUtil.getMaterialMonth(m)+"%");
+		query.setParameter("yyyymm", MaterialUtil.getMaterialYearMonth(m)+"%");
 		query.setParameter("tagState", Constants.TAG_STATE_NOT_IN_USE);
 		return query;
 	}
@@ -38,11 +39,12 @@ public class AlbumGenerator extends Generator {
 		Material m = updateTargetList.get(0).getMaterial();
 		String year = MaterialUtil.getMaterialYear(m);
 		String month = MaterialUtil.getMaterialMonth(m);
+		String outfile = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MW_ALBUM)+"\\"+MaterialUtil.getMaterialYearMonth(m)+".html";
 
 		// velocity用のマップ
 		Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("generator",this); // 自分自身へのCallbackを使えるように。
-	    map.put("list",updateTargetList);      // Materialのリスト
+	    map.put("list",updateTargetList); // TODO HPCMSではmaterialリストを渡していて、material.yyyy()とかが使えていた。
 	    map.put("year",year);
 	    map.put("month",month);
 	    map.put("title",year+"年"+month+"月のアルバム");
@@ -51,11 +53,9 @@ public class AlbumGenerator extends Generator {
 	    tw.setContext(map);
 	    tw.setTemplate("nobugs/nolife/mw/generator/template/albumPage.vm");
 	    tw.setLevel(1);
-//	    tw.setOutput(contentsPath); // TODO not implemented
+	    tw.setOutput(outfile);
 	    tw.out();
 
-
-		// TODO Auto-generated method stub
-		return null;
+	    return outfile;
 	}
 }

@@ -1,4 +1,4 @@
-package nobugs.nolife.mw.persistence;
+package nobugs.nolife.mw.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -83,6 +83,11 @@ public class TaggedMaterial implements Serializable {
 
 	public void setMaterial(Material material) {
 		this.material = material;
+	}
+	
+	// ã‘‚«‚³‚ê‚Ä‚µ‚Ü‚¤‚©‚È?
+	public String getMaterialId(){
+		return this.getId().getMaterialId();
 	}
 
 }

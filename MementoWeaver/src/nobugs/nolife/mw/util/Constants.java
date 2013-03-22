@@ -25,4 +25,15 @@ public class Constants {
 	public static String FFMPEG_PATH="C:\\home\\softwares\\ffmpeg\\ffmpeg ";
 	public static String FFMPEG_OPTS=" -f image2 -pix_fmt jpg -ss 1 -s 640x480 -an -y -vframes 1 ";
 	
+	// dir.properties key
+	public static String DIRPROP_KEY_MATERIAL_SOURCE="dir.materialSource";
+	public static String DIRPROP_KEY_STAGING_AREA="dir.stagingArea";
+	public static String DIRPROP_KEY_MW_ROOT="dir.mw.root";
+	public static String DIRPROP_KEY_MW_ALBUM="dir.memento.albums";
+	public static String DIRPROP_KEY_MW_CHRONICLE="dir.memento.chronicle";
+	public static String DIRPROP_KEY_MW_PRIZE="dir.memento.prizes";
+	public static String DIRPROP_KEY_MW_TREASURE="dir.memento.treasures";
+	public static String DIRPROP_KEY_MW_PARTY="dir.memento.parties";
+	public static String DIRPROP_KEY_MW_MATERIAL="dir.material";
+
 }

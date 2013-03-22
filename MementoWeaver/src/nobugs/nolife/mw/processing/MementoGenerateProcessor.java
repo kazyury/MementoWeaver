@@ -8,10 +8,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import nobugs.nolife.mw.MWException;
+import nobugs.nolife.mw.entities.Material;
+import nobugs.nolife.mw.entities.TaggedMaterial;
 import nobugs.nolife.mw.generator.Generator;
 import nobugs.nolife.mw.generator.GeneratorFactory;
-import nobugs.nolife.mw.persistence.Material;
-import nobugs.nolife.mw.persistence.TaggedMaterial;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.PersistenceUtil;
 
@@ -52,6 +52,13 @@ public class MementoGenerateProcessor {
 			generatedMemento.addAll(generator.getGeneratedMemento());
 			logger.info("Generator:["+generator.getClass().getSimpleName()+"]が生成したメメントは["+generator.getGeneratedMemento().toString()+"]です");
 		}
+		
+		// TODO StagingAreaに存在する素材毎に以下を繰り返し
+		// 全てのタグがPUBLISHEDならば、StagingAreaから素材を移動+Materialの状態を更新
+		// 一部のタグのみがPUBLISHEDならば、StagingAreaから素材をコピー(Materialの状態は維持)
+		
+		// TODO Mementoテーブルの作成
+		// TODO その他の関連メメントの生成
 		return generatedMemento;
 	}
 

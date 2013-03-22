@@ -15,7 +15,7 @@ import javax.persistence.EntityManager;
 import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.derivatizer.Derivatizer;
 import nobugs.nolife.mw.derivatizer.DerivatizerFactory;
-import nobugs.nolife.mw.persistence.Material;
+import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.PersistenceUtil;
 

@@ -1,11 +1,15 @@
 package nobugs.nolife.mw.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.Properties;
+import java.util.logging.Logger;
 
 import nobugs.nolife.mw.MWException;
-import nobugs.nolife.mw.persistence.Material;
+import nobugs.nolife.mw.entities.Material;
 
 /**
  * ファイルパス・ユーティリティ
@@ -13,7 +17,25 @@ import nobugs.nolife.mw.persistence.Material;
  *
  */
 public class PathUtil {
+	private static Logger logger = Logger.getGlobal();
+	private static Properties dirProperties = new Properties();
 
+	static {
+		logger.info("プロパティファイルの読み込みを開始します");
+		InputStream dirstream = PathUtil.class.getResourceAsStream("/dir.properties");
+		try {
+			logger.info("ディレクトリプロパティの読み込み中");
+			dirProperties.load(dirstream);
+			dirstream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static String getDirectoryProperty(String key){
+		return dirProperties.getProperty(key);
+	}
+	
 	public static String getBaseFileName(Material m) {
 		String materialId = m.getMaterialId();
 		StringBuffer materialName = new StringBuffer();
@@ -59,9 +81,9 @@ public class PathUtil {
 	 * @throws MWException 
 	 */
 	public static Path getInstalledFilePath(Material m) throws MWException {
-		PropertyUtil prop = new PropertyUtil();
 		FileSystem fs = FileSystems.getDefault();
-		return fs.getPath(prop.getStagingAreaName(), getFileName(m));
+		String stagingAreaPath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_STAGING_AREA);
+		return fs.getPath(stagingAreaPath, getFileName(m));
 	}
 
 	/**
@@ -75,9 +97,9 @@ public class PathUtil {
 		if (m.getMaterialType().equals(Constants.MATERIAL_TYPE_JPG)) {
 			return getInstalledFilePath(m);
 		}
-		PropertyUtil prop = new PropertyUtil();
 		FileSystem fs = FileSystems.getDefault();
-		return fs.getPath(prop.getStagingAreaName(),getPhotoFileName(m));
+		String stagingAreaPath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_STAGING_AREA);
+		return fs.getPath(stagingAreaPath,getPhotoFileName(m));
 	}
 
 	/**
@@ -88,9 +110,9 @@ public class PathUtil {
 	 * @throws MWException 
 	 */
 	public static Path getInstalledThumbnailPath(Material m) throws MWException {
-		PropertyUtil prop = new PropertyUtil();
 		FileSystem fs = FileSystems.getDefault();
-		return fs.getPath(prop.getStagingAreaName(),"thumbnail",getPhotoFileName(m));
+		String stagingAreaPath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_STAGING_AREA);
+		return fs.getPath(stagingAreaPath,"thumbnail",getPhotoFileName(m));
 	}
 
 }

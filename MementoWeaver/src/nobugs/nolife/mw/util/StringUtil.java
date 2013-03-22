@@ -3,7 +3,7 @@ package nobugs.nolife.mw.util;
 import java.util.List;
 
 import nobugs.nolife.mw.MWException;
-import nobugs.nolife.mw.persistence.TaggedMaterial;
+import nobugs.nolife.mw.entities.TaggedMaterial;
 
 public class StringUtil {
 	/**
