@@ -41,40 +41,18 @@ public class MaterialUtil {
 	}
 
 	/**
-	 * yyyymmddŒ`®‚Å‘fŞ‚ÌB‰e”NŒ“ú‚ğ•Ô‹p‚·‚é
+	 * ‘fŞ‚ÌB‰e”NŒ“ú‚ğ•Ô‹p‚·‚é
 	 * @param m
 	 * @return
 	 */
-	public static String getMaterialDate(Material m){
-		return m.getMaterialId().substring(0, 8);
-	}
-
-	/**
-	 * yyyymmŒ`®‚Å‘fŞ‚ÌB‰eŒ‚ğ•Ô‹p‚·‚é
-	 * @param m
-	 * @return
-	 */
-	public static String getMaterialMonth(Material m){
-		return m.getMaterialId().substring(2, 6);
-	}
-
-	/**
-	 * yyyymmŒ`®‚Å‘fŞ‚ÌB‰e”NŒ‚ğ•Ô‹p‚·‚é
-	 * @param m
-	 * @return
-	 */
-	public static String getMaterialYearMonth(Material m){
-		return m.getMaterialId().substring(0, 6);
-	}
-
-	/**
-	 * yyyyŒ`®‚Å‘fŞ‚ÌB‰e”N‚ğ•Ô‹p‚·‚é
-	 * @param m
-	 * @return
-	 */
-	public static String getMaterialYear(Material m) {
-		return m.getMaterialId().substring(0, 4);
-	}
+	public static String getMaterialYearMonthDate(Material m){ return m.getMaterialId().substring(0, 8); }
+	public static String getMaterialYearMonth(Material m){ return m.getMaterialId().substring(0, 6); }
+	public static String getMaterialYear(Material m) { return m.getMaterialId().substring(0, 4); }
+	public static String getMaterialMonth(Material m){ return m.getMaterialId().substring(4, 6); }
+	public static String getMaterialDate(Material m){ return m.getMaterialId().substring(6, 8); }
+	public static String getMaterialHour(Material m){ return m.getMaterialId().substring(8, 10); }
+	public static String getMaterialMinute(Material m){ return m.getMaterialId().substring(10, 12); }
+	public static String getMaterialSecond(Material m){ return m.getMaterialId().substring(12, 14); }
 
 	/**
 	 * ƒ^ƒO•t‘fŞ‚Ìî•ñ‚ğXV‚·‚éB
@@ -98,7 +76,7 @@ public class MaterialUtil {
 		MaterialUtil.updateTagInfo(new UpdateMemoHandler() {
 			@Override
 			public void updateAllMemo(TaggedMaterial existingTm) {/* do nothing */}
-			
+
 			@Override
 			public void createNewMemo(TaggedMaterial newTm) {
 				MaterialUtil.updateMemo(newTm, memo);
@@ -115,12 +93,12 @@ public class MaterialUtil {
 	 */
 	public static void updateTagInfo(Material m, String[] tags, final String memo){
 		MaterialUtil.updateTagInfo(new UpdateMemoHandler() {
-			
+
 			@Override
 			public void updateAllMemo(TaggedMaterial existingTm) {
 				MaterialUtil.updateMemo(existingTm, memo);
 			}
-			
+
 			@Override
 			public void createNewMemo(TaggedMaterial newTm) {
 				MaterialUtil.updateMemo(newTm, memo);
@@ -167,7 +145,7 @@ public class MaterialUtil {
 			 */
 			if(tagList.contains(tag)){
 				logger.info("tagList["+tagList.toString()+"]‚Étag["+tag+"]‚ªŠÜ‚Ü‚ê‚Ä‚¢‚Ü‚·B");
-				
+
 				if(tm.getTagState().equals(Constants.TAG_STATE_STAGED)){
 					logger.info("Œ³‚Ìƒ^ƒOó‘Ô‚ªSTAGED‚Ì‚½‚ßA‘fŞ‚Ìó‘Ô‚ğSTAGED‚É•ÏX‚µ‚Ü‚·");
 					m.setMaterialState(Constants.MATERIAL_STATE_STAGED); // ‘fŞ‚Ìó‘Ô‚àSTAGED‚É•ÏX
@@ -215,7 +193,7 @@ public class MaterialUtil {
 
 		if(tag.equals("kazunori")||tag.equals("hiroko")||tag.equals("taito")){
 			logger.info("tag["+tag+"]‚Ì‚½‚ßƒNƒƒjƒNƒ‹Eƒ‹[ƒ‹‚ª“K—p‚³‚ê‚Ü‚·");
-			tm.setMemo(AgeCalculator.calcAge(tag, MaterialUtil.getMaterialDate(m))+"Î‚ÌÑ‘œ");
+			tm.setMemo(AgeCalculator.calcAge(tag, MaterialUtil.getMaterialYearMonthDate(m))+"Î‚ÌÑ‘œ");
 		} else {
 			tm.setMemo(memo);
 		}

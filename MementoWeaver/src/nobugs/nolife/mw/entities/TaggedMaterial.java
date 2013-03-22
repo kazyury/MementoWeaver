@@ -85,9 +85,4 @@ public class TaggedMaterial implements Serializable {
 		this.material = material;
 	}
 	
-	// ã‘‚«‚³‚ê‚Ä‚µ‚Ü‚¤‚©‚È?
-	public String getMaterialId(){
-		return this.getId().getMaterialId();
-	}
-
 }

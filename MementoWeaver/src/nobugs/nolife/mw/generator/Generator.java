@@ -10,6 +10,8 @@ import javax.persistence.TypedQuery;
 import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.TaggedMaterial;
+import nobugs.nolife.mw.util.MaterialUtil;
+import nobugs.nolife.mw.util.PathUtil;
 import nobugs.nolife.mw.util.PersistenceUtil;
 
 public abstract class Generator {
@@ -63,4 +65,16 @@ public abstract class Generator {
 	public List<String> getPreparedMemento() {
 		return preparedMementoList;
 	}
+
+	/* テンプレートから使用するためのメソッド */
+	public String yyyymmdd(Material m) { return MaterialUtil.getMaterialYearMonthDate(m); }
+	public String year(Material m) { return MaterialUtil.getMaterialYear(m); }
+	public String month(Material m) { return MaterialUtil.getMaterialMonth(m); }
+	public String date(Material m) { return MaterialUtil.getMaterialDate(m); }
+	public String hour(Material m) { return MaterialUtil.getMaterialHour(m); }
+	public String minute(Material m) { return MaterialUtil.getMaterialMinute(m); }
+	public String second(Material m) { return MaterialUtil.getMaterialSecond(m); }
+	
+	public String fileName(Material m) throws MWException {return PathUtil.getFileName(m); }
+	public String photoFileName(Material m) throws MWException {return PathUtil.getPhotoFileName(m); }
 }

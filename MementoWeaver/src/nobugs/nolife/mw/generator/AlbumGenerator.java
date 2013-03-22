@@ -43,19 +43,20 @@ public class AlbumGenerator extends Generator {
 
 		// velocity用のマップ
 		Map<String, Object> map = new HashMap<String, Object>();
-	    map.put("generator",this); // 自分自身へのCallbackを使えるように。
-	    map.put("list",updateTargetList); // TODO HPCMSではmaterialリストを渡していて、material.yyyy()とかが使えていた。
+	    map.put("g",this);
+	    map.put("list",updateTargetList);
 	    map.put("year",year);
 	    map.put("month",month);
 	    map.put("title",year+"年"+month+"月のアルバム");
 	    
 	    TemplateWrapper tw = new TemplateWrapper();
 	    tw.setContext(map);
-	    tw.setTemplate("nobugs/nolife/mw/generator/template/albumPage.vm");
+	    tw.setTemplate("nobugs/nolife/mw/generator/template/albumPage.html");
 	    tw.setLevel(1);
 	    tw.setOutput(outfile);
 	    tw.out();
 
 	    return outfile;
 	}
+	
 }

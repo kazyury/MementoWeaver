@@ -101,34 +101,31 @@
         <a name="top"></a>
         <div class="highslide-gallery">
 #set($yyyymmdd = '19750101')
-#foreach($material in $list)
-  #if($yyyymmdd == ${material.yyyymmdd()})
+#foreach($tm in $list)
+  #set($m = ${tm.getMaterial()})
+  #if($yyyymmdd == ${g.yyyymmdd($m)})
   #else
-          <h1 style="clear: both;">${material.year()}-${material.month()}-${material.date()}</h1>
-  #set($yyyymmdd = ${material.yyyymmdd()})
+          <h1 style="clear: both;">${g.year($m)}-${g.month($m)}-${g.date($m)}</h1>
+    #set($yyyymmdd = ${g.yyyymmdd($m)})
   #end
           <div class="album-container">
             <div class="photo">
-  #if($material.getFileFormat() == "mov")
-              <a class="highslide" onclick="return hs.expand(this)" href="${this.predecessor()}materials/${material.getSnapBasename()}">
-  #elseif($material.getFileFormat() == "jpg")
-              <a class="highslide" onclick="return hs.expand(this)" href="${this.predecessor()}materials/${material.getBasename()}">
-  #end
-                <img src="${this.predecessor()}materials/thumbnail/${material.getThumbBasename()}" title="クリックすると大きくなります。" border="0"><br>
+              <a class="highslide" onclick="return hs.expand(this)" href="${this.predecessor()}materials/${g.photoFileName($m)}">
+                <img src="${this.predecessor()}materials/thumbnail/${g.photoFileName($m)}" title="クリックすると大きくなります。" border="0"><br>
               </a>
               <div class='highslide-heading'>
-                ${material.year()}年${material.month()}月${material.date()}日 ${material.hour()}時${material.minute()}分${material.second()}秒
+                ${g.year($m)}年${g.month($m)}月${g.date($m)}日 ${g.hour($m)}時${g.minute($m)}分${g.second($m)}秒
               </div>
               <div class='highslide-caption'>
-                ${material.getDescription()}
+                ${tm.getMemo()}
               </div>
             </div> <!-- end of photo -->
             <div class="comment" >
-  #if($material.getFileFormat() == "mov")
+  #if($m.getMaterialType() == "M")
               <!-- 動画ファイルの場合のアペンド -->
-              <a href="#" onclick="showMovie('../materials/${material.getBasename()}');">ビデオはこちら。<br></a>
+              <a href="#" onclick="showMovie('../materials/${g.fileName($m)}');">ビデオはこちら。<br></a>
   #end
-              ${material.getDescription()}
+              ${tm.getMemo()}
             </div>
           </div>
 #end

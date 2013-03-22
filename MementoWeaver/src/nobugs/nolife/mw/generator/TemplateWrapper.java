@@ -134,9 +134,8 @@ public class TemplateWrapper {
 	 * @throws MWException 下位で発生した例外はMWException に変換してthrow する。
 	 */
 	private String _apply(String template, Map<String, Object> context) throws MWException {
-		// FIXME
-		// velocity のプロパティファイルの読み出しが一寸微妙なようなので、ハードコードしている。
-		logger.info("_apply:Velocityプロパティの設定開始");
+		// FIXME velocity のプロパティファイルの読み出しが一寸微妙なようなので、ハードコードしている。
+		logger.fine("_apply:Velocityプロパティの設定開始");
 		Properties p = new Properties();
 		p.setProperty("resource.loader", "class");
 		p.setProperty("class.resource.loader.class","org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
@@ -145,21 +144,21 @@ public class TemplateWrapper {
 		StringWriter writer = new StringWriter();
 
 		try {
-			logger.info("_apply:Velocity.init");
+			logger.fine("_apply:Velocity.init");
 			Velocity.init(p);
 			VelocityContext vc = new VelocityContext();
 
-			logger.info("_apply:context setting.");
+			logger.fine("_apply:context setting.");
 			Set<String> set = context.keySet();
 			for(String key : set) {
 				logger.info("_apply:context setting.["+key+"],["+context.get(key)+"]");
 				vc.put(key, context.get(key));
 			}
-			logger.info("_apply:context setting end.");
+			logger.fine("_apply:context setting end.");
 
-			logger.info("_apply:getTemplate("+template+").");
+			logger.fine("_apply:getTemplate("+template+").");
 			Template vt = Velocity.getTemplate(template);
-			logger.info("_apply:getTemplate. vt was ["+vt+"].");
+			logger.fine("_apply:getTemplate. vt was ["+vt+"].");
 
 			if (vt != null) {
 				vt.merge(vc, writer);

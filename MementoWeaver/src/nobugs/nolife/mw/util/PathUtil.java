@@ -36,6 +36,11 @@ public class PathUtil {
 		return dirProperties.getProperty(key);
 	}
 	
+	/**
+	 * 素材のベース名(yyyymmdd_hhmmss)を返却する。拡張子は付与しない。
+	 * @param m
+	 * @return
+	 */
 	public static String getBaseFileName(Material m) {
 		String materialId = m.getMaterialId();
 		StringBuffer materialName = new StringBuffer();
@@ -45,6 +50,12 @@ public class PathUtil {
 		return materialName.toString();
 	}
 
+	/**
+	 * 素材のファイル名(yyyymmdd_hhmmss.jpg等)を返却する
+	 * @param m
+	 * @return
+	 * @throws MWException
+	 */
 	public static String getFileName(Material m) throws MWException {
 		StringBuffer materialName = new StringBuffer(getBaseFileName(m));
 		if (m.getMaterialType().equals(Constants.MATERIAL_TYPE_JPG)) {
@@ -75,7 +86,7 @@ public class PathUtil {
 	}
 
 	/**
-	 * Materialのフルパスを返却する。
+	 * ステージングエリアに存在するMaterialのフルパスを返却する。
 	 * @param m
 	 * @return
 	 * @throws MWException 
@@ -87,7 +98,7 @@ public class PathUtil {
 	}
 
 	/**
-	 * Materialの静止画像のフルパスを返却する。
+	 * ステージングエリアに存在するMaterialの静止画像のフルパスを返却する。
 	 * (静止画素材の場合はgetInstalledFilePathと同値.動画素材の場合はスナップショットのフルパス)
 	 * @param m
 	 * @return
@@ -103,7 +114,7 @@ public class PathUtil {
 	}
 
 	/**
-	 * Materialのサムネイルのフルパスを返却する。
+	 * ステージングエリアに存在するMaterialのサムネイルのフルパスを返却する。
 	 * 動画素材の場合はスナップショットのサムネイルのパスを返却する。
 	 * @param m
 	 * @return
