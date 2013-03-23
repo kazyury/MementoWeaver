@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.TypedQuery;
 
 import nobugs.nolife.mw.entities.Material;
+import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.entities.TaggedMaterial;
 
 public class ChronicleGenerator extends Generator {
@@ -23,7 +24,13 @@ public class ChronicleGenerator extends Generator {
 	}
 
 	@Override
-	protected String generateMemento(List<TaggedMaterial> updateTargetList) {
+	protected Memento generateMemento(List<TaggedMaterial> updateTargetList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String getMementoId(Material m, String tag) {
 		// TODO Auto-generated method stub
 		return null;
 	}

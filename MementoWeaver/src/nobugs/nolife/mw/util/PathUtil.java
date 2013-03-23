@@ -98,6 +98,18 @@ public class PathUtil {
 	}
 
 	/**
+	 * Production環境に存在するMaterialのフルパスを返却する。
+	 * @param m
+	 * @return
+	 * @throws MWException 
+	 */
+	public static Path getProductionFilePath(Material m) throws MWException {
+		FileSystem fs = FileSystems.getDefault();
+		String productionPath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MW_MATERIAL);
+		return fs.getPath(productionPath, getFileName(m));
+	}
+
+	/**
 	 * ステージングエリアに存在するMaterialの静止画像のフルパスを返却する。
 	 * (静止画素材の場合はgetInstalledFilePathと同値.動画素材の場合はスナップショットのフルパス)
 	 * @param m
@@ -114,6 +126,22 @@ public class PathUtil {
 	}
 
 	/**
+	 * Productionに存在するMaterialの静止画像のフルパスを返却する。
+	 * (静止画素材の場合はgetProductionFilePathと同値.動画素材の場合はスナップショットのフルパス)
+	 * @param m
+	 * @return
+	 * @throws MWException 
+	 */
+	public static Path getProductionPhotoPath(Material m) throws MWException {
+		if (m.getMaterialType().equals(Constants.MATERIAL_TYPE_JPG)) {
+			return getProductionFilePath(m);
+		}
+		FileSystem fs = FileSystems.getDefault();
+		String productionPath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MW_MATERIAL);
+		return fs.getPath(productionPath,getPhotoFileName(m));
+	}
+
+	/**
 	 * ステージングエリアに存在するMaterialのサムネイルのフルパスを返却する。
 	 * 動画素材の場合はスナップショットのサムネイルのパスを返却する。
 	 * @param m
@@ -124,6 +152,19 @@ public class PathUtil {
 		FileSystem fs = FileSystems.getDefault();
 		String stagingAreaPath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_STAGING_AREA);
 		return fs.getPath(stagingAreaPath,"thumbnail",getPhotoFileName(m));
+	}
+
+	/**
+	 * Production環境に存在するMaterialのサムネイルのフルパスを返却する。
+	 * 動画素材の場合はスナップショットのサムネイルのパスを返却する。
+	 * @param m
+	 * @return
+	 * @throws MWException 
+	 */
+	public static Path getProductionThumbnailPath(Material m) throws MWException {
+		FileSystem fs = FileSystems.getDefault();
+		String productionPath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MW_MATERIAL);
+		return fs.getPath(productionPath,"thumbnail",getPhotoFileName(m));
 	}
 
 }

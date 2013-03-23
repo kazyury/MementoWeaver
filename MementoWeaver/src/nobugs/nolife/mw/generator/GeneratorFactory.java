@@ -20,6 +20,7 @@ public class GeneratorFactory {
 		em.close();
 		
 		logger.info("タグ["+tag+"]に関連付けられたFQCNは ["+pt.getFqcn()+"]です。");
+		// TODO PredefinedTagに未登録のタグを入力したらNullPointerになる。
 
 		Generator generator = generatorMap.get(pt.getFqcn());
 		if (generator != null) {

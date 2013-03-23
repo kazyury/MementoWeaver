@@ -33,7 +33,7 @@ public class TaggedMaterial implements Serializable {
 			}
 		, inverseJoinColumns={
 			@JoinColumn(name="MEMENTO_ID", nullable=false)
-			}
+			}, schema = "MW"
 		)
 	private List<Memento> mementos;
 

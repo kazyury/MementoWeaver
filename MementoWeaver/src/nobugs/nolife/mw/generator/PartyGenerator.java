@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.TypedQuery;
 
 import nobugs.nolife.mw.entities.Material;
+import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.entities.TaggedMaterial;
 import nobugs.nolife.mw.util.MaterialUtil;
 
@@ -24,7 +25,13 @@ public class PartyGenerator extends Generator {
 	}
 
 	@Override
-	protected String generateMemento(List<TaggedMaterial> updateTargetList) {
+	protected Memento generateMemento(List<TaggedMaterial> updateTargetList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String getMementoId(Material m, String tag) {
 		// TODO Auto-generated method stub
 		return null;
 	}
