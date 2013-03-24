@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
@@ -18,6 +20,7 @@ import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.entities.TaggedMaterial;
 import nobugs.nolife.mw.generator.Generator;
 import nobugs.nolife.mw.generator.GeneratorFactory;
+import nobugs.nolife.mw.generator.SubGenerator;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.PathUtil;
 import nobugs.nolife.mw.util.PersistenceUtil;
@@ -25,6 +28,7 @@ import nobugs.nolife.mw.util.PersistenceUtil;
 public class MementoGenerateProcessor {
 	private static Logger logger = Logger.getGlobal();
 	private EntityManager em = PersistenceUtil.getMWEntityManager();
+	private Set<String> generatorSet = new TreeSet<>();
 
 	/**
 	 * メメントを生成する
@@ -46,9 +50,12 @@ public class MementoGenerateProcessor {
 			// 最初の1件を取得
 			TaggedMaterial tm = result.get(0);
 			Material m = tm.getMaterial();
-			Generator generator = GeneratorFactory.getGenerator(tm.getId().getTag());
 
-			logger.info("Generator:["+generator.getClass().getSimpleName()+"]を使用してメメントを生成します");
+			// ジェネレータを生成
+			Generator generator = GeneratorFactory.getGenerator(tm.getId().getTag());
+			String generatorName = generator.getClass().getSimpleName();
+			generatorSet.add(generatorName);
+			logger.info("Generator:["+generatorName+"]を使用してメメントを生成します");
 
 			// ジェネレータによる生成 と生成されたメメントに含まれるタグ付素材のリスト(updateTargetList)を取得
 			Memento memento = generator.generate(m);
@@ -73,7 +80,12 @@ public class MementoGenerateProcessor {
 
 		}
 
-		// TODO その他の関連メメントの生成
+		// その他の関連メメント(albumIndex等)の生成
+		for(String generatorName:generatorSet){
+			SubGenerator subGenerator = GeneratorFactory.getSubGenerator(generatorName);
+			subGenerator.generate();
+		}
+		
 		return generatedMemento;
 	}
 

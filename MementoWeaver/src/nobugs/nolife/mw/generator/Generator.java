@@ -54,6 +54,7 @@ public abstract class Generator {
 		return memento;
 	}
 	
+	
 	/**
 	 * 生成対象メメントを判定し、準備メメントリストとして保管する。
 	 * テンプレートメソッドとしてサブクラスで実装される抽象メソッドを呼んでいる。
