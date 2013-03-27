@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.ui.controller.InstalledMaterialListController">
+  <children>
+    <VBox prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+        <HBox prefHeight="30.0" prefWidth="200.0">
+          <children>
+            <Label text="Installed Material List">
+              <font>
+                <Font size="28.0" />
+              </font>
+              <graphic>
+                <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@icons/generate.png" preserveRatio="false" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Label>
+          </children>
+        </HBox>
+        <TableView fx:id="tableView" onMouseClicked="#clicked" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+          <columns>
+        <TableColumn prefWidth="120.0" text="ID" fx:id="idCol" />
+        <TableColumn prefWidth="75.0" text="TYPE" fx:id="typeCol" />
+        <TableColumn prefWidth="360.0" resizable="false" text="TAG" fx:id="tagCol" />
+          </columns>
+          <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x1" />
+          </VBox.margin>
+        </TableView>
+        <HBox alignment="CENTER_RIGHT" padding="$x1" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+          <children>
+            <Button fx:id="generate" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#generate" text="Generate">
+              <graphic>
+                <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@icons/go.png" preserveRatio="false" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <Button fx:id="exit" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#exit" prefWidth="80.0" text="Exit">
+              <graphic>
+                <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@icons/exit.png" preserveRatio="false" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+          </children>
+        </HBox>
+      </children>
+    </VBox>
+  </children>
+</AnchorPane>

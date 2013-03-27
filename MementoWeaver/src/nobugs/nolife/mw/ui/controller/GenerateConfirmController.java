@@ -29,7 +29,7 @@ public class GenerateConfirmController extends AnchorPane implements MWSceneCont
 	private ObservableList<String> listRecords = FXCollections.observableArrayList();
 
 	// イベントハンドラ
-	@FXML protected void cancel(ActionEvent e) throws MWException {appl.fwdListInstalledMaterial();}
+	@FXML protected void cancel(ActionEvent e) throws MWException {appl.fwdInstalledMaterialList();}
 	@FXML protected void generate(ActionEvent e) throws MWException {appl.fwdGenerateResult();}
 
 	@Override

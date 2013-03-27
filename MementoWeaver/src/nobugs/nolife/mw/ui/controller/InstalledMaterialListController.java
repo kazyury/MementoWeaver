@@ -28,7 +28,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-public class ListInstalledMaterialController extends AnchorPane implements MWSceneController {
+public class InstalledMaterialListController extends AnchorPane implements MWSceneController {
 	private AppMain appl;
 	private List<Material> installedMaterials;
 

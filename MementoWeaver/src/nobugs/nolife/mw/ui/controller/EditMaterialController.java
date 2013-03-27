@@ -25,6 +25,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
+//TODO EditMaterialで何も入力せずにApplyするとJoined tag string is not valid.
+
+
 public class EditMaterialController extends AnchorPane implements MWSceneController{
 	private AppMain appl;
 	/** 描画する素材 */
@@ -76,11 +79,11 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 		// タグ情報を更新して画面を閉じる
 		UpdateTagProcessor processor = new UpdateTagProcessor();
 		processor.updateTagProcess(material);
-		appl.fwdListInstalledMaterial();
+		appl.fwdInstalledMaterialList();
 		
 	}
 	@FXML	protected void cancel(ActionEvent e) throws MWException {
-		appl.fwdListInstalledMaterial();
+		appl.fwdInstalledMaterialList();
 	}
 
 	@Override
