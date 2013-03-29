@@ -19,9 +19,12 @@ public class MainMenuController extends AnchorPane implements MWSceneController 
 	// publicフィールドの場合は@FXMLの記述は不要
 
 	// イベントハンドラ
-	@FXML	protected void install(ActionEvent e) throws MWException {appl.fwdInstallMaterial();}
-	@FXML	protected void generate(ActionEvent e) throws MWException {appl.fwdListInstalledMaterial();}
-	@FXML	protected void modify(ActionEvent e) {} // TODO not implemented yet
+	@FXML	protected void installMaterial(ActionEvent e) throws MWException {appl.fwdInstallMaterial();}
+	@FXML	protected void generateMemento(ActionEvent e) throws MWException {appl.fwdInstalledMaterialList();}
+	@FXML	protected void modifyMemento(ActionEvent e) {} // TODO not implemented yet
+	@FXML	protected void manageTag(ActionEvent e) {} // TODO not implemented yet
+	@FXML	protected void archive(ActionEvent e) {} // TODO not implemented yet
+	@FXML	protected void scanMaterial(ActionEvent e) {} // TODO not implemented yet
 	@FXML	protected void exit(ActionEvent e) {Platform.exit();}
 
 	@Override

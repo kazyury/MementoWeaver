@@ -17,10 +17,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 
 // TODO 例外設計
-// TODO 画面のお化粧直し
 // TODO LoggerのFormatter作成
 // TODO javadoc
 // TODO 単体テスト
+
+
 
 public class AppMain extends Application {
 	private Stage stage;
@@ -41,7 +42,7 @@ public class AppMain extends Application {
 	// TODO 画面遷移系をforwardに一本化するか?
 	public void fwdMainMenu() throws MWException {	forward("ui/fxml/MainMenu.fxml"); }
 	public void fwdInstallMaterial() throws MWException { forward("ui/fxml/InstallMaterial.fxml"); }
-	public void fwdListInstalledMaterial() throws MWException { forward("ui/fxml/ListInstalledMaterial.fxml"); }
+	public void fwdInstalledMaterialList() throws MWException { forward("ui/fxml/InstalledMaterialList.fxml"); }
 
 	public void fwdMaterialEditor(Material material) throws MWException {
 		forward("ui/fxml/EditMaterial.fxml",(Object)material);

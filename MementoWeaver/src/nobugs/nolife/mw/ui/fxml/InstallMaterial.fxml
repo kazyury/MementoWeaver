@@ -2,16 +2,77 @@
 
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.ui.controller.InstallMaterialController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.ui.controller.InstallMaterialController">
   <children>
-    <Button fx:id="exitButton" layoutX="523.0" layoutY="361.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
-    <Button id="exitButton" fx:id="installButton" layoutX="429.0" layoutY="361.0" mnemonicParsing="false" onAction="#install" text="Install" />
-    <Label layoutX="39.0" layoutY="84.0" text="Photo file path" />
-    <TextField fx:id="pathInput" layoutX="140.0" layoutY="81.0" prefWidth="289.0000999999975" />
-    <Button id="exitButton" fx:id="browseButton" layoutX="429.0" layoutY="82.0" mnemonicParsing="false" onAction="#browse" text="browse" />
+    <VBox prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+        <HBox>
+          <children>
+            <Label text="Install Material">
+              <font>
+                <Font size="28.0" />
+              </font>
+              <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@icons/camera.png" preserveRatio="false" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Label>
+          </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0" VBox.vgrow="ALWAYS">
+          <children>
+            <Label text="Material Source Path" />
+            <TextField fx:id="pathInput" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Button fx:id="browse" mnemonicParsing="false" onAction="#browse" text="browse">
+              <graphic>
+                <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@icons/browse.png" preserveRatio="false" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+          </children>
+          <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+          </padding>
+        </HBox>
+        <HBox alignment="CENTER_RIGHT" prefHeight="30.0" spacing="10.0">
+          <children>
+            <Button fx:id="install" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#install" text="Install">
+              <graphic>
+                <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@icons/go.png" preserveRatio="false" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <Button fx:id="exit" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#exit" prefWidth="80.0" text="Exit">
+              <graphic>
+                <ImageView mouseTransparent="true" pickOnBounds="true">
+                  <image>
+                    <Image url="@icons/exit.png" preserveRatio="false" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+          </children>
+          <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+          </padding>
+        </HBox>
+      </children>
+    </VBox>
   </children>
 </AnchorPane>

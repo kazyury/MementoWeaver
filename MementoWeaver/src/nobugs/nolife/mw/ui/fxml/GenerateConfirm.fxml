@@ -2,15 +2,65 @@
 
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.ui.controller.GenerateConfirmController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.ui.controller.GenerateConfirmController">
   <children>
-    <Button fx:id="continueButton" layoutX="416.0" layoutY="367.0" mnemonicParsing="false" onAction="#generate" text="Generate" />
-    <Button fx:id="canecelButton" layoutX="509.0" layoutY="367.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
-    <Label layoutX="32.0" layoutY="41.0" prefWidth="536.0" text="以下のメメントが生成されます。よろしいですか？" />
-    <ListView id="generateCandidateListView" fx:id="generateListView" layoutX="32.0" layoutY="55.0" prefHeight="278.0" prefWidth="536.0" />
+    <VBox prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+        <HBox prefHeight="30.0" prefWidth="200.0">
+          <children>
+            <Label text="Generate Confirm">
+              <font>
+                <Font size="28.0" />
+              </font>
+              <graphic>
+                <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@icons/generate.png" preserveRatio="false" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Label>
+          </children>
+          <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x1" />
+          </padding>
+        </HBox>
+        <VBox alignment="TOP_CENTER" padding="$x1" prefWidth="100.0" spacing="10.0" VBox.vgrow="ALWAYS">
+          <children>
+            <Label text="以下のメメントが生成されます。よろしいですか？" />
+            <ListView fx:id="generateListView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+          </children>
+        </VBox>
+        <HBox alignment="CENTER_RIGHT" padding="$x1" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+          <children>
+            <Button fx:id="generate" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#generate" text="Generate">
+              <graphic>
+                <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@icons/go.png" preserveRatio="false" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <Button fx:id="cancel" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#cancel" text="Cancel">
+              <graphic>
+                <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@icons/cancel.png" preserveRatio="false" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+          </children>
+        </HBox>
+      </children>
+    </VBox>
   </children>
 </AnchorPane>
