@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-style-type" content="text/css">
     <meta http-equiv="content-script-type" content="text/javascript">
-    <title>${title}</title>
+    <title>泰斗 ${age}歳のお宝</title>
     <style type='text/css'>
       @import '../js/dijit/themes/tundra/tundra.css';
       @import '../js/dojo/resources/dojo.css';
@@ -51,7 +51,7 @@
     </script>
     <!-- headerTemplate end -->
   </head>
-  <body class="tundra body-prizes">
+  <body class="tundra body-treasures">
     <div id="headline_menu">
       <!-- headlinemenu_load() でここにヘッドラインメニューが埋め込まれる。 -->
     </div>
@@ -70,38 +70,35 @@
         <!-- ナビゲーションメニュー end -->
       </div>
       <div id="contents_container">
-        <h1>${year}年の獲物</h1>
+        <h1>泰斗 ${age}歳のお宝</h1>
         <a name="top"></a>
         <div class="highslide-gallery">
 #set($yyyymm = '197501')
-#foreach($material in $list)
-  #if($yyyymm == ${material.yyyymm()})
+#foreach($tm in $list)
+  #set($m = ${tm.getMaterial()})
+  #if($yyyymm == ${g.yyyymm($m)})
   #else
-          <h2 style="clear: both;">${material.year()}年${material.month()}月の獲物</h2>
-  #set($yyyymm = ${material.yyyymm()})
+          <h2 style="clear: both;">${g.year($m)}年${g.month($m)}月の泰斗のお宝</h2>
+  #set($yyyymm = ${g.yyyymm($m)})
   #end
           <div class="album-container">
             <div class="photo">
-  #if($material.getFileFormat() == "mov")
-              <a class="highslide" onclick="return hs.expand(this)" href="${this.predecessor()}materials/${material.getSnapBasename()}">
-  #elseif($material.getFileFormat() == "jpg")
-              <a class="highslide" onclick="return hs.expand(this)" href="${this.predecessor()}materials/${material.getBasename()}">
-  #end
-                <img src="${this.predecessor()}materials/thumbnail/${material.getThumbBasename()}" title="クリックすると大きくなります。" border="0"><br>
+              <a class="highslide" onclick="return hs.expand(this)" href="${this.predecessor()}materials/${g.photoFileName($m)}">
+                <img src="${this.predecessor()}materials/thumbnail/${g.photoFileName($m)}" title="クリックすると大きくなります。" border="0"><br>
               </a>
               <div class='highslide-heading'>
-                ${material.year()}年${material.month()}月${material.date()}日 ${material.hour()}時${material.minute()}分${material.second()}秒
+                ${g.year($m)}年${g.month($m)}月${g.date($m)}日 ${g.hour($m)}時${g.minute($m)}分${g.second($m)}秒
               </div>
               <div class='highslide-caption'>
-                ${material.getDescription()}
+                ${tm.getMemo()}
               </div>
             </div> <!-- end of photo -->
             <div class="comment" >
-  #if($material.getFileFormat() == "mov")
+  #if($m.getMaterialType() == "M")
               <!-- 動画ファイルの場合のアペンド -->
-              <a href="#" onclick="showMovie('../materials/${material.getBasename()}');">ビデオはこちら。<br></a>
+              <a href="#" onclick="showMovie('../materials/${g.fileName($m)}');">ビデオはこちら。<br></a>
   #end
-              ${material.getDescription()}
+              ${tm.getMemo()}
             </div>
           </div>
 #end

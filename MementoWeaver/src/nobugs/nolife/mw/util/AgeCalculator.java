@@ -2,6 +2,7 @@ package nobugs.nolife.mw.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -35,8 +36,25 @@ public class AgeCalculator {
 	 */
 	public static int calcAge(String key, String yyyymmdd){
 		logger.info("年齢計算を開始します key="+key+" 素材年月日="+yyyymmdd);
-		int dob = Integer.parseInt(bodProperties.getProperty(key));
+		int dob = getDateOfBirth(key);
 		int base = Integer.parseInt(yyyymmdd);
 		return (base - dob)/10000;
+	}
+
+	/**
+	 * 年齢を簡単な方法で計算し、2桁の文字列として返却する。
+	 * @param key
+	 * @param yyyymmdd
+	 * @return 2桁でフォーマットされた年齢("08"等)
+	 */
+	public static String calcAgeAsFormattedString(String key, String yyyymmdd){
+		int age = calcAge(key, yyyymmdd);
+		DecimalFormat formatter = new DecimalFormat("00");
+		return formatter.format(age);
+	}
+
+	
+	public static int getDateOfBirth(String key) {
+		return Integer.parseInt(bodProperties.getProperty(key));
 	}
 }

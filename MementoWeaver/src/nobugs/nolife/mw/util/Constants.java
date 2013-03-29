@@ -32,6 +32,7 @@ public class Constants {
 	public static String DIRPROP_KEY_MW_ALBUM="dir.memento.albums";
 	public static String DIRPROP_KEY_MW_CHRONICLE="dir.memento.chronicle";
 	public static String DIRPROP_KEY_MW_PRIZE="dir.memento.prizes";
+	public static String DIRPROP_KEY_MW_WINNER="dir.memento.winners";
 	public static String DIRPROP_KEY_MW_TREASURE="dir.memento.treasures";
 	public static String DIRPROP_KEY_MW_PARTY="dir.memento.parties";
 	public static String DIRPROP_KEY_MW_MATERIAL="dir.material";

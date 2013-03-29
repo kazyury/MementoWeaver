@@ -25,8 +25,8 @@ public abstract class Generator {
 	protected abstract String affectedMemento(Material m, String tag);
 	protected abstract String getMementoId(Material m, String tag);
 
-	/** Material mと同一メメントに属するTaggedMaterialを検索するためのTypedQueryを返却する */
-	protected abstract TypedQuery<TaggedMaterial> queryBelongingSameMementoWith(Material m);
+	/** TaggedMaterial tmと同一メメントに属するTaggedMaterialを検索するためのTypedQueryを返却する */
+	protected abstract TypedQuery<TaggedMaterial> queryBelongingSameMementoWith(TaggedMaterial tm);
 	
 	/** メメントを生成し返却する 
 	 * @throws MWException */
@@ -34,16 +34,16 @@ public abstract class Generator {
 
 
 	/**
-	 * 渡されたMaterialを含むメメントを生成し、そのメメントに含まれるTaggedMaterialを返却する.
+	 * 渡されたMaterialを含むメメントを生成し返却する.
 	 * テンプレートメソッドとしてサブクラスで実装される抽象メソッドを呼んでいる.
 	 * @param m ステージング状態のタグ付素材(TaggedMaterial)が属する素材(Material)
-	 * @return
+	 * @return 作成・更新されるTaggedMaterialをセット済みのMemento
 	 * @throws MWException 
 	 */
-	public Memento generate(Material m) throws MWException{
-		logger.info("素材["+m.getMaterialId()+"]が属するメメントの作成を開始します");
+	public Memento generate(TaggedMaterial tm) throws MWException{
+		logger.info("素材["+tm.getMaterial().getMaterialId()+"]が属するメメントの作成を開始します");
 
-		TypedQuery<TaggedMaterial> query = queryBelongingSameMementoWith(m);
+		TypedQuery<TaggedMaterial> query = queryBelongingSameMementoWith(tm);
 		List<TaggedMaterial> updateTargetList = query.getResultList();
 		logger.info("所属メメントの素材は"+updateTargetList.size()+"件です");
 
@@ -78,6 +78,7 @@ public abstract class Generator {
 
 	/* テンプレートから使用するためのメソッド */
 	public String yyyymmdd(Material m) { return MaterialUtil.getMaterialYearMonthDate(m); }
+	public String yyyymm(Material m) { return MaterialUtil.getMaterialYearMonth(m); }
 	public String year(Material m) { return MaterialUtil.getMaterialYear(m); }
 	public String month(Material m) { return MaterialUtil.getMaterialMonth(m); }
 	public String date(Material m) { return MaterialUtil.getMaterialDate(m); }

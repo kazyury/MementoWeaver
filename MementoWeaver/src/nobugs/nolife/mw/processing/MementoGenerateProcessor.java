@@ -28,7 +28,7 @@ import nobugs.nolife.mw.util.PersistenceUtil;
 public class MementoGenerateProcessor {
 	private static Logger logger = Logger.getGlobal();
 	private EntityManager em = PersistenceUtil.getMWEntityManager();
-	private Set<String> generatorSet = new TreeSet<>();
+	private Set<String> generatorSet = new TreeSet<>(); // インデックス等を1度だけ作成するために必要
 
 	/**
 	 * メメントを生成する
@@ -49,7 +49,7 @@ public class MementoGenerateProcessor {
 
 			// 最初の1件を取得
 			TaggedMaterial tm = result.get(0);
-			Material m = tm.getMaterial();
+//			Material m = tm.getMaterial();
 
 			// ジェネレータを生成
 			Generator generator = GeneratorFactory.getGenerator(tm.getId().getTag());
@@ -58,7 +58,7 @@ public class MementoGenerateProcessor {
 			logger.info("Generator:["+generatorName+"]を使用してメメントを生成します");
 
 			// ジェネレータによる生成 と生成されたメメントに含まれるタグ付素材のリスト(updateTargetList)を取得
-			Memento memento = generator.generate(m);
+			Memento memento = generator.generate(tm);
 			List<TaggedMaterial> updateTargetList = memento.getTaggedMaterials();
 
 			// 生成されたメメントに含まれるタグ付素材の状態を更新(PUBLISHED)
@@ -85,6 +85,8 @@ public class MementoGenerateProcessor {
 			SubGenerator subGenerator = GeneratorFactory.getSubGenerator(generatorName);
 			subGenerator.generate();
 		}
+		
+		// TODO news.vmの処理
 		
 		return generatedMemento;
 	}

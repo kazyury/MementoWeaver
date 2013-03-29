@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<data>
+#foreach($tm in $list)
+  #set($m = ${tm.getMaterial()})
+  <event
+    title='${name}: ${g.calcAge(${tm})}歳の肖像'
+    start='${g.formatChronicleDate($tm)}' 
+    classname='chronicle'
+    icon='${this.predecessor()}materials/thumbnail/${g.photoFileName($m)}'
+    image='${this.predecessor()}materials/thumbnail/${g.photoFileName($m)}' >
+    ${g.htmlEncode($tm.getMemo())}
+  </event>
+#end
+</data>
+

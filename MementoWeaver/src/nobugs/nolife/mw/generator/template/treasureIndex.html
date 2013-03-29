@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="content-style-type" content="text/css">
+    <meta http-equiv="content-script-type" content="text/javascript">
+    <title>${title}</title>
+    <style type='text/css'>
+      @import '../js/dijit/themes/tundra/tundra.css';
+      @import '../js/dojo/resources/dojo.css';
+      @import '../css/hpcms.css';
+    </style>
+    <script type='text/javascript' src='../js/highslide/highslide-with-gallery.js'></script>
+    <script type='text/javascript' src='../js/dojo/dojo.js' djConfig='parseOnLoad: true'></script>
+    <script type='text/javascript' src='../js/headline.js'></script>
+    <script type='text/javascript' src='../js/navmenu.js'></script>
+
+    <script type='text/javascript'>
+      dojo.require('dojo.parser');
+
+
+      dojo.addOnLoad(function(){headlinemenu_load('../chunk/headlineMenu1.xml')});
+      dojo.addOnLoad(function(){navmenu_load('menu.xml')});
+      dojo.addOnLoad(function(){dojo.parser.parse();});
+    </script>
+  </head>
+
+  <body class="tundra body-treasures">
+    <div id="headline_menu">
+      <!-- headlinemenu_load() でここにヘッドラインメニューが埋め込まれる。 -->
+    </div>
+    <div id="contents_base">
+      <div id="leftpane_menu">
+        <!-- ナビゲーションメニュー start -->
+        <div class="leftmenu">
+          <ul id="navmenu">
+          <!-- navmenu_load() でここにナビゲーションメニューが埋め込まれる。 -->
+          </ul>
+          <br />
+          <ul>
+            <li><a href="../index.html">ホームに戻る</a></li>
+          </ul>
+        </div>
+        <!-- ナビゲーションメニュー end -->
+      </div>
+      <div id="contents_container">
+        <h1>${title}</h1>
+        <div class="welcomeimage">
+          <img src="${this.predecessor()}img/welcome-treasure.png">
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

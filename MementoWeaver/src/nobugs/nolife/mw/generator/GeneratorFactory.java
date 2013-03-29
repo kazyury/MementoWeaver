@@ -17,12 +17,10 @@ public class GeneratorFactory {
 
 	static {
 		subGeneratorMap.put("AlbumGenerator","nobugs.nolife.mw.generator.AlbumIndexGenerator");
-		// TODO à»â∫ÇÕÇ∆ÇËÇ†Ç¶Ç∏É_É~Å[
-		subGeneratorMap.put("PartyGenerator","nobugs.nolife.mw.generator.AlbumIndexGenerator");
-		subGeneratorMap.put("TreasureGenerator","nobugs.nolife.mw.generator.AlbumIndexGenerator");
-		subGeneratorMap.put("WinnerGenerator","nobugs.nolife.mw.generator.AlbumIndexGenerator");
-		subGeneratorMap.put("ChronicleGenerator","nobugs.nolife.mw.generator.AlbumIndexGenerator");
-
+		subGeneratorMap.put("WinnerGenerator","nobugs.nolife.mw.generator.WinnerIndexGenerator");
+		subGeneratorMap.put("TreasureGenerator","nobugs.nolife.mw.generator.TreasureIndexGenerator");
+		subGeneratorMap.put("PartyGenerator","nobugs.nolife.mw.generator.PartyIndexGenerator");
+		subGeneratorMap.put("ChronicleGenerator","nobugs.nolife.mw.generator.ChronicleIndexGenerator");
 	}
 
 	public static Generator getGenerator(String tag) throws MWException{

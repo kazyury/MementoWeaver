@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<menu>
+#foreach($record in $records)
+$record
+#end
+</menu>
