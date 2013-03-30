@@ -49,7 +49,7 @@ public class MementoGenerateProcessor {
 
 			// 最初の1件を取得
 			TaggedMaterial tm = result.get(0);
-//			Material m = tm.getMaterial();
+			//			Material m = tm.getMaterial();
 
 			// ジェネレータを生成
 			Generator generator = GeneratorFactory.getGenerator(tm.getId().getTag());
@@ -66,9 +66,16 @@ public class MementoGenerateProcessor {
 			for(TaggedMaterial inUseTaggedMaterial:updateTargetList){
 				inUseTaggedMaterial.setTagState(Constants.TAG_STATE_PUBLISHED);
 				em.merge(inUseTaggedMaterial);
-				
-				// 今回処理した素材にSTAGEDのタグが存在する場合、素材をステージングエリアからコピー. 存在しなければ移動
-				deployMaterial(inUseTaggedMaterial.getMaterial());
+
+				// 今回処理した素材にSTAGEDのタグが存在する場合、素材をステージングエリアからコピー. 存在しなければ移動してMaterialの状態を更新
+				Material m = inUseTaggedMaterial.getMaterial();
+				if(isExistStagedTagFor(m)){
+					copyMaterial(m);
+				} else {
+					moveMaterial(m);
+					m.setMaterialState(Constants.MATERIAL_STATE_IN_USE);
+					em.merge(m);
+				}
 			}
 
 			// Mementoテーブルの作成
@@ -85,9 +92,9 @@ public class MementoGenerateProcessor {
 			SubGenerator subGenerator = GeneratorFactory.getSubGenerator(generatorName);
 			subGenerator.generate();
 		}
-		
+
 		// TODO news.vmの処理
-		
+
 		return generatedMemento;
 	}
 
@@ -134,14 +141,13 @@ public class MementoGenerateProcessor {
 		return query;
 	}
 
-	
+
 	/**
-	 * 素材をステージングエリアからProduction環境に配置する。
-	 * 対象の素材にSTAGEDのタグが存在する場合、素材をステージングエリアからコピー. 存在しなければ移動する。
+	 * 素材をステージングエリアからProduction環境に配置(コピー)する。
 	 * @param m
 	 * @throws MWException
 	 */
-	private void deployMaterial(Material m) throws MWException {
+	private void copyMaterial(Material m) throws MWException {
 		Path sourcePath = PathUtil.getInstalledFilePath(m);
 		// 素材がステージングエリアに存在しなければreturn.
 		if(!Files.exists(sourcePath, LinkOption.NOFOLLOW_LINKS)){
@@ -153,26 +159,46 @@ public class MementoGenerateProcessor {
 		Path destThumbPath = PathUtil.getProductionThumbnailPath(m);
 		Path destPhotoPath = PathUtil.getProductionPhotoPath(m);
 		try {
-			if(isExistStagedTagFor(m)){
-				logger.info("素材["+m.getMaterialId()+"]にはSTAGEDタグが存在するため、Production環境にコピーします");
-				Files.copy(sourcePath, destPath, StandardCopyOption.REPLACE_EXISTING);
-				Files.copy(sourceThumbPath, destThumbPath, StandardCopyOption.REPLACE_EXISTING);
-				if(m.getMaterialType().equals(Constants.MATERIAL_TYPE_MOV)){
-					Files.copy(sourcePhotoPath, destPhotoPath, StandardCopyOption.REPLACE_EXISTING);
-				}
-			} else {
-				logger.info("素材["+m.getMaterialId()+"]をProduction環境に移動します");
-				Files.move(sourcePath, destPath, StandardCopyOption.REPLACE_EXISTING);
-				Files.move(sourceThumbPath, destThumbPath, StandardCopyOption.REPLACE_EXISTING);
-				if(m.getMaterialType().equals(Constants.MATERIAL_TYPE_MOV)){
-					Files.move(sourcePhotoPath, destPhotoPath, StandardCopyOption.REPLACE_EXISTING);
-				}
+			logger.info("素材["+m.getMaterialId()+"]にはSTAGEDタグが存在するため、Production環境にコピーします");
+			Files.copy(sourcePath, destPath, StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(sourceThumbPath, destThumbPath, StandardCopyOption.REPLACE_EXISTING);
+			if(m.getMaterialType().equals(Constants.MATERIAL_TYPE_MOV)){
+				Files.copy(sourcePhotoPath, destPhotoPath, StandardCopyOption.REPLACE_EXISTING);
 			}
 		} catch (IOException e) {
 			throw new MWException(e);
 		}
 
 	}
+	
+	/**
+	 * 素材をステージングエリアからProduction環境に配置(移動)する。
+	 * @param m
+	 * @throws MWException
+	 */
+	private void moveMaterial(Material m) throws MWException {
+		Path sourcePath = PathUtil.getInstalledFilePath(m);
+		// 素材がステージングエリアに存在しなければreturn.
+		if(!Files.exists(sourcePath, LinkOption.NOFOLLOW_LINKS)){
+			return;
+		}
+		Path sourceThumbPath = PathUtil.getInstalledThumbnailPath(m);
+		Path sourcePhotoPath = PathUtil.getInstalledPhotoPath(m);
+		Path destPath = PathUtil.getProductionFilePath(m);
+		Path destThumbPath = PathUtil.getProductionThumbnailPath(m);
+		Path destPhotoPath = PathUtil.getProductionPhotoPath(m);
+		try {
+			logger.info("素材["+m.getMaterialId()+"]をProduction環境に移動します");
+			Files.move(sourcePath, destPath, StandardCopyOption.REPLACE_EXISTING);
+			Files.move(sourceThumbPath, destThumbPath, StandardCopyOption.REPLACE_EXISTING);
+			if(m.getMaterialType().equals(Constants.MATERIAL_TYPE_MOV)){
+				Files.move(sourcePhotoPath, destPhotoPath, StandardCopyOption.REPLACE_EXISTING);
+			}
+		} catch (IOException e) {
+			throw new MWException(e);
+		}
+	}
+
 
 	/**
 	 * 対象の素材にSTAGED状態のタグが付与されているか否かを返却する
