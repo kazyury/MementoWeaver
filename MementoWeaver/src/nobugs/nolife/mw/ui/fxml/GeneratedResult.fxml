@@ -9,7 +9,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.ui.controller.GeneratedResultController">
   <children>
     <VBox prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
@@ -40,7 +40,7 @@
                 <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true" />
               </graphic>
             </Button>
-            <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" text="Exit">
+            <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#exit" text="Exit">
               <graphic>
                 <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                   <image>

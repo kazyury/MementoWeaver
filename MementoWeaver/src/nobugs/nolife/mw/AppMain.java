@@ -61,11 +61,12 @@ public class AppMain extends Application {
 	}
 
 	private void forward(String fxml, Object bulk) throws MWException {
+		logger.info(fxml+"へforwardします。伝播オブジェクトは["+bulk.toString()+"]です。");
 		MWSceneController next;
 		try {
 			next = (MWSceneController) replaceSceneContent(fxml);
 			next.setApplication(this, bulk);
-		} catch (IOException e) {
+		} catch (MWException e) {
 			e.printStackTrace();
 			throw new MWException("画面遷移で例外が発生しました",e.getCause());
 		}
@@ -74,23 +75,36 @@ public class AppMain extends Application {
 	 * 
 	 * @param fxml
 	 * @return fxmlで指定されたシーンに対応したコントローラをInitializableとして返却
+	 * @throws MWException 
 	 * @throws IOException 
 	 */
-	private Initializable replaceSceneContent(String fxml) throws IOException {
+	private Initializable replaceSceneContent(String fxml) throws MWException{
 		FXMLLoader loader = new FXMLLoader();
 		InputStream in = AppMain.class.getResourceAsStream(fxml);
 		loader.setBuilderFactory(new JavaFXBuilderFactory());
 		loader.setLocation(AppMain.class.getResource(fxml));
-		AnchorPane page;
+		AnchorPane page = null;
 
 		try {
 			page = (AnchorPane) loader.load(in);
+		} catch (IOException e) {
+			throw new MWException(e);
 		} finally {
-			in.close();
+			try {
+				in.close();
+			} catch (IOException e) {
+				throw new MWException(e);
+			}
 		}
 		Scene scene = new Scene(page, 800, 600);
 		stage.setScene(scene);
 		stage.sizeToScene();
+		Object controller = loader.getController();
+		if(controller==null){
+			logger.severe("controllerがNullです");
+			return null;
+		}
+		logger.info("次画面のControllerは["+loader.getController().toString()+"]です。");
 		return (Initializable) loader.getController();
 	}
 
