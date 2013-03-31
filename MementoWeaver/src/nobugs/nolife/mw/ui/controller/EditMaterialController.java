@@ -10,6 +10,7 @@ import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.TaggedMaterial;
+import nobugs.nolife.mw.image.ImageManipulator;
 import nobugs.nolife.mw.processing.UpdateTagProcessor;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.MaterialUtil;
@@ -38,16 +39,16 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 	@FXML private TextField tagTextField;
 	@FXML private TextArea memoTextArea;
 	@FXML private ImageView imageView;
-	@FXML private Button rotateLeft;
-	@FXML private Button rotateRight;
+	@FXML private Button rotateLeft;	// ButtonのEnable/Disable制御を行うために必要
+	@FXML private Button rotateRight;	// ButtonのEnable/Disable制御を行うために必要
 
 	// イベントハンドラ
 	@FXML	protected void rotateLeft(ActionEvent e) throws MWException {
-		MaterialUtil.rotatePhoto(material,270);
+		rotate(270);
 		setImageView();
 	}
 	@FXML	protected void rotateRight(ActionEvent e) throws MWException {
-		MaterialUtil.rotatePhoto(material,90);
+		rotate(90);
 		setImageView();
 	}
 	@FXML	protected void appendTag(ActionEvent e) {
@@ -64,7 +65,7 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 	@FXML	protected void apply(ActionEvent e) throws MWException {
 		// タグ文字列の分離
 		String[] tagnames = StringUtil.splitTagString(tagTextField.getText());
-		
+
 		// TaggedMaterialの更新(メモ更新を制限している場合には、デフォルトメモを使用する)
 		if (isSameMemoOnly) {
 			String memo = memoTextArea.getText();
@@ -72,12 +73,12 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 		} else {
 			MaterialUtil.updateTagInfo(material, tagnames);
 		}
-		
+
 		// タグ情報を更新して画面を閉じる
 		UpdateTagProcessor processor = new UpdateTagProcessor();
 		processor.updateTagProcess(material);
 		appl.fwdInstalledMaterialList();
-		
+
 	}
 	@FXML	protected void cancel(ActionEvent e) throws MWException {
 		appl.fwdInstalledMaterialList();
@@ -132,7 +133,7 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 			memoTextArea.setDisable(true);
 		}
 	}
-	
+
 	private void setImageView() throws MWException {
 		String fullpath = PathUtil.getInstalledPhotoPath(material).toString();
 		FileInputStream is = null;
@@ -142,6 +143,17 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 			is.close();
 		} catch (IOException e) {
 			throw new MWException("ImageViewへのイメージ描画で例外が発生しました", e.getCause());
+		}
+	}
+	
+	private void rotate(int degree) throws MWException {
+		try {
+			// 素材本体を回転する。
+			ImageManipulator.rotate(PathUtil.getInstalledPhotoPath(material), degree);
+			// サムネイルを回転する。
+			ImageManipulator.rotate(PathUtil.getInstalledThumbnailPath(material), degree);
+		} catch (IOException ioe) {
+			throw new MWException("例外が発生しました",ioe.getCause());
 		}
 	}
 }

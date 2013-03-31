@@ -1,15 +1,12 @@
 package nobugs.nolife.mw.util;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.TaggedMaterial;
 import nobugs.nolife.mw.entities.TaggedMaterialPK;
-import nobugs.nolife.mw.image.ImageManipulator;
 
 /**
  * Materialユーティリティ
@@ -18,27 +15,6 @@ import nobugs.nolife.mw.image.ImageManipulator;
  */
 public class MaterialUtil {
 	private static Logger logger = Logger.getGlobal();
-
-	/** 
-	 * 画像を回転して保管する。静止画素材本体とサムネイルが対象となる。
-	 * @param m
-	 * @param degree:回転角
-	 * @throws MWException 
-	 */
-	public static void rotatePhoto(Material m,int degree) throws MWException{
-		if(m.getMaterialType().equals(Constants.MATERIAL_TYPE_MOV)) {
-			throw new MWException("動画素材は回転に対応していません");
-		}
-
-		try {
-			// 素材本体を回転する。
-			ImageManipulator.rotate(PathUtil.getInstalledPhotoPath(m), degree);
-			// サムネイルを回転する。
-			ImageManipulator.rotate(PathUtil.getInstalledThumbnailPath(m), degree);
-		} catch (IOException e) {
-			throw new MWException("例外が発生しました",e.getCause());
-		}
-	}
 
 	/**
 	 * 素材の撮影年月日を返却する
