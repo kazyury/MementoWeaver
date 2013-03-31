@@ -25,9 +25,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-//TODO EditMaterial‚Å‰½‚à“ü—Í‚¹‚¸‚ÉApply‚·‚é‚ÆJoined tag string is not valid.
-
-
 public class EditMaterialController extends AnchorPane implements MWSceneController{
 	private AppMain appl;
 	/** •`‰æ‚·‚é‘fŞ */

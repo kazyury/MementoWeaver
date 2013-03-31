@@ -18,8 +18,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 
-//TODO installでキー重複エラー.
-
 public class InstallMaterialController extends AnchorPane implements MWSceneController{
 	private static String materialSourcePath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MATERIAL_SOURCE);
 	private static String stagingAreaPath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_STAGING_AREA);
