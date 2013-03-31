@@ -27,7 +27,7 @@ public class WinnerGenerator extends Generator {
 		TypedQuery<TaggedMaterial> query = em.createQuery(
 				"SELECT tm FROM Material m , m.taggedMaterials tm " +
 						"WHERE tm.id.tag = 'winner' AND tm.id.materialId like :yyyy AND tm.tagState <> :tagState",TaggedMaterial.class);
-		query.setParameter("yyyymm", MaterialUtil.getMaterialYear(m)+"%");
+		query.setParameter("yyyy", MaterialUtil.getMaterialYear(m)+"%");
 		query.setParameter("tagState", Constants.TAG_STATE_NOT_IN_USE);
 		return query;
 	}
