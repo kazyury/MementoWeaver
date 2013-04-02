@@ -2,26 +2,95 @@
 
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.ui.controller.EditMaterialController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.ui.controller.EditMaterialController">
   <children>
-    <Button fx:id="cancel" layoutX="527.0" layoutY="367.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
-    <Button fx:id="apply" layoutX="452.0" layoutY="367.0" mnemonicParsing="false" onAction="#apply" text="Apply" />
-    <ImageView fx:id="imageView" fitHeight="317.0" fitWidth="422.66666666666663" layoutX="3.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true" />
-    <Button fx:id="album" layoutX="436.0" layoutY="49.0" onAction="#appendTag" prefWidth="71.0" text="_Album" />
-    <Button fx:id="winner" layoutX="436.0" layoutY="69.0" onAction="#appendTag" prefWidth="71.0" text="_Winner" />
-    <Button fx:id="treasure" layoutX="436.0" layoutY="89.0" onAction="#appendTag" prefWidth="71.0" text="T_reasure" />
-    <Button fx:id="kazunori" layoutX="510.0" layoutY="49.0" onAction="#appendTag" prefWidth="71.0" text="_Kazu" />
-    <Button fx:id="hiroko" layoutX="510.0" layoutY="69.0" onAction="#appendTag" prefWidth="71.0" text="_Hiro" />
-    <Button fx:id="taito" layoutX="510.0" layoutY="90.0" onAction="#appendTag" prefWidth="71.0" text="_Taito" />
-    <TextField id="tagText" fx:id="tagTextField" layoutX="431.0" layoutY="130.0" prefWidth="164.0" promptText="[tagname]" />
-    <TextArea fx:id="memoTextArea" layoutX="431.0" layoutY="171.0" prefWidth="164.0" wrapText="true" />
-    <Button fx:id="rotateLeft" layoutX="14.0" layoutY="31.0" mnemonicParsing="false" onAction="#rotateLeft" text="-90" />
-    <Button fx:id="rotateRight" layoutX="82.0" layoutY="31.0" mnemonicParsing="false" onAction="#rotateRight" text="+90" />
-    <Button fx:id="party" layoutX="436.0" layoutY="109.0" onAction="#appendTag" prefWidth="71.0" text="_Party" />
+    <VBox prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+        <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+          <children>
+            <VBox prefWidth="100.0" HBox.hgrow="ALWAYS">
+              <children>
+                <HBox alignment="BOTTOM_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="20.0">
+                  <children>
+                    <Button fx:id="rotateLeft" mnemonicParsing="false" onAction="#rotateLeft" text="-90">
+                      <graphic>
+                        <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                            <Image url="@icons/rotate270.png" preserveRatio="false" smooth="false" />
+                          </image>
+                        </ImageView>
+                      </graphic>
+                    </Button>
+                    <Button fx:id="rotateRight" mnemonicParsing="false" onAction="#rotateRight" text="+90">
+                      <graphic>
+                        <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                            <Image url="@icons/rotate90.png" preserveRatio="false" smooth="false" />
+                          </image>
+                        </ImageView>
+                      </graphic>
+                    </Button>
+                  </children>
+                  <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x1" />
+                  </padding>
+                </HBox>
+                <ImageView fx:id="imageView" fitHeight="448.5000589644967" fitWidth="598.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS" />
+              </children>
+            </VBox>
+            <VBox minWidth="200.0" padding="$x1" prefWidth="200.0" spacing="5.0">
+              <children>
+                <Label prefHeight="30.0" prefWidth="103.0" text="Predefined Tags" wrapText="true" />
+                <ToggleButton fx:id="albumTag" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Album" />
+                <ToggleButton fx:id="winnerTag" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Winner" />
+                <ToggleButton fx:id="treasureTag" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Treasure" />
+                <ToggleButton fx:id="partyTag" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Party" />
+                <ToggleButton fx:id="kazunoriTag" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Kazunori" />
+                <ToggleButton fx:id="hirokoTag" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Hiroko" />
+                <ToggleButton fx:id="taitoTag" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Taito" />
+                <Label text="Custom Tags" />
+                <TextField fx:id="tagTextField" prefWidth="200.0" promptText="[customtag]..." />
+                <Label text="Memo" />
+                <TextArea fx:id="memoTextArea" prefWidth="200.0" wrapText="true" />
+              </children>
+            </VBox>
+          </children>
+        </HBox>
+        <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+          <children>
+            <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#apply" text="Apply">
+              <graphic>
+                <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@icons/ok.png" preserveRatio="false" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#cancel" text="Cancel">
+              <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@icons/cancel.png" preserveRatio="false" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+          </children>
+          <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x2" />
+          </padding>
+          <VBox.margin>
+            <Insets />
+          </VBox.margin>
+        </HBox>
+      </children>
+    </VBox>
   </children>
 </AnchorPane>
