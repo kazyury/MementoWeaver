@@ -34,6 +34,9 @@ public class StringUtil {
 	 * @throws MWException 
 	 */
 	public static String[] splitTagString(String joinedTagString) throws MWException{
+		if(joinedTagString==null || joinedTagString.equals("")){
+			return new String[0];
+		}
 		if(joinedTagString.startsWith("[") && joinedTagString.endsWith("]")){
 			return joinedTagString.substring(1, joinedTagString.lastIndexOf("]")).split("\\]\\[");
 		} else {
