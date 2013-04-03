@@ -3,7 +3,9 @@ package nobugs.nolife.mw.ui.controller;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import nobugs.nolife.mw.AppMain;
@@ -13,7 +15,6 @@ import nobugs.nolife.mw.entities.TaggedMaterial;
 import nobugs.nolife.mw.image.ImageManipulator;
 import nobugs.nolife.mw.processing.UpdateTagProcessor;
 import nobugs.nolife.mw.util.Constants;
-import nobugs.nolife.mw.util.MaterialUtil;
 import nobugs.nolife.mw.util.PathUtil;
 import nobugs.nolife.mw.util.StringUtil;
 
@@ -22,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -32,6 +34,9 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 	private Material material;
 	/** 素材内のメモが全て同一か? */
 	private boolean isSameMemoOnly = true;
+	
+	/** tagname と ToggleButtonのmap */
+	private Map<String, ToggleButton> tagMap = new HashMap<String, ToggleButton>();
 
 	// 入力フィールドに対応するインスタンスを保持する変数
 	// 対応付けはFXMLファイルで定義する
@@ -41,6 +46,14 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 	@FXML private ImageView imageView;
 	@FXML private Button rotateLeft;	// ButtonのEnable/Disable制御を行うために必要
 	@FXML private Button rotateRight;	// ButtonのEnable/Disable制御を行うために必要
+	// PredefinedTag用のToggleButton
+	@FXML private ToggleButton albumTag;
+	@FXML private ToggleButton winnerTag;
+	@FXML private ToggleButton treasureTag;
+	@FXML private ToggleButton partyTag;
+	@FXML private ToggleButton kazunoriTag;
+	@FXML private ToggleButton hirokoTag;
+	@FXML private ToggleButton taitoTag;
 
 	// イベントハンドラ
 	@FXML	protected void rotateLeft(ActionEvent e) throws MWException {
@@ -51,42 +64,38 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 		rotate(90);
 		setImageView();
 	}
-	@FXML	protected void appendTag(ActionEvent e) {
-		// 押されたボタンのIDをタグとして使用する
-		// 押されたボタンのIDを取得
-		Button btn = (Button) e.getSource();
-		String tagname = btn.getId();
-
-		// tagTextFieldに既に同じタグがあったら追記しない。
-		if(!tagTextField.getText().matches(".*"+tagname+".*")){
-			tagTextField.setText(tagTextField.getText()+"["+tagname+"]");
-		}
-	}
+	
 	@FXML	protected void apply(ActionEvent e) throws MWException {
-		// タグ文字列の分離
-		String[] tagnames = StringUtil.splitTagString(tagTextField.getText());
-
-		// TaggedMaterialの更新(メモ更新を制限している場合には、デフォルトメモを使用する)
-		if (isSameMemoOnly) {
-			String memo = memoTextArea.getText();
-			MaterialUtil.updateTagInfo(material, tagnames, memo);
-		} else {
-			MaterialUtil.updateTagInfo(material, tagnames);
-		}
+		// 画面で選択・入力されたタグ情報
+		Map<String, Boolean> toggleButtonState = gatherInputedTag();
 
 		// タグ情報を更新して画面を閉じる
 		UpdateTagProcessor processor = new UpdateTagProcessor();
-		processor.updateTagProcess(material);
+		// TaggedMaterialの更新(メモ更新を制限している場合には、デフォルトメモを使用する)
+		if (isSameMemoOnly) {
+			String memo = memoTextArea.getText();
+			processor.updateTagProess(material, toggleButtonState, memo);
+		} else {
+			processor.updateTagProess(material, toggleButtonState);
+		}
 		appl.fwdInstalledMaterialList();
 
 	}
+
 	@FXML	protected void cancel(ActionEvent e) throws MWException {
 		appl.fwdInstalledMaterialList();
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// nothing to do.
+		// 事前定義タグ名とToggleButtonの対応付け
+		tagMap.put("album", albumTag);
+		tagMap.put("winner", winnerTag);
+		tagMap.put("treasure", treasureTag);
+		tagMap.put("party", partyTag);
+		tagMap.put("kazunori", kazunoriTag);
+		tagMap.put("hiroko", hirokoTag);
+		tagMap.put("taito", taitoTag);
 	}
 
 	@Override
@@ -102,17 +111,34 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 			rotateRight.setDisable(true);
 		}
 
+		// Toggleボタンの制御
 		List<TaggedMaterial> taggedMaterialList = material.getTaggedMaterials();
-		// タグが存在するならばtagTextFieldに設定
-		// TODO tagTextFieldとの突合せではなく、実際のDBにあるか否かでチェックしなければならないか、後で検証（Publishedなタグをもう一度追加されたり)
-		String tags = StringUtil.joinTagString(taggedMaterialList);
-		tagTextField.appendText(tags);
+		for(TaggedMaterial tm:taggedMaterialList){
+			String tag = tm.getId().getTag();
+			if(tagMap.containsKey(tag)){
+				ToggleButton btn = tagMap.get(tag);
+				// タグがStaged又はPublishedとして登録されているならToggleButtonをON(PredefinedTagの場合)
+				if(!tm.getTagState().equals(Constants.TAG_STATE_NOT_IN_USE)){
+					btn.setSelected(true);
+				}
+				// ただし、Published状態ならばDisableにしてToggleを変更不可に。
+				if(tm.getTagState().equals(Constants.TAG_STATE_PUBLISHED)){
+					btn.setDisable(true);
+				}
+			}else{
+				// タグがStaged又はPublishedとして登録されているならtagTextFieldに追記(PredefinedTag以外の場合)
+				if(!tm.getTagState().equals(Constants.TAG_STATE_NOT_IN_USE)){
+					tagTextField.appendText("["+tag+"]");
+				}
+				// 事前定義タグ以外の場合には、Publish状態を制御できないが、Publishedになることが無いので当面は放置
+			}
+		}
 
 		// メモの状態に応じて活性/非活性を制御
 		boolean isFirsttime = true;// ループ初回判定用
 		String previousMemo = "";
 		for (TaggedMaterial tm:taggedMaterialList) {
-			// Stagedだけを対象に
+			// Stagedだけを対象にする。apply時にPublishedのメモを潰さないようにする必要がある。
 			if(tm.getTagState().equals(Constants.TAG_STATE_STAGED)){
 				if (isFirsttime == true) {
 					previousMemo = tm.getMemo();
@@ -124,6 +150,7 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 				}
 			}
 		}
+		
 		// メモが存在するならばmemoTextAreaに設定
 		// 異なるメモが格納されている場合には、[複数の異なるメモがあります。メメントの修正でコメントを修正してください。]ってことにする。
 		if(isSameMemoOnly) {
@@ -155,5 +182,28 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 		} catch (IOException ioe) {
 			throw new MWException("例外が発生しました",ioe.getCause());
 		}
+	}
+	
+	/**
+	 * 画面のトグルボタン・tagTextFieldで入力されたタグの状態をMap<タグ名,Boolean>で返却する。
+	 * タグが選択又は入力されているときにはtrueとなる。PredefinedTagが未選択の場合にはfalse.
+	 * @return
+	 * @throws MWException
+	 */
+	private Map<String, Boolean> gatherInputedTag() throws MWException {
+		// 画面上のトグルボタン状態の取得
+		Map<String, Boolean> toggleButtonState = new HashMap<>();
+		for(Map.Entry<String,ToggleButton> entry:tagMap.entrySet()){
+			if(entry.getValue().isSelected()){
+				toggleButtonState.put(entry.getKey(), new Boolean(true));
+			} else {
+				toggleButtonState.put(entry.getKey(), new Boolean(false));
+			}
+		}
+		// tagTextFieldに入力されたタグ
+		for(String tagname:StringUtil.splitTagString(tagTextField.getText())){
+			toggleButtonState.put(tagname, new Boolean(true));
+		}
+		return toggleButtonState;
 	}
 }
