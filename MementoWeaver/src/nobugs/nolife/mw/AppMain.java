@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import nobugs.nolife.mw.entities.Material;
+import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.ui.controller.MWSceneController;
 
 import javafx.application.Application;
@@ -20,8 +21,6 @@ import javafx.scene.layout.AnchorPane;
 // TODO LoggerのFormatter作成
 // TODO javadoc
 // TODO 単体テスト
-
-
 
 public class AppMain extends Application {
 	private Stage stage;
@@ -39,7 +38,7 @@ public class AppMain extends Application {
 		stage.show(); // 画面表示
 	}
 
-	// TODO 画面遷移系をforwardに一本化するか?
+	// 画面遷移
 	public void fwdMainMenu() throws MWException {	forward("ui/fxml/MainMenu.fxml"); }
 	public void fwdInstallMaterial() throws MWException { forward("ui/fxml/InstallMaterial.fxml"); }
 	public void fwdInstalledMaterialList() throws MWException { forward("ui/fxml/InstalledMaterialList.fxml"); }
@@ -49,8 +48,17 @@ public class AppMain extends Application {
 	}
 	public void fwdGenerateConfirm() throws MWException { forward("ui/fxml/GenerateConfirm.fxml"); }
 	public void fwdGenerateResult() throws MWException { forward("ui/fxml/GeneratedResult.fxml"); }
+	public void fwdSelectMementoType() throws MWException { forward("ui/fxml/SelectMementoType.fxml"); }
 
-	
+	public void fwdPublishedMementoList(String type) throws MWException {
+		forward("ui/fxml/PublishedMementoList.fxml",(Object)type);
+	}
+
+	public void fwdModifyMemento(Memento memento) throws MWException {
+		forward("ui/fxml/ModifyMemento.fxml",(Object)memento);
+	}
+
+
 	/**
 	 * 画面遷移の実装
 	 * @param fxml

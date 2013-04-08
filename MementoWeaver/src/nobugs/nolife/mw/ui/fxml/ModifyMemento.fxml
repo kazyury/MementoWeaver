@@ -9,7 +9,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.ui.controller.ModifyMementoController">
   <children>
     <VBox prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
@@ -37,7 +37,7 @@
             <Label fx:id="mementoLabel" text="Current Memento is" />
             <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
               <children>
-                <Button mnemonicParsing="false" text="Append">
+                <Button fx:id="append" mnemonicParsing="false" onAction="#append" text="Append">
                   <graphic>
                     <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                       <image>
@@ -46,7 +46,7 @@
                     </ImageView>
                   </graphic>
                 </Button>
-                <Button mnemonicParsing="false" text="Remove">
+                <Button fx:id="remove" mnemonicParsing="false" onAction="#remove" text="Remove">
                   <graphic>
                     <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                       <image>
@@ -62,16 +62,16 @@
             </HBox>
             <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn prefWidth="75.0" text="MaterialID" fx:id="materialIdCol" />
-                <TableColumn prefWidth="75.0" text="Image" fx:id="imageCol" />
-                <TableColumn prefWidth="75.0" text="Memo" fx:id="memoCol" />
+                <TableColumn prefWidth="150.0" text="MaterialID" fx:id="idCol" />
+                <TableColumn prefWidth="280.0" text="Image" fx:id="imageCol" />
+                <TableColumn prefWidth="250.0" text="Memo" fx:id="memoCol" />
               </columns>
             </TableView>
           </children>
         </VBox>
         <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
           <children>
-            <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" text="Submit">
+            <Button fx:id="submit" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#submit" text="Submit">
               <graphic>
                 <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                   <image>
@@ -80,7 +80,7 @@
                 </ImageView>
               </graphic>
             </Button>
-            <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" text="Cancel">
+            <Button fx:id="cancel" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#cancel" text="Cancel">
               <graphic>
                 <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                   <image>
