@@ -49,7 +49,6 @@ public class MementoGenerateProcessor {
 
 			// 最初の1件を取得
 			TaggedMaterial tm = result.get(0);
-			//			Material m = tm.getMaterial();
 
 			// ジェネレータを生成
 			Generator generator = GeneratorFactory.getGenerator(tm.getId().getTag());

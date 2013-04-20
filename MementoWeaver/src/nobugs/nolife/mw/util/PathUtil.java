@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.Properties;
 import java.util.logging.Logger;
+
 
 import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
@@ -165,6 +168,35 @@ public class PathUtil {
 		FileSystem fs = FileSystems.getDefault();
 		String productionPath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MW_MATERIAL);
 		return fs.getPath(productionPath,"thumbnail",getPhotoFileName(m));
+	}
+	
+	/**
+	 * 与えられたPathが素材をあらわす場合、その素材のMaterialIDを返却する。
+	 * @param path
+	 * @return
+	 * @throws MWException 
+	 */
+	public static String toMaterialId(Path path) throws MWException {
+
+		// 素材エリアに存在する素材ファイルか否かの確認
+		String filename = path.getFileName().toString();
+		String parent = getDirectoryProperty(Constants.DIRPROP_KEY_MW_MATERIAL);
+		FileSystem fs = FileSystems.getDefault();
+		Path materialPath = fs.getPath(parent, filename);
+		logger.info("materialPath は "+materialPath.toString()+"です");
+		
+		// 素材エリアに存在しない　又は　(存在しても)ffから始まる場合には例外
+		if(!Files.exists(materialPath, LinkOption.NOFOLLOW_LINKS) || filename.startsWith("ff")) {
+			logger.warning("Not a material ["+materialPath.toString()+"]");
+			throw new MWException("Not a material ["+materialPath.toString()+"]");
+		}
+		
+		// マテリアルID相当を返却
+		StringBuffer buf = new StringBuffer();
+		buf.append(filename.substring(0,8));
+		buf.append(filename.substring(9,15));
+		logger.info("materialId is ["+buf.toString()+"]");
+		return buf.toString();
 	}
 
 }

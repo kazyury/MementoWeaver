@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.MWException;
-import nobugs.nolife.mw.processing.FindMementoProcessor;
+import nobugs.nolife.mw.processing.ModifyMementoProcessor;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,7 +17,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class SelectMementoTypeController extends AnchorPane implements MWSceneController {
 	private static Logger logger = Logger.getGlobal();
-	private FindMementoProcessor processor = new FindMementoProcessor();
+	private ModifyMementoProcessor processor = new ModifyMementoProcessor();
 
 	private AppMain appl;
 
