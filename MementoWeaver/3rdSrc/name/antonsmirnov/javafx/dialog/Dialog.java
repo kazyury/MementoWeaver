@@ -307,7 +307,7 @@ public class Dialog extends Stage {
             return this;
         }
 
-        protected Builder addConfirmationButton(String buttonCaption, final EventHandler actionHandler) {
+        protected Builder addConfirmationButton(String buttonCaption, final EventHandler<ActionEvent> actionHandler) {
             Button confirmationButton = new Button(buttonCaption);
             confirmationButton.setMinWidth(BUTTON_WIDTH);
             confirmationButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -329,7 +329,7 @@ public class Dialog extends Stage {
          * @param actionHandler action handler
          * @return 
          */
-        public Builder addYesButton(EventHandler actionHandler) {
+        public Builder addYesButton(EventHandler<ActionEvent> actionHandler) {
             return addConfirmationButton("Yes", actionHandler);
         }
         
@@ -339,7 +339,7 @@ public class Dialog extends Stage {
          * @param actionHandler action handler
          * @return 
          */
-        public Builder addNoButton(EventHandler actionHandler) {
+        public Builder addNoButton(EventHandler<ActionEvent> actionHandler) {
             return addConfirmationButton("No", actionHandler);
         }
         
@@ -349,7 +349,7 @@ public class Dialog extends Stage {
          * @param actionHandler action handler
          * @return 
          */
-        public Builder addCancelButton(EventHandler actionHandler) {
+        public Builder addCancelButton(EventHandler<ActionEvent> actionHandler) {
             return addConfirmationButton("Cancel", actionHandler);
         }
         
