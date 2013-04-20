@@ -59,8 +59,7 @@ public class MaterialUtil {
 		}
 		// ã‹L‚Ì‰½‚ê‚É‚à‚ ‚½‚ç‚È‚¢ê‡‚Í‘S‚ÄPublished‚È‚Ì‚ÅIN-USE‚Éİ’è
 		m.setMaterialState(Constants.MATERIAL_STATE_IN_USE);
-		logger.info("Material‚ÍMATERIAL_STATE_INSTALLED‚Éİ’è‚³‚ê‚Ü‚µ‚½(TAG_STATE_NOT_IN_USE:İ‚è)");
+		logger.info("Material‚ÍMATERIAL_STATE_IN_USE‚Éİ’è‚³‚ê‚Ü‚µ‚½");
 		return;
 	}
-
 }
