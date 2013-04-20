@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
+import name.antonsmirnov.javafx.dialog.Dialog;
 import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.derivatizer.Derivatizer;
 import nobugs.nolife.mw.derivatizer.DerivatizerFactory;
@@ -100,15 +101,13 @@ public class InstallProcessor {
 
 		// pathInputが空若しくは存在しないパスならばエラーメッセージを表示してreturn
 		if (!sourceDirectory.isDirectory()) {
-			//TODO エラーメッセージの表示 javaFX1.3 では javafx.stage.Alertが有ったが2.2ではなくなっている。3で復活の予定らしいが。
-			logger.warning(sourceDirectory.toString() + " is not Directory.");
+			Dialog.showWarning("不正なパスです", sourceDirectory.toString() + " はディレクトリではありません.");
 			return false;
 		}
 
 		// ステージングエリアが空若しくは存在しないパスならばエラーメッセージを表示してreturn
 		if (!targetDirectory.isDirectory()) {
-			//TODO エラーメッセージの表示 javaFX1.3 では javafx.stage.Alertが有ったが2.2ではなくなっている。3で復活の予定らしいが。
-			logger.warning(targetDirectory.toString() + " is not Directory.");
+			Dialog.showError("[BUG]不正なパスです", targetDirectory.toString() + " はディレクトリではありません.");
 			return false;
 		}
 		return  true;
