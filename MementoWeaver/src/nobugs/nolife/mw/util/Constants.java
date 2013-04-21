@@ -1,6 +1,7 @@
 package nobugs.nolife.mw.util;
 
 public class Constants {
+
 	// Persistence Unit
 	public static String PERSISTENCE_UNIT_NAME="MementoWeaver";
 
@@ -36,5 +37,10 @@ public class Constants {
 	public static String DIRPROP_KEY_MW_TREASURE="dir.memento.treasures";
 	public static String DIRPROP_KEY_MW_PARTY="dir.memento.parties";
 	public static String DIRPROP_KEY_MW_MATERIAL="dir.material";
+
+	// scan type
+	public static final String SCANTYPE_ALL = "All";
+	public static final String SCANTYPE_NOTSCANNED = "Not Scanned Only";
+	public static final String SCANTYPE_SCANNED = "Scanned Only";
 
 }

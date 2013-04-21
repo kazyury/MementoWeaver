@@ -40,24 +40,29 @@ public class AppMain extends Application {
 
 	// âÊñ ëJà⁄
 	public void fwdMainMenu() throws MWException {	forward("ui/fxml/MainMenu.fxml"); }
+	
+	// Install Materials
 	public void fwdInstallMaterial() throws MWException { forward("ui/fxml/InstallMaterial.fxml"); }
+	
+	// Generate Mementos
 	public void fwdInstalledMaterialList() throws MWException { forward("ui/fxml/InstalledMaterialList.fxml"); }
-
 	public void fwdMaterialEditor(Material material) throws MWException {
 		forward("ui/fxml/EditMaterial.fxml",(Object)material);
 	}
 	public void fwdGenerateConfirm() throws MWException { forward("ui/fxml/GenerateConfirm.fxml"); }
 	public void fwdGenerateResult() throws MWException { forward("ui/fxml/GeneratedResult.fxml"); }
-	public void fwdSelectMementoType() throws MWException { forward("ui/fxml/SelectMementoType.fxml"); }
 
+	// Modify Mementos
+	public void fwdSelectMementoType() throws MWException { forward("ui/fxml/SelectMementoType.fxml"); }
 	public void fwdPublishedMementoList(String type) throws MWException {
 		forward("ui/fxml/PublishedMementoList.fxml",(Object)type);
 	}
-
 	public void fwdModifyMemento(Memento memento) throws MWException {
 		forward("ui/fxml/ModifyMemento.fxml",(Object)memento);
 	}
 
+	// Scan Material Usage
+	public void fwdScannedMementos() throws MWException  { forward("ui/fxml/ScannedMementos.fxml"); }
 
 	/**
 	 * âÊñ ëJà⁄ÇÃé¿ëï
@@ -115,5 +120,6 @@ public class AppMain extends Application {
 		logger.info("éüâÊñ ÇÃControllerÇÕ["+loader.getController().toString()+"]Ç≈Ç∑ÅB");
 		return (Initializable) loader.getController();
 	}
+
 
 }

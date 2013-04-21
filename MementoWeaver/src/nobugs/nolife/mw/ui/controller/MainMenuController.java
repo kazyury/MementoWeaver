@@ -19,7 +19,7 @@ public class MainMenuController extends AnchorPane implements MWSceneController 
 	@FXML	protected void generateMemento(ActionEvent e) throws MWException {appl.fwdInstalledMaterialList();}
 	@FXML	protected void modifyMemento(ActionEvent e) throws MWException {appl.fwdSelectMementoType();}
 	@FXML	protected void archive(ActionEvent e) {} // TODO not implemented yet
-	@FXML	protected void scanMaterial(ActionEvent e) {} // TODO not implemented yet
+	@FXML	protected void scanMaterial(ActionEvent e) throws MWException {appl.fwdScannedMementos();}
 	@FXML	protected void exit(ActionEvent e) {Platform.exit();}
 
 	@Override
