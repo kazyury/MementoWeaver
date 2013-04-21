@@ -30,6 +30,10 @@ public class Memento implements Serializable {
 	@ManyToMany(mappedBy="mementos", cascade = { PERSIST, MERGE })
 	private List<TaggedMaterial> taggedMaterials;
 
+	//bi-directional many-to-one association to ScannedResult
+	@OneToMany(mappedBy="memento")
+	private List<ScannedResult> scannedResults;
+
 	public Memento() {
 	}
 
@@ -63,6 +67,28 @@ public class Memento implements Serializable {
 
 	public void setTaggedMaterials(List<TaggedMaterial> taggedMaterials) {
 		this.taggedMaterials = taggedMaterials;
+	}
+
+	public List<ScannedResult> getScannedResults() {
+		return this.scannedResults;
+	}
+
+	public void setScannedResults(List<ScannedResult> scannedResults) {
+		this.scannedResults = scannedResults;
+	}
+
+	public ScannedResult addScannedResult(ScannedResult scannedResult) {
+		getScannedResults().add(scannedResult);
+		scannedResult.setMemento(this);
+
+		return scannedResult;
+	}
+
+	public ScannedResult removeScannedResult(ScannedResult scannedResult) {
+		getScannedResults().remove(scannedResult);
+		scannedResult.setMemento(null);
+
+		return scannedResult;
 	}
 
 }
