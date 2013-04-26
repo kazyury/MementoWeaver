@@ -3,7 +3,6 @@ package nobugs.nolife.mw.ui.controller;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 
 import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.MWException;
@@ -14,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 
 public class GeneratedResultController extends AnchorPane implements MWSceneController {
-	private static Logger logger = Logger.getGlobal();
 	private AppMain appl;
 	
 	@FXML protected void exit(ActionEvent e) {Platform.exit();}

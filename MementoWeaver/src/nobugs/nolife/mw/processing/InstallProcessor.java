@@ -8,7 +8,6 @@ import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
@@ -21,7 +20,6 @@ import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.PersistenceUtil;
 
 public class InstallProcessor {
-	private static Logger logger = Logger.getGlobal();
 
 	private File sourceDirectory;
 	private File targetDirectory;
