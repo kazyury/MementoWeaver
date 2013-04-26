@@ -55,10 +55,10 @@ public class TemplateWrapper {
 	 */
 	public String getContents() throws MWException {
 		if(this.contents == null) {
-			logger.info("this.contents が null のため、apply()を実行します。");
+			logger.fine("this.contents が null のため、apply()を実行します。");
 			return apply();
 		} else {
-			logger.info("this.contentsを返却します。");
+			logger.fine("this.contentsを返却します。");
 			return this.contents;
 		}
 	}
