@@ -56,7 +56,7 @@ public class PartyGenerator extends Generator {
 		// •Ô‹p—pƒƒƒ“ƒg‚ğ¶¬
 		Memento memento = new Memento();
 		memento.setMementoId(getMementoId(m));
-		memento.setCategory("partyPage");
+		memento.setCategory(Constants.MEMENTO_CATEGORY_PARTY);
 		memento.setProductionPath(outfile);
 		 // mapped by mementos(TaggedMaterial)‚È‚Ì‚ÅATaggedMaterial‘¤‚Åmementos‚ğİ’è
 		for(TaggedMaterial tm:updateTargetList) {

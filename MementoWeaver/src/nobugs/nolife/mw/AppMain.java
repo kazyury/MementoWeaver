@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.Memento;
+import nobugs.nolife.mw.entities.ScannedResult;
 import nobugs.nolife.mw.ui.controller.MWSceneController;
 
 import javafx.application.Application;
@@ -63,6 +64,9 @@ public class AppMain extends Application {
 
 	// Scan Material Usage
 	public void fwdScannedMementos() throws MWException  { forward("ui/fxml/ScannedMementos.fxml"); }
+	public void fwdScanneMaterialDetail(ScannedResult sr) throws MWException {
+		forward("ui/fxml/ScannedMaterialDetail.fxml",(Object)sr);
+	}
 
 	/**
 	 * âÊñ ëJà⁄ÇÃé¿ëï
@@ -120,6 +124,4 @@ public class AppMain extends Application {
 		logger.info("éüâÊñ ÇÃControllerÇÕ["+loader.getController().toString()+"]Ç≈Ç∑ÅB");
 		return (Initializable) loader.getController();
 	}
-
-
 }

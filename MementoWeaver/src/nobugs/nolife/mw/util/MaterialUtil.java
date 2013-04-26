@@ -1,7 +1,9 @@
 package nobugs.nolife.mw.util;
 
+import java.nio.file.Path;
 import java.util.logging.Logger;
 
+import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.TaggedMaterial;
 
@@ -26,6 +28,27 @@ public class MaterialUtil {
 	public static String getMaterialHour(Material m){ return m.getMaterialId().substring(8, 10); }
 	public static String getMaterialMinute(Material m){ return m.getMaterialId().substring(10, 12); }
 	public static String getMaterialSecond(Material m){ return m.getMaterialId().substring(12, 14); }
+
+	/**
+	 * materialPathで指定されたマテリアルのタイプを返却する
+	 * @param materialPath
+	 * @return {@value Constants#MATERIAL_TYPE_JPG} or {@value Constants#MATERIAL_TYPE_MOV}
+	 * @throws MWException 
+	 * @see Constants#MATERIAL_TYPE_JPG
+	 * @see Constants#MATERIAL_TYPE_MOV
+	 */
+	public static String getMaterialType(Path materialPath) throws MWException {
+		String strpath = materialPath.toString();
+		int idx = strpath.indexOf(".");
+		if(strpath.substring(idx+1).equalsIgnoreCase("jpg")) {
+			return Constants.MATERIAL_TYPE_JPG;
+		} else if (strpath.substring(idx+1).equalsIgnoreCase("mov")) {
+			return Constants.MATERIAL_TYPE_MOV;
+		} else {
+			logger.severe("path["+materialPath.toString()+"]が不正です.");
+			throw new MWException("path["+materialPath.toString()+"]が不正です.");
+		}
+	}
 
 	
 	/**

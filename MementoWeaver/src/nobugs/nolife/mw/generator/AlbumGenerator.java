@@ -62,7 +62,7 @@ public class AlbumGenerator extends Generator {
 		// •Ô‹p—pƒƒƒ“ƒg‚ğ¶¬
 		Memento memento = new Memento();
 		memento.setMementoId(getMementoId(m));
-		memento.setCategory("albumPage");
+		memento.setCategory(Constants.MEMENTO_CATEGORY_ALBUM);
 		memento.setProductionPath(outfile);
 		 // mapped by mementos(TaggedMaterial)‚È‚Ì‚ÅATaggedMaterial‘¤‚Åmementos‚ğİ’è
 		for(TaggedMaterial tm:updateTargetList) {

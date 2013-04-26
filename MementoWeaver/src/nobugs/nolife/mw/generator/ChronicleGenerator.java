@@ -58,7 +58,7 @@ public class ChronicleGenerator extends Generator {
 		// •Ô‹p—pƒƒƒ“ƒg‚ğ¶¬
 		Memento memento = new Memento();
 		memento.setMementoId(tag);
-		memento.setCategory("chronicle");
+		memento.setCategory(Constants.MEMENTO_CATEGORY_CHRONICLE);
 		memento.setProductionPath(outfile);
 		// mapped by mementos(TaggedMaterial)‚È‚Ì‚ÅATaggedMaterial‘¤‚Åmementos‚ğİ’è
 		for(TaggedMaterial tm:updateTargetList) {

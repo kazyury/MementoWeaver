@@ -1,5 +1,6 @@
 package nobugs.nolife.mw.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileSystem;
@@ -197,6 +198,31 @@ public class PathUtil {
 		buf.append(filename.substring(9,15));
 		logger.info("materialId is ["+buf.toString()+"]");
 		return buf.toString();
+	}
+
+	
+	/**
+	 * —^‚¦‚ç‚ê‚½Path‚ªƒƒƒ“ƒg‚ğ‚ ‚ç‚í‚·ê‡A‚»‚Ì‘fŞ‚ÌMementoID‚ğ•Ô‹p‚·‚éB
+	 * @param path
+	 * @return
+	 */
+	public static String toMementoId(Path path){
+		logger.fine("argument path is "+path);
+		String filename = path.getFileName().toString();
+		String mementoId = filename.substring(0, filename.indexOf("."));
+
+		logger.fine("return mementoId is "+mementoId);
+		return mementoId;
+	}
+
+	/**
+	 * @see toMementoId(Path path)
+	 * @param strpath
+	 * @return
+	 */
+	public static String toMementoId(String strpath) {
+		File file = new File(strpath);
+		return toMementoId(file.toPath());
 	}
 
 }

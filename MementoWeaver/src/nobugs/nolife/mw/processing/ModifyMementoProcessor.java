@@ -8,7 +8,6 @@ import java.util.TreeSet;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 
 import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
@@ -28,25 +27,6 @@ public class ModifyMementoProcessor {
 	private static Logger logger = Logger.getGlobal();
 	private static EntityManager em = PersistenceUtil.getMWEntityManager();
 	private Set<String> generatorSet = new TreeSet<>(); // インデックス等を1度だけ作成するために必要
-
-
-	public List<String> findMementoCategoryProcess() {
-		TypedQuery<String> query = em.createQuery(
-				"SELECT DISTINCT me.category FROM Memento me order by me.category",String.class);
-		return query.getResultList();
-	}
-
-	public List<Memento> findMementoProcess(String category) {
-		TypedQuery<Memento> query = em.createQuery(
-				"SELECT me FROM Memento me WHERE me.category = :category order by me.category",Memento.class);
-		query.setParameter("category", category);
-		for(Memento m:query.getResultList()){
-			logger.info("###findMementoProcess");
-			PersistenceUtil.logPersistenceState(m, em);
-		}
-		return query.getResultList();
-	}
-
 
 	/**
 	 * 

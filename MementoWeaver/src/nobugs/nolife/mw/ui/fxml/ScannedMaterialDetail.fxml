@@ -10,13 +10,13 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.ui.controller.ScannedMemenotsController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="nobugs.nolife.mw.ui.controller.ScannedMaterialDetailController">
   <children>
     <VBox prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
         <HBox prefHeight="30.0" prefWidth="200.0" spacing="10.0">
           <children>
-            <Label text="Scanned Mementos">
+            <Label text="Scanned Material Detail">
               <font>
                 <Font size="28.0" />
               </font>
@@ -33,12 +33,13 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x1" />
           </padding>
         </HBox>
-        <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" VBox.vgrow="ALWAYS">
+        <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" VBox.margin="$x1" VBox.vgrow="ALWAYS">
           <children>
-            <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+            <Label fx:id="pathLabel" text="Memento Path :" />
+            <HBox prefHeight="30.0" prefWidth="200.0" spacing="10.0">
               <children>
-                <Label text="Scan Target" />
-                <ComboBox fx:id="targetType" prefWidth="150.0">
+                <Label text="Memento Category:" />
+                <ComboBox fx:id="categoryCombo" prefWidth="150.0">
                   <items>
                     <FXCollections fx:factory="observableArrayList">
                       <String fx:value="アイテム1" />
@@ -47,26 +48,26 @@
                     </FXCollections>
                   </items>
                 </ComboBox>
-                <Button fx:id="scan" mnemonicParsing="false" onAction="#scan" text="Scan">
-                  <graphic>
-                    <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                      <image>
-                        <Image url="@icons/go.png" preserveRatio="false" smooth="false" />
-                      </image>
-                    </ImageView>
-                  </graphic>
-                </Button>
+                <Label text="Tag:" />
+                <ComboBox fx:id="tagCombo" prefWidth="150.0">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="アイテム1" />
+                      <String fx:value="アイテム2" />
+                      <String fx:value="アイテム3" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
               </children>
               <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x1" />
               </padding>
             </HBox>
-            <TableView fx:id="tableView" onMouseClicked="#clicked" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn prefWidth="480.0" text="Path" fx:id="pathCol" />
-                <TableColumn text="Ignore" fx:id="ignoreCol" />
-                <TableColumn prefWidth="150.0" text="Last Scanned" fx:id="lastScannedCol" />
-                <TableColumn prefWidth="75.0" text="Status" fx:id="statusCol" />
+                <TableColumn text="Material?" fx:id="materialCol" />
+                <TableColumn prefWidth="120.0" text="TaggedMaterial?" fx:id="taggedMaterialCol" />
+                <TableColumn prefWidth="480.0" text="Material Path" fx:id="pathCol" />
               </columns>
             </TableView>
           </children>
@@ -76,11 +77,11 @@
         </VBox>
         <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
           <children>
-            <Button fx:id="udpateIgnored" mnemonicParsing="false" onAction="#update" text="Update Ignored">
+            <Button fx:id="manage" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#manage" text="Manage them">
               <graphic>
                 <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="@icons/ok.png" preserveRatio="false" smooth="false" />
+                    <Image url="@icons/go.png" preserveRatio="false" smooth="false" />
                   </image>
                 </ImageView>
               </graphic>

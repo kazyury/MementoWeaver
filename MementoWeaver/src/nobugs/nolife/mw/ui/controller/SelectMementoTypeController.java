@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.MWException;
-import nobugs.nolife.mw.processing.ModifyMementoProcessor;
+import nobugs.nolife.mw.processing.FindProcessor;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,7 +17,6 @@ import javafx.scene.layout.AnchorPane;
 
 public class SelectMementoTypeController extends AnchorPane implements MWSceneController {
 	private static Logger logger = Logger.getGlobal();
-	private ModifyMementoProcessor processor = new ModifyMementoProcessor();
 
 	private AppMain appl;
 
@@ -38,7 +37,7 @@ public class SelectMementoTypeController extends AnchorPane implements MWSceneCo
 	 * ListViewにメメントタイプ一覧を設定する
 	 */
 	private void fillTypeListView(){
-		for(String category:processor.findMementoCategoryProcess()){
+		for(String category:FindProcessor.findMementoCategoryProcess()){
 			logger.info("カテゴリ["+category+"]を追加します。");
 			listRecords.add(category);
 		}
