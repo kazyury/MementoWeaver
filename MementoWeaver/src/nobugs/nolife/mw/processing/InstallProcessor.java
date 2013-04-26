@@ -99,12 +99,14 @@ public class InstallProcessor {
 
 		// pathInputが空若しくは存在しないパスならばエラーメッセージを表示してreturn
 		if (!sourceDirectory.isDirectory()) {
+			// TODO ProcessorがDialogを使うべきではない。例外設計見直し要
 			Dialog.showWarning("不正なパスです", sourceDirectory.toString() + " はディレクトリではありません.");
 			return false;
 		}
 
 		// ステージングエリアが空若しくは存在しないパスならばエラーメッセージを表示してreturn
 		if (!targetDirectory.isDirectory()) {
+			// TODO ProcessorがDialogを使うべきではない。例外設計見直し要
 			Dialog.showError("[BUG]不正なパスです", targetDirectory.toString() + " はディレクトリではありません.");
 			return false;
 		}
@@ -117,6 +119,7 @@ public class InstallProcessor {
 	 * @throws MWException 
 	 */
 	private String fileTypeOf(File material) throws MWException {
+		// TODO MaterialUtil に移動するべき
 		int pos = material.getPath().lastIndexOf(".");
 		String suffix = material.getPath().toLowerCase().substring(pos+1);
 		
