@@ -6,7 +6,8 @@ select * from MW.MEMENTO_CONTENTS;
 delete from MW.MEMENTO_CONTENTS;
 delete from MW.TAGGED_MATERIAL;
 delete from MW.MEMENTO;
-delete from mw.material;
+delete from MW.MATERIAL;
+delete from MW.SCANNED_RESULTS
 
 select * from MW.PREDEFINED_TAG;
 
