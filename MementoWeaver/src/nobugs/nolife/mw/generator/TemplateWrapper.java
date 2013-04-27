@@ -151,7 +151,7 @@ public class TemplateWrapper {
 			logger.fine("_apply:context setting.");
 			Set<String> set = context.keySet();
 			for(String key : set) {
-				logger.info("_apply:context setting.["+key+"],["+context.get(key)+"]");
+				logger.fine("_apply:context setting.["+key+"],["+context.get(key)+"]");
 				vc.put(key, context.get(key));
 			}
 			logger.fine("_apply:context setting end.");
