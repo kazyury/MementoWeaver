@@ -6,8 +6,8 @@ import java.util.logging.Logger;
 
 import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.MWException;
+import nobugs.nolife.mw.dao.MementoDao;
 import nobugs.nolife.mw.entities.Memento;
-import nobugs.nolife.mw.processing.FindProcessor;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,6 +21,7 @@ import javafx.util.Callback;
 
 public class PublishedMementoListController extends AnchorPane implements MWSceneController {
 	private static Logger logger = Logger.getGlobal();
+	private static MementoDao mementoDao = new MementoDao();
 
 	private AppMain appl;
 	private String category;
@@ -43,7 +44,7 @@ public class PublishedMementoListController extends AnchorPane implements MWScen
 	 * ListView‚Éƒƒƒ“ƒgˆê——‚ğİ’è‚·‚é
 	 */
 	private void fillMementoListView(String category){
-		for(Memento me:FindProcessor.findMementoProcess(category)){
+		for(Memento me:mementoDao.findByCategory(category)){
 			logger.info("ƒƒƒ“ƒg["+me+"]‚ğ’Ç‰Á‚µ‚Ü‚·B");
 			listRecords.add(me);
 		}

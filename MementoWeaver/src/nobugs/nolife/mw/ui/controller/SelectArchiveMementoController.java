@@ -9,9 +9,9 @@ import java.util.ResourceBundle;
 import name.antonsmirnov.javafx.dialog.Dialog;
 import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.MWException;
+import nobugs.nolife.mw.dao.MementoDao;
 import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.processing.ArchiveProcessor;
-import nobugs.nolife.mw.processing.FindProcessor;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -30,6 +30,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
 public class SelectArchiveMementoController extends AnchorPane implements MWSceneController {
+	private static MementoDao mementoDao = new MementoDao();
 	private AppMain appl;
 
 	// âÊñ ÉRÉìÉgÉçÅ[Éã
@@ -81,7 +82,7 @@ public class SelectArchiveMementoController extends AnchorPane implements MWScen
 		tableView.setItems(tableRecord);
 
 		// tableRecord í«â¡
-		for(Memento memento:FindProcessor.findMementoProcess()){
+		for(Memento memento:mementoDao.findAll()){
 			tableRecord.add(new TableRecord(memento));
 		}
 	}

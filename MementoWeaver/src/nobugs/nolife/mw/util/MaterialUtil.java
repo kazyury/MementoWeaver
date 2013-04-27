@@ -1,5 +1,6 @@
 package nobugs.nolife.mw.util;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
@@ -30,7 +31,7 @@ public class MaterialUtil {
 	public static String getMaterialSecond(Material m){ return m.getMaterialId().substring(12, 14); }
 
 	/**
-	 * materialPathで指定されたマテリアルのタイプを返却する
+	 * materialPathで指定された素材のタイプを返却する
 	 * @param materialPath
 	 * @return {@value Constants#MATERIAL_TYPE_JPG} or {@value Constants#MATERIAL_TYPE_MOV}
 	 * @throws MWException 
@@ -51,7 +52,25 @@ public class MaterialUtil {
 		}
 	}
 
-	
+	/**
+	 * materialPathで指定された素材の拡張子に応じて、正規化された拡張子文字列を返却する
+	 * @param materialPath
+	 * @return
+	 * @throws MWException
+	 */
+	public static String getNormalizedSuffix(File materialPath) throws MWException {
+		int pos = materialPath.getPath().lastIndexOf(".");
+		String suffix = materialPath.getPath().toLowerCase().substring(pos+1);
+		
+		if (suffix.equals("jpg")||suffix.equals("jpeg")){
+			suffix = "jpg";
+		}
+		if (!suffix.equals("mov") && !suffix.equals("jpg")){
+			throw new MWException("Unsupported file type");
+		}
+		return suffix;
+	}
+
 	/**
 	 * 関連するTaggedMaterialの状態に基づいてMaterialの状態を更新する。
 	 * @param m

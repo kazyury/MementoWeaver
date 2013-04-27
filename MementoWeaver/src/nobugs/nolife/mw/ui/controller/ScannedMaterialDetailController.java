@@ -9,10 +9,11 @@ import java.util.ResourceBundle;
 import name.antonsmirnov.javafx.dialog.Dialog;
 import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.MWException;
+import nobugs.nolife.mw.dao.MementoDao;
+import nobugs.nolife.mw.dao.PredefinedTagDao;
 import nobugs.nolife.mw.dto.ScannedMaterialDTO;
 import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.entities.ScannedResult;
-import nobugs.nolife.mw.processing.FindProcessor;
 import nobugs.nolife.mw.processing.ScanProcessor;
 import nobugs.nolife.mw.processing.ScannedResultProcessor;
 import javafx.beans.property.BooleanProperty;
@@ -35,6 +36,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
 public class ScannedMaterialDetailController extends AnchorPane implements MWSceneController  {
+	private static MementoDao mementoDao = new MementoDao();
+	private static PredefinedTagDao predefinedTagDao = new PredefinedTagDao();
 	private AppMain appl;
 	private ScannedResult scannedResult;
 
@@ -95,14 +98,14 @@ public class ScannedMaterialDetailController extends AnchorPane implements MWSce
 		pathLabel.setText(pathLabel.getText()+scannedResult.getProductionPath());
 		
 		// memento category コンボ設定
-		for(String category:FindProcessor.findMementoCategoryProcess()){
+		for(String category:mementoDao.findCategory()){
 			categoryComboList.add(category);
 		}
 		categoryCombo.setItems(categoryComboList);
 		categoryCombo.setEditable(true);
 		
 		// tag コンボ設定
-		for(String tag:FindProcessor.findPredefinedTagProcess()){
+		for(String tag:predefinedTagDao.findAll()){
 			tagComboList.add(tag);
 		}
 		tagCombo.setItems(tagComboList);

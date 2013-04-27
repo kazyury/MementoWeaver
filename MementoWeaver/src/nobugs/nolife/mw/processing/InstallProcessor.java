@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,6 +18,7 @@ import nobugs.nolife.mw.derivatizer.Derivatizer;
 import nobugs.nolife.mw.derivatizer.DerivatizerFactory;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.util.Constants;
+import nobugs.nolife.mw.util.MaterialUtil;
 import nobugs.nolife.mw.util.PersistenceUtil;
 
 public class InstallProcessor {
@@ -55,14 +57,8 @@ public class InstallProcessor {
 			Material materialEntity = new Material();
 
 			// ファイルタイプの取得と設定
-			String suffix = fileTypeOf(material);
-			if (suffix.equals("jpg")){
-				materialEntity.setMaterialType(Constants.MATERIAL_TYPE_JPG);
-			} else if (suffix.equals("mov")){
-				materialEntity.setMaterialType(Constants.MATERIAL_TYPE_MOV);
-			} else {
-				throw new MWException("Unsupported file type");
-			}
+			materialEntity.setMaterialType(MaterialUtil.getMaterialType(material.toPath()));
+			String suffix = MaterialUtil.getNormalizedSuffix(material);
 
 			// ファイルタイムスタンプの取得と設定
 			Date lastModifiedDate = new Date(material.lastModified());
@@ -73,7 +69,7 @@ public class InstallProcessor {
 			materialEntity.setCreatedMonth(Integer.parseInt(formatDate(lastModifiedDate,"MM")));
 			
 			// ステージングエリアにファイル名を変更してコピー
-			java.nio.file.Path dest = new File(targetDirectory,destBaseFilename+"."+suffix).toPath();
+			Path dest = new File(targetDirectory,destBaseFilename+"."+suffix).toPath();
 			try {
 				Files.copy(material.toPath(), dest, StandardCopyOption.COPY_ATTRIBUTES);
 			} catch (IOException e1) {
@@ -113,24 +109,6 @@ public class InstallProcessor {
 		return  true;
 	}
 
-	/**
-	 * @param material
-	 * @return
-	 * @throws MWException 
-	 */
-	private String fileTypeOf(File material) throws MWException {
-		// TODO MaterialUtil に移動するべき
-		int pos = material.getPath().lastIndexOf(".");
-		String suffix = material.getPath().toLowerCase().substring(pos+1);
-		
-		if (suffix.equals("jpg")||suffix.equals("jpeg")){
-			suffix = "jpg";
-		}
-		if (!suffix.equals("mov") && !suffix.equals("jpg")){
-			throw new MWException("Unsupported file type");
-		}
-		return suffix;
-	}
 
 	private String formatDate(Date date, String pattern) {
 		DateFormat formatter = new SimpleDateFormat(pattern);
