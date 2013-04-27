@@ -37,6 +37,7 @@ public class Constants {
 	// dir.properties key
 	public static String DIRPROP_KEY_MATERIAL_SOURCE="dir.materialSource";
 	public static String DIRPROP_KEY_STAGING_AREA="dir.stagingArea";
+	public static String DIRPROP_KEY_ARCHIVE_AREA="dir.archiveArea";
 	public static String DIRPROP_KEY_MW_ROOT="dir.mw.root";
 	public static String DIRPROP_KEY_MW_ALBUM="dir.memento.albums";
 	public static String DIRPROP_KEY_MW_CHRONICLE="dir.memento.chronicle";

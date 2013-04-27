@@ -39,13 +39,14 @@ public class MaterialUtil {
 	 */
 	public static String getMaterialType(Path materialPath) throws MWException {
 		String strpath = materialPath.toString();
-		int idx = strpath.indexOf(".");
-		if(strpath.substring(idx+1).equalsIgnoreCase("jpg")) {
+		int idx = strpath.lastIndexOf(".");
+		String suffix = strpath.substring(idx+1);
+		if(suffix.equalsIgnoreCase("jpg")) {
 			return Constants.MATERIAL_TYPE_JPG;
-		} else if (strpath.substring(idx+1).equalsIgnoreCase("mov")) {
+		} else if (suffix.equalsIgnoreCase("mov")) {
 			return Constants.MATERIAL_TYPE_MOV;
 		} else {
-			logger.severe("path["+materialPath.toString()+"]Ç™ïsê≥Ç≈Ç∑.");
+			logger.severe("path["+materialPath.toString()+"]Ç™ïsê≥Ç≈Ç∑.SuffixÇÕ["+suffix+"]Ç≈Ç∑.");
 			throw new MWException("path["+materialPath.toString()+"]Ç™ïsê≥Ç≈Ç∑.");
 		}
 	}

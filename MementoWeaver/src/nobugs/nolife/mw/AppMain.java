@@ -68,6 +68,9 @@ public class AppMain extends Application {
 		forward("ui/fxml/ScannedMaterialDetail.fxml",(Object)sr);
 	}
 
+	// Archive
+	public void fwdSelectArchiveMemento() throws MWException  { forward("ui/fxml/SelectArchiveMemento.fxml"); }
+
 	/**
 	 * ‰æ–Ê‘JˆÚ‚ÌŽÀ‘•
 	 * @param fxml

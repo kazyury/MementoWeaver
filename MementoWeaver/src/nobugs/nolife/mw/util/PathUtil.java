@@ -3,11 +3,13 @@ package nobugs.nolife.mw.util;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -23,6 +25,8 @@ import nobugs.nolife.mw.entities.Material;
 public class PathUtil {
 	private static Logger logger = Logger.getGlobal();
 	private static Properties dirProperties = new Properties();
+	private static int ARCHIVE_MODE_COPY = 0;
+	private static int ARCHIVE_MODE_MOVE = 1;
 
 	static {
 		logger.info("プロパティファイルの読み込みを開始します");
@@ -224,5 +228,31 @@ public class PathUtil {
 		File file = new File(strpath);
 		return toMementoId(file.toPath());
 	}
+	
+	public static void moveToArchive(String source) throws MWException { archiveFile(ARCHIVE_MODE_MOVE, source); }
+	public static void moveToArchive(Path source) throws MWException { archiveFile(ARCHIVE_MODE_MOVE, source.toString()); }
+	public static void copyToArchive(String source) throws MWException { archiveFile(ARCHIVE_MODE_COPY, source); }
+	public static void copyToArchive(Path source) throws MWException { archiveFile(ARCHIVE_MODE_COPY, source.toString()); }
+	
+	private static void archiveFile(int mode, String source) throws MWException {
+		URI mwroot = new File(getDirectoryProperty(Constants.DIRPROP_KEY_MW_ROOT)).toURI();
+		File sourceFile = new File(source);
+		URI  sourceURI  = sourceFile.toURI();
+		String relativePath = mwroot.relativize(sourceURI).toString();
 
+		FileSystem fs = FileSystems.getDefault();
+		Path sourcePath = sourceFile.toPath();
+		Path targetPath = fs.getPath(getDirectoryProperty(Constants.DIRPROP_KEY_ARCHIVE_AREA), relativePath);
+		try {
+			if(mode == ARCHIVE_MODE_COPY) {
+				Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+			} else if (mode == ARCHIVE_MODE_MOVE) {
+				Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+			} else {
+				throw new MWException("[BUG] invalid mode.");
+			}
+		} catch (IOException e) {
+			throw new MWException(e);
+		}
+	}
 }
