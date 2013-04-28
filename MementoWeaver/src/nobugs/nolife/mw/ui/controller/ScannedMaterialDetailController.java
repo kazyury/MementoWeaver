@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 import name.antonsmirnov.javafx.dialog.Dialog;
 import nobugs.nolife.mw.AppMain;
 import nobugs.nolife.mw.dao.MementoDao;
-import nobugs.nolife.mw.dao.PredefinedTagDao;
+import nobugs.nolife.mw.dao.TagConfigDao;
 import nobugs.nolife.mw.dto.ScannedMaterialDTO;
 import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.entities.ScannedResult;
@@ -36,7 +36,7 @@ import javafx.util.Callback;
 
 public class ScannedMaterialDetailController extends AnchorPane implements MWSceneController  {
 	private static MementoDao mementoDao = new MementoDao();
-	private static PredefinedTagDao predefinedTagDao = new PredefinedTagDao();
+	private static TagConfigDao tagConfigDao = new TagConfigDao();
 	private AppMain appl;
 	private ScannedResult scannedResult;
 
@@ -104,7 +104,7 @@ public class ScannedMaterialDetailController extends AnchorPane implements MWSce
 		categoryCombo.setEditable(true);
 		
 		// tag ÉRÉìÉ{ê›íË
-		for(String tag:predefinedTagDao.findAll()){
+		for(String tag:tagConfigDao.findTagList()){
 			tagComboList.add(tag);
 		}
 		tagCombo.setItems(tagComboList);

@@ -9,7 +9,7 @@ delete from MW.MEMENTO;
 delete from MW.MATERIAL;
 delete from MW.SCANNED_RESULTS
 
-select * from MW.PREDEFINED_TAG;
+select * from MW.TAG_CONFIG;
 
 
 delete from mw.memento_contents where material_id='20130203063324' and tag='album';

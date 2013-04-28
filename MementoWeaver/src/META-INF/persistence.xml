@@ -3,10 +3,10 @@
 	<persistence-unit name="MementoWeaver" transaction-type="RESOURCE_LOCAL">
 		<class>nobugs.nolife.mw.entities.Material</class>
 		<class>nobugs.nolife.mw.entities.Memento</class>
-		<class>nobugs.nolife.mw.entities.PredefinedTag</class>
 		<class>nobugs.nolife.mw.entities.TaggedMaterial</class>
 		<class>nobugs.nolife.mw.entities.TaggedMaterialPK</class>
 		<class>nobugs.nolife.mw.entities.ScannedResult</class>
+		<class>nobugs.nolife.mw.entities.TagConfig</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:derby:C:\Users\kazyury\MyDB;create=true"/>
 			<property name="javax.persistence.jdbc.user" value="test"/>

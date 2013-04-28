@@ -1,0 +1,7 @@
+"album   ","albumPage       ","AlbumGenerator                  ","nobugs.nolife.mw.generator.AlbumGenerator","nobugs.nolife.mw.generator.AlbumIndexGenerator"
+"winner  ","winnerPage      ","WinnerGenerator                 ","nobugs.nolife.mw.generator.WinnerGenerator","nobugs.nolife.mw.generator.WinnerIndexGenerator"
+"treasure","treasurePage    ","TreasureGenerator               ","nobugs.nolife.mw.generator.TreasureGenerator","nobugs.nolife.mw.generator.TreasureIndexGenerator"
+"party   ","partyPage       ","PartyGenerator                  ","nobugs.nolife.mw.generator.PartyGenerator","nobugs.nolife.mw.generator.PartyIndexGenerator"
+"kazunori","chronicle       ","ChronicleGenerator              ","nobugs.nolife.mw.generator.ChronicleGenerator ","nobugs.nolife.mw.generator.ChronicleIndexGenerator"
+"hiroko  ","chronicle       ","ChronicleGenerator              ","nobugs.nolife.mw.generator.ChronicleGenerator ","nobugs.nolife.mw.generator.ChronicleIndexGenerator"
+"taito   ","chronicle       ","ChronicleGenerator              ","nobugs.nolife.mw.generator.ChronicleGenerator ","nobugs.nolife.mw.generator.ChronicleIndexGenerator"

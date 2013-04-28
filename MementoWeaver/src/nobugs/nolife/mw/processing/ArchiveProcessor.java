@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 
 import nobugs.nolife.mw.dao.MaterialDao;
 import nobugs.nolife.mw.dao.MementoDao;
+import nobugs.nolife.mw.dao.TagConfigDao;
 import nobugs.nolife.mw.dao.TaggedMaterialDao;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.Memento;
@@ -26,6 +27,7 @@ public class ArchiveProcessor {
 	private static MaterialDao materialDao = new MaterialDao();
 	private static TaggedMaterialDao taggedMaterialDao = new TaggedMaterialDao();
 	private static MementoDao mementoDao = new MementoDao();
+	private static TagConfigDao tagConfigDao = new TagConfigDao();
 
 
 	public void archive(List<Memento> mementoList) {
@@ -78,28 +80,14 @@ public class ArchiveProcessor {
 			PathUtil.moveToArchive(memento.getProductionPath());
 			
 			String category = memento.getCategory();
-			logger.info("カテゴリ["+category+"] のindexを再生成します.");
-			if(category.equals(Constants.MEMENTO_CATEGORY_ALBUM)){
-				// FIXME NONSENSE!
-				SubGenerator subGenerator = GeneratorFactory.getSubGenerator("AlbumGenerator");
+			String generatorFQCN = tagConfigDao.findGeneratorNameByCategory(category);
+			if(generatorFQCN==null) {
+				// 手入力メメント等(カテゴリに該当なし)
+				logger.info("カテゴリ["+category+"] は生成メメントではないためIndex作成は行いません.");
+			} else {
+				logger.info("カテゴリ["+category+"] のindexを再生成します.");
+				SubGenerator subGenerator = GeneratorFactory.getSubGenerator(generatorFQCN);
 				subGenerator.generate();
-			} else if(category.equals(Constants.MEMENTO_CATEGORY_CHRONICLE)){
-				// FIXME NONSENSE!
-				SubGenerator subGenerator = GeneratorFactory.getSubGenerator("ChronicleGenerator");
-				subGenerator.generate();
-			} else if(category.equals(Constants.MEMENTO_CATEGORY_PARTY)){
-				// FIXME NONSENSE!
-				SubGenerator subGenerator = GeneratorFactory.getSubGenerator("PartyGenerator");
-				subGenerator.generate();
-			} else if(category.equals(Constants.MEMENTO_CATEGORY_TREASURE)){
-				// FIXME NONSENSE!
-				SubGenerator subGenerator = GeneratorFactory.getSubGenerator("TreasureGenerator");
-				subGenerator.generate();
-			} else if(category.equals(Constants.MEMENTO_CATEGORY_WINNER)){
-				// FIXME NONSENSE!
-				SubGenerator subGenerator = GeneratorFactory.getSubGenerator("WinnerGenerator");
-				subGenerator.generate();
-			} else { // 手作成メメント等
 			}
 		}
 
