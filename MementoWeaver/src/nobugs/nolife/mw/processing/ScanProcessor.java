@@ -17,8 +17,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 
+import nobugs.nolife.mw.dao.MementoDao;
 import nobugs.nolife.mw.dto.ScannedMaterialDTO;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.Memento;
@@ -121,10 +121,11 @@ public class ScanProcessor {
 	 */
 	public static class MementoFinder extends SimpleFileVisitor<Path> {
 		private final PathMatcher matcher;
-		private EntityManager em = PersistenceUtil.getMWEntityManager();
-		private Logger logger = Logger.getGlobal();
+		private static EntityManager em = PersistenceUtil.getMWEntityManager();
+		private static Logger logger = Logger.getGlobal();
 		private String scanmode;
 		private List<ScannedResult> resultList = new ArrayList<ScannedResult>();
+		private MementoDao mementoDao = new MementoDao();
 		
 		public MementoFinder(String pattern, String scanmode) {
 			matcher=FileSystems.getDefault().getPathMatcher("glob:"+pattern);
@@ -161,7 +162,7 @@ public class ScanProcessor {
 		}
 		
 		private ScannedResult findOrCreateScannedResult(Path path) {
-			Memento memento = findMemento(path.toString());
+			Memento memento = mementoDao.findByPath(path.toString());
 			ScannedResult result = em.find(ScannedResult.class, path.toString());
 			if(result != null) {
 				logger.fine(path.toString()+" already exist. use existing ScannedResult.");
@@ -181,19 +182,6 @@ public class ScanProcessor {
 				em.getTransaction().commit();
 				logger.fine(path.toString()+" was not exist. new ScannedResult persisted.");
 				return sr;
-			}
-		}
-		
-		// TODO MementoDao‚ÉˆÚ“®
-		private Memento findMemento(String path) {
-			TypedQuery<Memento> query = em.createQuery(
-					"SELECT m FROM Memento m WHERE m.productionPath = :path", Memento.class);
-			query.setParameter("path", path);
-			List<Memento> result = query.getResultList();
-			if(result.isEmpty()){
-				return null;
-			} else {
-				return result.get(0);
 			}
 		}
 	}

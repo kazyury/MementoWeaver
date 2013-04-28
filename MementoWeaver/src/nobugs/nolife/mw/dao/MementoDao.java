@@ -57,4 +57,21 @@ public class MementoDao {
 		query.setParameter("category", category);
 		return query.getResultList();
 	}
+	
+	/**
+	 * ファイルパスを指定してシステムで永続化管理されているメメントを取得する
+	 * @param path メメントのファイルパス
+	 * @return 指定されたファイルパスのMemento.存在しない場合Nullを返却
+	 */
+	public Memento findByPath(String path) {
+		TypedQuery<Memento> query = em.createQuery(
+				"SELECT m FROM Memento m WHERE m.productionPath = :path", Memento.class);
+		query.setParameter("path", path);
+		List<Memento> result = query.getResultList();
+		if(result.isEmpty()){
+			return null;
+		} else {
+			return result.get(0);
+		}
+	}
 }
