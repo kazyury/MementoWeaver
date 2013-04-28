@@ -12,11 +12,12 @@ import java.util.Date;
 
 import javax.persistence.EntityManager;
 
-import name.antonsmirnov.javafx.dialog.Dialog;
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.derivatizer.Derivatizer;
 import nobugs.nolife.mw.derivatizer.DerivatizerFactory;
 import nobugs.nolife.mw.entities.Material;
+import nobugs.nolife.mw.exceptions.MWConfigurationError;
+import nobugs.nolife.mw.exceptions.MWInvalidUserInputException;
+import nobugs.nolife.mw.exceptions.MWResourceIOError;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.MaterialUtil;
 import nobugs.nolife.mw.util.PersistenceUtil;
@@ -26,16 +27,14 @@ public class InstallProcessor {
 	private File sourceDirectory;
 	private File targetDirectory;
 	
-	public void installProcess(String srcPath, String destPath) throws MWException{
+	public void installProcess(String srcPath, String destPath) throws MWInvalidUserInputException{
 		sourceDirectory = new File(srcPath);
 		targetDirectory = new File(destPath);
 		
 		EntityManager em = PersistenceUtil.getMWEntityManager();
 
 		// 素材ソース、ステージングエリアのパスをチェック
-		if (!isValidPathSet()) {
-			throw new MWException("checkFilePath() fails.");
-		}
+		isValidPathSet();
 
 		// ファイルリストの取得。.jpeg, .jpg, .mov を対象とする(大文字小文字は無視)
 		FilenameFilter filter = new FilenameFilter() {
@@ -73,7 +72,7 @@ public class InstallProcessor {
 			try {
 				Files.copy(material.toPath(), dest, StandardCopyOption.COPY_ATTRIBUTES);
 			} catch (IOException e1) {
-				throw new MWException("ステージングエリアへのファイルコピーで例外が発生しました", e1.getCause());
+				throw new MWResourceIOError("ステージングエリアへのファイルコピーで例外が発生しました", e1.getCause());
 			}
 			// DerivationManager(Derivatizer)に派生ファイルの作成を要求
 			Derivatizer derivatizer = DerivatizerFactory.getDerivatizer(dest);
@@ -90,22 +89,16 @@ public class InstallProcessor {
 
 		
 	}
-	private boolean isValidPathSet() {
-		// 素材ソース(pathInput)を取得
+	private boolean isValidPathSet() throws MWInvalidUserInputException {
 
-		// pathInputが空若しくは存在しないパスならばエラーメッセージを表示してreturn
+		// pathInput/ステージングエリアが空若しくは存在しないパスならば例外
 		if (!sourceDirectory.isDirectory()) {
-			// TODO ProcessorがDialogを使うべきではない。例外設計見直し要
-			Dialog.showWarning("不正なパスです", sourceDirectory.toString() + " はディレクトリではありません.");
-			return false;
+			throw new MWInvalidUserInputException(sourceDirectory.toString() + " はディレクトリではありません.");
 		}
-
-		// ステージングエリアが空若しくは存在しないパスならばエラーメッセージを表示してreturn
 		if (!targetDirectory.isDirectory()) {
-			// TODO ProcessorがDialogを使うべきではない。例外設計見直し要
-			Dialog.showError("[BUG]不正なパスです", targetDirectory.toString() + " はディレクトリではありません.");
-			return false;
+			throw new MWConfigurationError(targetDirectory.toString() + " はディレクトリではありません.");
 		}
+		
 		return  true;
 	}
 

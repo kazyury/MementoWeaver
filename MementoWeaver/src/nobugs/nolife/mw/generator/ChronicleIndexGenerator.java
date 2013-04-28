@@ -3,7 +3,7 @@ package nobugs.nolife.mw.generator;
 import java.util.HashMap;
 import java.util.Map;
 
-import nobugs.nolife.mw.MWException;
+import nobugs.nolife.mw.exceptions.MWException;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.PathUtil;
 
@@ -11,7 +11,7 @@ import nobugs.nolife.mw.util.PathUtil;
 public class ChronicleIndexGenerator extends SubGenerator {
 
 	@Override
-	protected void generateSubMemento() throws MWException {
+	protected void generateSubMemento() {
 		String indexfilePath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MW_CHRONICLE)+"\\index.html";
 		String familyFilePath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MW_CHRONICLE)+"\\family.xml";
 
@@ -28,7 +28,7 @@ public class ChronicleIndexGenerator extends SubGenerator {
 	 * @param indexfilePath
 	 * @throws MWException
 	 */
-	private void generateIndexPage(String indexfilePath) throws MWException {
+	private void generateIndexPage(String indexfilePath) {
 
 		// velocity用のマップ
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -42,7 +42,7 @@ public class ChronicleIndexGenerator extends SubGenerator {
 		tw.out();
 	}
 
-	private void generateFamilyXml(String familyFilePath) throws MWException {
+	private void generateFamilyXml(String familyFilePath) {
 		// velocity 用のmap
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("title","クロニクル");

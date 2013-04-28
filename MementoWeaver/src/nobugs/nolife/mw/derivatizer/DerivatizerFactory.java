@@ -4,12 +4,13 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
-import nobugs.nolife.mw.MWException;
+import nobugs.nolife.mw.exceptions.MWImplementationError;
+import nobugs.nolife.mw.exceptions.MWInvalidUserInputException;
 
 public class DerivatizerFactory {
 	private static Logger logger = Logger.getGlobal();
 
-	public static Derivatizer getDerivatizer(Path path) throws MWException {
+	public static Derivatizer getDerivatizer(Path path) throws MWInvalidUserInputException {
 		int pos = path.toString().lastIndexOf(".");
 		String suffix = path.toString().substring(pos+1);
 		
@@ -22,12 +23,12 @@ public class DerivatizerFactory {
 			return new QuicktimeDerivatizer(path);
 		
 		} else {
-			throw new MWException("Not supported :["+suffix+"]");
+			throw new MWImplementationError("Not supported :["+suffix+"]");
 		}
 
 	}
 	
-	public static Derivatizer getDerivatizer(File path) throws MWException {
+	public static Derivatizer getDerivatizer(File path) throws MWInvalidUserInputException {
 		return getDerivatizer(path.toPath());
 	}
 	

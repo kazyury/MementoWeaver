@@ -4,9 +4,10 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.TaggedMaterial;
+import nobugs.nolife.mw.exceptions.MWException;
+import nobugs.nolife.mw.exceptions.MWImplementationError;
 
 /**
  * Materialユーティリティ
@@ -38,7 +39,7 @@ public class MaterialUtil {
 	 * @see Constants#MATERIAL_TYPE_JPG
 	 * @see Constants#MATERIAL_TYPE_MOV
 	 */
-	public static String getMaterialType(Path materialPath) throws MWException {
+	public static String getMaterialType(Path materialPath) {
 		String strpath = materialPath.toString();
 		int idx = strpath.lastIndexOf(".");
 		String suffix = strpath.substring(idx+1);
@@ -47,8 +48,7 @@ public class MaterialUtil {
 		} else if (suffix.equalsIgnoreCase("mov")) {
 			return Constants.MATERIAL_TYPE_MOV;
 		} else {
-			logger.severe("path["+materialPath.toString()+"]が不正です.Suffixは["+suffix+"]です.");
-			throw new MWException("path["+materialPath.toString()+"]が不正です.");
+			throw new MWImplementationError("path["+materialPath.toString()+"]が不正です.Suffixは["+suffix+"]です.");
 		}
 	}
 
@@ -58,7 +58,7 @@ public class MaterialUtil {
 	 * @return
 	 * @throws MWException
 	 */
-	public static String getNormalizedSuffix(File materialPath) throws MWException {
+	public static String getNormalizedSuffix(File materialPath) {
 		int pos = materialPath.getPath().lastIndexOf(".");
 		String suffix = materialPath.getPath().toLowerCase().substring(pos+1);
 		
@@ -66,7 +66,7 @@ public class MaterialUtil {
 			suffix = "jpg";
 		}
 		if (!suffix.equals("mov") && !suffix.equals("jpg")){
-			throw new MWException("Unsupported file type");
+			throw new MWImplementationError("Unsupported file type");
 		}
 		return suffix;
 	}

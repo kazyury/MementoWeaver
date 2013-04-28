@@ -14,8 +14,10 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
+import nobugs.nolife.mw.exceptions.MWException;
+import nobugs.nolife.mw.exceptions.MWImplementationError;
+import nobugs.nolife.mw.exceptions.MWResourceIOError;
 
 /**
  * ファイルパス・ユーティリティ
@@ -64,14 +66,14 @@ public class PathUtil {
 	 * @return
 	 * @throws MWException
 	 */
-	public static String getFileName(Material m) throws MWException {
+	public static String getFileName(Material m) {
 		StringBuffer materialName = new StringBuffer(getBaseFileName(m));
 		if (m.getMaterialType().equals(Constants.MATERIAL_TYPE_JPG)) {
 			materialName.append(".jpg");
 		} else if(m.getMaterialType().equals(Constants.MATERIAL_TYPE_MOV)) {
 			materialName.append(".mov");
 		} else {
-			throw new MWException("素材タイプが不正です");
+			throw new MWImplementationError("素材タイプが不正です");
 		}
 		return materialName.toString();
 	}
@@ -83,7 +85,7 @@ public class PathUtil {
 	 * @return
 	 * @throws MWException 
 	 */
-	public static String getPhotoFileName(Material m) throws MWException {
+	public static String getPhotoFileName(Material m) {
 		if (m.getMaterialType().equals(Constants.MATERIAL_TYPE_JPG)) {
 			return getFileName(m);
 		}
@@ -99,7 +101,7 @@ public class PathUtil {
 	 * @return
 	 * @throws MWException 
 	 */
-	public static Path getInstalledFilePath(Material m) throws MWException {
+	public static Path getInstalledFilePath(Material m) {
 		FileSystem fs = FileSystems.getDefault();
 		String stagingAreaPath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_STAGING_AREA);
 		return fs.getPath(stagingAreaPath, getFileName(m));
@@ -111,7 +113,7 @@ public class PathUtil {
 	 * @return
 	 * @throws MWException 
 	 */
-	public static Path getProductionFilePath(Material m) throws MWException {
+	public static Path getProductionFilePath(Material m) {
 		FileSystem fs = FileSystems.getDefault();
 		String productionPath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MW_MATERIAL);
 		return fs.getPath(productionPath, getFileName(m));
@@ -124,7 +126,7 @@ public class PathUtil {
 	 * @return
 	 * @throws MWException 
 	 */
-	public static Path getInstalledPhotoPath(Material m) throws MWException {
+	public static Path getInstalledPhotoPath(Material m) {
 		if (m.getMaterialType().equals(Constants.MATERIAL_TYPE_JPG)) {
 			return getInstalledFilePath(m);
 		}
@@ -140,7 +142,7 @@ public class PathUtil {
 	 * @return
 	 * @throws MWException 
 	 */
-	public static Path getProductionPhotoPath(Material m) throws MWException {
+	public static Path getProductionPhotoPath(Material m) {
 		if (m.getMaterialType().equals(Constants.MATERIAL_TYPE_JPG)) {
 			return getProductionFilePath(m);
 		}
@@ -156,7 +158,7 @@ public class PathUtil {
 	 * @return
 	 * @throws MWException 
 	 */
-	public static Path getInstalledThumbnailPath(Material m) throws MWException {
+	public static Path getInstalledThumbnailPath(Material m) {
 		FileSystem fs = FileSystems.getDefault();
 		String stagingAreaPath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_STAGING_AREA);
 		return fs.getPath(stagingAreaPath,"thumbnail",getPhotoFileName(m));
@@ -169,7 +171,7 @@ public class PathUtil {
 	 * @return
 	 * @throws MWException 
 	 */
-	public static Path getProductionThumbnailPath(Material m) throws MWException {
+	public static Path getProductionThumbnailPath(Material m) {
 		FileSystem fs = FileSystems.getDefault();
 		String productionPath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MW_MATERIAL);
 		return fs.getPath(productionPath,"thumbnail",getPhotoFileName(m));
@@ -181,7 +183,7 @@ public class PathUtil {
 	 * @return
 	 * @throws MWException 
 	 */
-	public static String toMaterialId(Path path) throws MWException {
+	public static String toMaterialId(Path path) {
 
 		// 素材エリアに存在する素材ファイルか否かの確認
 		String filename = path.getFileName().toString();
@@ -193,7 +195,7 @@ public class PathUtil {
 		// 素材エリアに存在しない　又は　(存在しても)ffから始まる場合には例外
 		if(!Files.exists(materialPath, LinkOption.NOFOLLOW_LINKS) || filename.startsWith("ff")) {
 			logger.warning("Not a material ["+materialPath.toString()+"]");
-			throw new MWException("Not a material ["+materialPath.toString()+"]");
+			throw new MWImplementationError("Not a material ["+materialPath.toString()+"]");
 		}
 		
 		// マテリアルID相当を返却
@@ -229,12 +231,12 @@ public class PathUtil {
 		return toMementoId(file.toPath());
 	}
 	
-	public static void moveToArchive(String source) throws MWException { archiveFile(ARCHIVE_MODE_MOVE, source); }
-	public static void moveToArchive(Path source) throws MWException { archiveFile(ARCHIVE_MODE_MOVE, source.toString()); }
-	public static void copyToArchive(String source) throws MWException { archiveFile(ARCHIVE_MODE_COPY, source); }
-	public static void copyToArchive(Path source) throws MWException { archiveFile(ARCHIVE_MODE_COPY, source.toString()); }
+	public static void moveToArchive(String source) { archiveFile(ARCHIVE_MODE_MOVE, source); }
+	public static void moveToArchive(Path source) { archiveFile(ARCHIVE_MODE_MOVE, source.toString()); }
+	public static void copyToArchive(String source) { archiveFile(ARCHIVE_MODE_COPY, source); }
+	public static void copyToArchive(Path source) { archiveFile(ARCHIVE_MODE_COPY, source.toString()); }
 	
-	private static void archiveFile(int mode, String source) throws MWException {
+	private static void archiveFile(int mode, String source) {
 		URI mwroot = new File(getDirectoryProperty(Constants.DIRPROP_KEY_MW_ROOT)).toURI();
 		File sourceFile = new File(source);
 		URI  sourceURI  = sourceFile.toURI();
@@ -249,10 +251,10 @@ public class PathUtil {
 			} else if (mode == ARCHIVE_MODE_MOVE) {
 				Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
 			} else {
-				throw new MWException("[BUG] invalid mode.");
+				throw new MWImplementationError("[BUG] invalid mode.");
 			}
 		} catch (IOException e) {
-			throw new MWException(e);
+			throw new MWResourceIOError(e);
 		}
 	}
 }

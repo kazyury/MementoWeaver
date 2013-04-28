@@ -3,8 +3,6 @@ package nobugs.nolife.mw.derivatizer;
 import java.io.File;
 import java.nio.file.Path;
 
-import nobugs.nolife.mw.MWException;
-
 public class JpegDerivatizer extends Derivatizer {
 	private Path path;
 	
@@ -12,7 +10,7 @@ public class JpegDerivatizer extends Derivatizer {
 	public JpegDerivatizer(Path path){ this.path = path; }
 
 	@Override
-	public void derivate() throws MWException {
+	public void derivate(){
 		// Ã~‰æ‘fŞ‚ÍƒTƒ€ƒlƒCƒ‹‚Ìì¬‚Ì‚İ
 		createThumbnail(this.path);
 	}

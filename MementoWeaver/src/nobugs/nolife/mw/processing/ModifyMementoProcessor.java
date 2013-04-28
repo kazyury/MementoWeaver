@@ -9,11 +9,12 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.entities.TaggedMaterial;
 import nobugs.nolife.mw.entities.TaggedMaterialPK;
+import nobugs.nolife.mw.exceptions.MWException;
+import nobugs.nolife.mw.exceptions.MWInvalidUserInputException;
 import nobugs.nolife.mw.generator.Generator;
 import nobugs.nolife.mw.generator.GeneratorFactory;
 import nobugs.nolife.mw.generator.SubGenerator;
@@ -34,9 +35,10 @@ public class ModifyMementoProcessor {
 	 * @param materialFile
 	 * @param tag
 	 * @return
+	 * @throws MWInvalidUserInputException 
 	 * @throws MWException
 	 */
-	public TaggedMaterial appendTaggedMaterialProcess(Memento memento, File materialFile, String tag) throws MWException {
+	public TaggedMaterial appendTaggedMaterialProcess(Memento memento, File materialFile, String tag) throws MWInvalidUserInputException {
 		/* 追加されたTaggedMaterialのチェック処理
 		 * 1 memento内に同一のMaterialIDを持つTaggedMaterialが存在する場合=>null返却
 		 * 2 mementoに含まれるべきではないTaggedMaterialの場合(ex. 2012年1月のalbumPageに2012年2月の素材)=>null返却
@@ -62,7 +64,7 @@ public class ModifyMementoProcessor {
 		// 3 対応するMaterialが存在しない場合には例外throw
 		Material m = em.find(Material.class, materialId);
 		if(m==null){
-			throw new MWException("materialId["+materialId+"]はDBに登録されていません");
+			throw new MWInvalidUserInputException("materialId["+materialId+"]はDBに登録されていません.scanを実行してください.");
 		}
 
 		logger.info("素材["+materialFile+"]　タグ["+tag+"]でTaggedMaterialを作成します。");
@@ -89,7 +91,7 @@ public class ModifyMementoProcessor {
 	}
 
 
-	public void mementoSubmitProcess(Memento memento) throws MWException {
+	public void mementoSubmitProcess(Memento memento) {
 		// generatorによる生成前にmementoを永続化する
 		logger.info("commit current state");
 		em.getTransaction().begin();

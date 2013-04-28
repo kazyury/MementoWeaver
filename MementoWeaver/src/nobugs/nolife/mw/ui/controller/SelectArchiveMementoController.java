@@ -8,7 +8,6 @@ import java.util.ResourceBundle;
 
 import name.antonsmirnov.javafx.dialog.Dialog;
 import nobugs.nolife.mw.AppMain;
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.dao.MementoDao;
 import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.processing.ArchiveProcessor;
@@ -43,7 +42,7 @@ public class SelectArchiveMementoController extends AnchorPane implements MWScen
 	private ObservableList<TableRecord> tableRecord = FXCollections.observableArrayList();
 
 	// イベントハンドラ
-	@FXML protected void archive(ActionEvent e) throws MWException {
+	@FXML protected void archive(ActionEvent e){
 		// tableRecord から 対象List<Memento>への詰め替え
 		List<Memento> mementoList = new ArrayList<>();
 		
@@ -61,13 +60,13 @@ public class SelectArchiveMementoController extends AnchorPane implements MWScen
 		appl.fwdMainMenu();
 	}
 
-	@FXML protected void cancel(ActionEvent e) throws MWException {appl.fwdMainMenu();}
+	@FXML protected void cancel(ActionEvent e){appl.fwdMainMenu();}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {/* nothing to do */ }
 
 	@Override
-	public void setApplication(AppMain appMain, Object bulk) throws MWException {
+	public void setApplication(AppMain appMain, Object bulk){
 		this.appl = appMain;
 		
 		archiveChkCol.setCellValueFactory(new PropertyValueFactory<TableRecord, Boolean>("checked"));

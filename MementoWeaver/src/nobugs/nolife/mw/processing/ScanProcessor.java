@@ -19,12 +19,13 @@ import java.util.regex.Pattern;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.dto.ScannedMaterialDTO;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.entities.ScannedResult;
 import nobugs.nolife.mw.entities.TaggedMaterial;
+import nobugs.nolife.mw.exceptions.MWException;
+import nobugs.nolife.mw.exceptions.MWResourceIOError;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.PathUtil;
 import nobugs.nolife.mw.util.PersistenceUtil;
@@ -38,7 +39,7 @@ public class ScanProcessor {
 		this.scanmode = scanmode;
 	}
 	
-	public List<ScannedResult> scanMementoFiles() throws MWException {
+	public List<ScannedResult> scanMementoFiles() {
 		// TODO *.htmlà»äOÇ…Ç‡ëŒâûÇ≥ÇπÇÈ
 		// MWROOTà»â∫ÇÃ*.htmlÇëSëñç∏
 		MementoFinder finder = new MementoFinder("*.html", scanmode);
@@ -47,7 +48,7 @@ public class ScanProcessor {
 			Files.walkFileTree(start.toPath(), finder);
 		} catch (IOException e) {
 			logger.severe("ëñç∏íÜÇ…IOExceptionÇ™î≠ê∂ÇµÇ‹ÇµÇΩ.");
-			throw new MWException(e);
+			throw new MWResourceIOError("ëñç∏íÜÇ…IOExceptionÇ™î≠ê∂ÇµÇ‹ÇµÇΩ.",e);
 		}
 		return finder.getResult();
 	}
@@ -58,7 +59,7 @@ public class ScanProcessor {
 	 * @param scannedResult
 	 * @throws MWException 
 	 */
-	public List<ScannedMaterialDTO> scanMaterialsIn(ScannedResult scannedResult) throws MWException {
+	public List<ScannedMaterialDTO> scanMaterialsIn(ScannedResult scannedResult) {
 		
 		List<ScannedMaterialDTO> materialList = new ArrayList<ScannedMaterialDTO>();
 		Memento memento = scannedResult.getMemento();
@@ -106,7 +107,7 @@ public class ScanProcessor {
 				}
 			}
 		} catch (IOException e) {
-			throw new MWException(e);
+			throw new MWResourceIOError(e);
 		}
 		return materialList;
 	}
@@ -183,6 +184,7 @@ public class ScanProcessor {
 			}
 		}
 		
+		// TODO MementoDaoÇ…à⁄ìÆ
 		private Memento findMemento(String path) {
 			TypedQuery<Memento> query = em.createQuery(
 					"SELECT m FROM Memento m WHERE m.productionPath = :path", Memento.class);
@@ -195,7 +197,4 @@ public class ScanProcessor {
 			}
 		}
 	}
-
-
-
 }

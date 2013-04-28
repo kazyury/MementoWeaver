@@ -14,7 +14,9 @@ import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 
-import nobugs.nolife.mw.MWException;
+import nobugs.nolife.mw.exceptions.MWException;
+import nobugs.nolife.mw.exceptions.MWImplementationError;
+import nobugs.nolife.mw.exceptions.MWResourceIOError;
 
 /**
  * 素材画像の操作に責務を持つ
@@ -31,10 +33,16 @@ public class ImageManipulator {
 	 * @throws IOException 
 	 * @throws MWException 
 	 */
-	public static void rotate(Path sourcePath, int degree) throws IOException, MWException{
+	public static void rotate(Path sourcePath, int degree) {
 		logger.fine(sourcePath.toString()+"の回転処理を開始");
-		ImageInputStream is = new FileImageInputStream(sourcePath.toFile());
-		BufferedImage sourceImage = ImageIO.read(is);
+		ImageInputStream is=null;
+		BufferedImage sourceImage = null;
+		try {
+			is = new FileImageInputStream(sourcePath.toFile());
+			sourceImage = ImageIO.read(is);
+		} catch (IOException e) {
+			throw new MWResourceIOError(e);
+		}
 
 		// 一回の操作では90度回転か270度回転かしかないので、heightとwidthを入れ替えてBufferedImageを作成している。
 		BufferedImage rotatedImage = new BufferedImage(sourceImage.getHeight(), sourceImage.getWidth(), sourceImage.getType());
@@ -50,17 +58,25 @@ public class ImageManipulator {
 			logger.fine("270度の回転実行");
 			affine.rotate(Math.toRadians(degree), w/2, w/2);
 		} else {
-			throw new MWException("degree should be 90 or 270.");
+			throw new MWImplementationError("degree should be 90 or 270.");
 		}
 
 		AffineTransformOp operator = new AffineTransformOp(affine,AffineTransformOp.TYPE_BICUBIC);
 		operator.filter(sourceImage, rotatedImage);
 
 		// 書き出し
-		Path tmpfile = Files.createTempFile("mwImageManipulator", ".tmp");
-		FileOutputStream os = new FileOutputStream(tmpfile.toFile());
-		ImageIO.write(rotatedImage, "jpeg", os);
-		os.close();
-		Files.move(tmpfile, sourcePath,StandardCopyOption.REPLACE_EXISTING,StandardCopyOption.ATOMIC_MOVE);
+		Path tmpfile=null;
+		try {
+			tmpfile = Files.createTempFile("mwImageManipulator", ".tmp");
+		} catch (IOException e) {
+			throw new MWResourceIOError("tmpファイルの作成時に例外が発生しました.",e);
+		}
+
+		try(FileOutputStream os = new FileOutputStream(tmpfile.toFile())) {
+			ImageIO.write(rotatedImage, "jpeg", os);
+			Files.move(tmpfile, sourcePath,StandardCopyOption.REPLACE_EXISTING,StandardCopyOption.ATOMIC_MOVE);
+		} catch (IOException e) {
+			throw new MWResourceIOError(e);
+		}
 	}
 }

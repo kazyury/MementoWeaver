@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import nobugs.nolife.mw.AppMain;
-import nobugs.nolife.mw.MWException;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -15,11 +14,11 @@ public class MainMenuController extends AnchorPane implements MWSceneController 
 	private AppMain appl;
 	
 	// イベントハンドラ
-	@FXML	protected void installMaterial(ActionEvent e) throws MWException {appl.fwdInstallMaterial();}
-	@FXML	protected void generateMemento(ActionEvent e) throws MWException {appl.fwdInstalledMaterialList();}
-	@FXML	protected void modifyMemento(ActionEvent e) throws MWException {appl.fwdSelectMementoType();}
-	@FXML	protected void archive(ActionEvent e) throws MWException {appl.fwdSelectArchiveMemento();}
-	@FXML	protected void scanMaterial(ActionEvent e) throws MWException {appl.fwdScannedMementos();}
+	@FXML	protected void installMaterial(ActionEvent e){appl.fwdInstallMaterial();}
+	@FXML	protected void generateMemento(ActionEvent e){appl.fwdInstalledMaterialList();}
+	@FXML	protected void modifyMemento(ActionEvent e){appl.fwdSelectMementoType();}
+	@FXML	protected void archive(ActionEvent e){appl.fwdSelectArchiveMemento();}
+	@FXML	protected void scanMaterial(ActionEvent e){appl.fwdScannedMementos();}
 	@FXML	protected void exit(ActionEvent e) {Platform.exit();}
 
 	@Override

@@ -7,10 +7,10 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.entities.TaggedMaterial;
+import nobugs.nolife.mw.exceptions.MWException;
 import nobugs.nolife.mw.util.MaterialUtil;
 import nobugs.nolife.mw.util.PathUtil;
 import nobugs.nolife.mw.util.PersistenceUtil;
@@ -30,7 +30,7 @@ public abstract class Generator {
 	
 	/** メメントを生成し返却する 
 	 * @throws MWException */
-	protected abstract Memento generateMemento(List<TaggedMaterial> updateTargetList) throws MWException;
+	protected abstract Memento generateMemento(List<TaggedMaterial> updateTargetList);
 
 
 	/**
@@ -40,7 +40,7 @@ public abstract class Generator {
 	 * @return 作成・更新されるTaggedMaterialをセット済みのMemento
 	 * @throws MWException 
 	 */
-	public Memento generate(TaggedMaterial tm) throws MWException{
+	public Memento generate(TaggedMaterial tm){
 		logger.info("素材["+tm.getMaterial().getMaterialId()+"]が属するメメントの作成を開始します");
 
 		TypedQuery<TaggedMaterial> query = queryBelongingSameMementoWith(tm);
@@ -86,6 +86,6 @@ public abstract class Generator {
 	public String minute(Material m) { return MaterialUtil.getMaterialMinute(m); }
 	public String second(Material m) { return MaterialUtil.getMaterialSecond(m); }
 	
-	public String fileName(Material m) throws MWException {return PathUtil.getFileName(m); }
-	public String photoFileName(Material m) throws MWException {return PathUtil.getPhotoFileName(m); }
+	public String fileName(Material m) {return PathUtil.getFileName(m); }
+	public String photoFileName(Material m) {return PathUtil.getPhotoFileName(m); }
 }

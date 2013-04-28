@@ -14,7 +14,9 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
-import nobugs.nolife.mw.MWException;
+import nobugs.nolife.mw.exceptions.MWException;
+import nobugs.nolife.mw.exceptions.MWImplementationError;
+import nobugs.nolife.mw.exceptions.MWResourceIOError;
 
 public class TemplateWrapper {
 	private static Logger logger = Logger.getGlobal();
@@ -53,7 +55,7 @@ public class TemplateWrapper {
 	 * @return テンプレート適用結果の文字列表現
 	 * @throws MWException 下位で発生した例外はMWException に変換してthrow する。
 	 */
-	public String getContents() throws MWException {
+	public String getContents() {
 		if(this.contents == null) {
 			logger.fine("this.contents が null のため、apply()を実行します。");
 			return apply();
@@ -70,15 +72,15 @@ public class TemplateWrapper {
 	 *
 	 * @throws MWException 下位で発生した例外はMWException に変換してthrow する。
 	 */
-	public void out() throws MWException {
-		if(this.output == null) { throw new MWException("出力ファイル名が指定されていません。"); }
+	public void out() {
+		if(this.output == null) { throw new MWImplementationError("出力ファイル名が指定されていません。"); }
 		if(this.contents == null) { apply(); }
 
 		// 書き込みできないパス(親ディレクトリが存在しない,不正なファイル名等)の場合には例外送出
 		File outfile = new File(this.output);
 		File parent = outfile.getParentFile();
 		if (parent==null || !parent.canWrite()) { 
-			throw new MWException("書き込みできない出力ファイル名です。["+this.output+"]"); 
+			throw new MWResourceIOError("書き込みできない出力ファイル名です。["+this.output+"]"); 
 		}
 
 		try {
@@ -86,7 +88,7 @@ public class TemplateWrapper {
 			fw.write(this.contents);
 			fw.close();
 		} catch(IOException e) {
-			throw new MWException(e.getMessage());
+			throw new MWResourceIOError(e.getMessage());
 		}
 	}
 
@@ -99,10 +101,10 @@ public class TemplateWrapper {
 	 * @return テンプレート適用結果文字列
 	 * @throws MWException 下位で発生した例外はMWException に変換してthrow する。
 	 */
-	public String apply() throws MWException {
+	public String apply() {
 		logger.info("テンプレート適用を開始します。");
 		if (this.template == null) {
-			throw new MWException("テンプレートが指定されていません。setTemplate()を使用してください。");
+			throw new MWImplementationError("テンプレートが指定されていません。setTemplate()を使用してください。");
 		}
 
 		if (this.context == null) {
@@ -111,7 +113,7 @@ public class TemplateWrapper {
 		}
 
 		if (this.context.containsKey("this")) {
-			throw new MWException("コンテキストのキーにthisキーワードは使用できません。");
+			throw new MWImplementationError("コンテキストのキーにthisキーワードは使用できません。");
 		}
 
 		this.context.put("this",this);
@@ -133,7 +135,7 @@ public class TemplateWrapper {
 	 * @return テンプレート適用結果文字列
 	 * @throws MWException 下位で発生した例外はMWException に変換してthrow する。
 	 */
-	private String _apply(String template, Map<String, Object> context) throws MWException {
+	private String _apply(String template, Map<String, Object> context) {
 		// FIXME velocity のプロパティファイルの読み出しが一寸微妙なようなので、ハードコードしている。
 		logger.fine("_apply:Velocityプロパティの設定開始");
 		Properties p = new Properties();
@@ -166,8 +168,7 @@ public class TemplateWrapper {
 				logger.warning("template is null!");
 			}
 		} catch (Exception e) {
-			logger.severe(e.getMessage());
-			throw new MWException(e.getMessage());
+			throw new MWImplementationError(e.getMessage(), e);
 		}
 
 		this.contents = writer.toString();

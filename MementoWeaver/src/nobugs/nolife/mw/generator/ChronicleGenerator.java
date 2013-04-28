@@ -6,10 +6,10 @@ import java.util.Map;
 
 import javax.persistence.TypedQuery;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.entities.TaggedMaterial;
+import nobugs.nolife.mw.exceptions.MWException;
 import nobugs.nolife.mw.util.AgeCalculator;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.MaterialUtil;
@@ -35,7 +35,7 @@ public class ChronicleGenerator extends Generator {
 	}
 
 	@Override
-	protected Memento generateMemento(List<TaggedMaterial> updateTargetList) throws MWException {
+	protected Memento generateMemento(List<TaggedMaterial> updateTargetList) {
 
 		// êÊì™1åèÇÃTaggedMaterial
 		String tag = updateTargetList.get(0).getId().getTag();
@@ -103,7 +103,7 @@ public class ChronicleGenerator extends Generator {
 	 * @return
 	 * @throws MWException
 	 */
-	public String formatChronicleDate(TaggedMaterial tm) throws MWException{
+	public String formatChronicleDate(TaggedMaterial tm){
 		Material m = tm.getMaterial();
 		String year = MaterialUtil.getMaterialYear(m);
 		String month = MaterialUtil.getMaterialMonth(m);

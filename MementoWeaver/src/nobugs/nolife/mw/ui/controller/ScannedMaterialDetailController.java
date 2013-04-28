@@ -8,7 +8,6 @@ import java.util.ResourceBundle;
 
 import name.antonsmirnov.javafx.dialog.Dialog;
 import nobugs.nolife.mw.AppMain;
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.dao.MementoDao;
 import nobugs.nolife.mw.dao.PredefinedTagDao;
 import nobugs.nolife.mw.dto.ScannedMaterialDTO;
@@ -57,7 +56,7 @@ public class ScannedMaterialDetailController extends AnchorPane implements MWSce
 	private ObservableList<TableRecord> tableRecord = FXCollections.observableArrayList();
 
 	// イベントハンドラ
-	@FXML protected void manage(ActionEvent e) throws MWException {
+	@FXML protected void manage(ActionEvent e){
 		// Comboの入力チェック
 		if(categoryCombo.getValue() == null || categoryCombo.getValue().equals("")) {
 			Dialog.showError("Choose Category", "カテゴリを選択又は入力してください");
@@ -81,7 +80,7 @@ public class ScannedMaterialDetailController extends AnchorPane implements MWSce
 		appl.fwdScannedMementos();
 	}
 
-	@FXML protected void cancel(ActionEvent e) throws MWException {appl.fwdScannedMementos();}
+	@FXML protected void cancel(ActionEvent e){appl.fwdScannedMementos();}
 
 	
 	
@@ -89,7 +88,7 @@ public class ScannedMaterialDetailController extends AnchorPane implements MWSce
 	public void initialize(URL arg0, ResourceBundle arg1) { /* nothing to do */ }
 
 	@Override
-	public void setApplication(AppMain appMain, Object bulk) throws MWException {
+	public void setApplication(AppMain appMain, Object bulk){
 		this.appl = appMain;
 		this.scannedResult = (ScannedResult)bulk;
 		Memento memento = scannedResult.getMemento();

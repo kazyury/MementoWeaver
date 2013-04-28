@@ -14,10 +14,11 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.entities.TaggedMaterial;
+import nobugs.nolife.mw.exceptions.MWException;
+import nobugs.nolife.mw.exceptions.MWResourceIOError;
 import nobugs.nolife.mw.generator.Generator;
 import nobugs.nolife.mw.generator.GeneratorFactory;
 import nobugs.nolife.mw.generator.SubGenerator;
@@ -36,7 +37,7 @@ public class MementoGenerateProcessor {
 	 * @return
 	 * @throws MWException
 	 */
-	public List<String> generateProcess() throws MWException {
+	public List<String> generateProcess() {
 		List<String> generatedMemento = new ArrayList<>();
 
 		while(true) {
@@ -99,7 +100,7 @@ public class MementoGenerateProcessor {
 
 
 
-	public List<Generator> getGeneratorList() throws MWException{
+	public List<Generator> getGeneratorList(){
 		final List<Generator> generatorList = new ArrayList<>();
 		whileOnTargetTag(new TargetTagHandler() {
 			@Override
@@ -119,7 +120,7 @@ public class MementoGenerateProcessor {
 		void process(Generator generator, Material m, String tag);
 	}
 
-	private void whileOnTargetTag(TargetTagHandler handler) throws MWException{
+	private void whileOnTargetTag(TargetTagHandler handler){
 		TypedQuery<TaggedMaterial> query = stagedTagQuery();
 		for(TaggedMaterial tm:query.getResultList()){
 			Material m = tm.getMaterial();
@@ -146,7 +147,7 @@ public class MementoGenerateProcessor {
 	 * @param m
 	 * @throws MWException
 	 */
-	private void copyMaterial(Material m) throws MWException {
+	private void copyMaterial(Material m) {
 		Path sourcePath = PathUtil.getInstalledFilePath(m);
 		// 素材がステージングエリアに存在しなければreturn.
 		if(!Files.exists(sourcePath, LinkOption.NOFOLLOW_LINKS)){
@@ -165,7 +166,7 @@ public class MementoGenerateProcessor {
 				Files.copy(sourcePhotoPath, destPhotoPath, StandardCopyOption.REPLACE_EXISTING);
 			}
 		} catch (IOException e) {
-			throw new MWException(e);
+			throw new MWResourceIOError(e);
 		}
 
 	}
@@ -175,7 +176,7 @@ public class MementoGenerateProcessor {
 	 * @param m
 	 * @throws MWException
 	 */
-	private void moveMaterial(Material m) throws MWException {
+	private void moveMaterial(Material m) {
 		Path sourcePath = PathUtil.getInstalledFilePath(m);
 		// 素材がステージングエリアに存在しなければreturn.
 		if(!Files.exists(sourcePath, LinkOption.NOFOLLOW_LINKS)){
@@ -194,7 +195,7 @@ public class MementoGenerateProcessor {
 				Files.move(sourcePhotoPath, destPhotoPath, StandardCopyOption.REPLACE_EXISTING);
 			}
 		} catch (IOException e) {
-			throw new MWException(e);
+			throw new MWResourceIOError(e);
 		}
 	}
 
@@ -217,5 +218,4 @@ public class MementoGenerateProcessor {
 			return true;
 		}
 	}
-
 }

@@ -9,9 +9,9 @@ import java.util.TreeSet;
 
 import javax.persistence.TypedQuery;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.TaggedMaterial;
+import nobugs.nolife.mw.exceptions.MWException;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.MaterialUtil;
 import nobugs.nolife.mw.util.PathUtil;
@@ -21,7 +21,7 @@ import nobugs.nolife.mw.util.StringUtil;
 public class WinnerIndexGenerator extends SubGenerator {
 
 	@Override
-	protected void generateSubMemento() throws MWException {
+	protected void generateSubMemento() {
 		String indexfilePath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MW_WINNER)+"\\index.html";
 		String menuFilePath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MW_WINNER)+"\\menu.xml";
 
@@ -46,7 +46,7 @@ public class WinnerIndexGenerator extends SubGenerator {
 	 * @param indexfilePath
 	 * @throws MWException
 	 */
-	private void generateIndexPage(String indexfilePath) throws MWException {
+	private void generateIndexPage(String indexfilePath) {
 
 		// velocity用のマップ
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -66,7 +66,7 @@ public class WinnerIndexGenerator extends SubGenerator {
 	 * @param yyyymms
 	 * @throws MWException
 	 */
-	private void generateMenuXml(String menuFilePath, Set<String> yyyys) throws MWException {
+	private void generateMenuXml(String menuFilePath, Set<String> yyyys) {
 		List<String> records = new ArrayList<String>();
 	    for (String yyyy:yyyys) {
 	      records.add(StringUtil.htmlEncode("<li><a href='../winners/w_"+yyyy+".html'>"+yyyy+"年のヒロコの獲物</a></li>"));

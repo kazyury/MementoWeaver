@@ -2,13 +2,13 @@ package nobugs.nolife.mw.util;
 
 import java.util.logging.Logger;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Memento;
+import nobugs.nolife.mw.exceptions.MWImplementationError;
 
 public class MementoUtil {
 	private static Logger logger = Logger.getGlobal();
 	
-	public static boolean isAppendable(Memento memento, String materialId) throws MWException{
+	public static boolean isAppendable(Memento memento, String materialId) {
 		boolean ret = false;
 		String category = memento.getCategory();
 		String mementoId = memento.getMementoId();
@@ -59,7 +59,7 @@ public class MementoUtil {
 			}
 			
 		} else {
-			throw new MWException("category["+category+"] is not valid. memento was["+memento+"]");
+			throw new MWImplementationError("category["+category+"] is not valid. memento was["+memento+"]");
 		}
 
 		return ret;

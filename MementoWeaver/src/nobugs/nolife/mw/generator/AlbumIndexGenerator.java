@@ -11,9 +11,10 @@ import java.util.TreeSet;
 
 import javax.persistence.TypedQuery;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.TaggedMaterial;
+import nobugs.nolife.mw.exceptions.MWException;
+import nobugs.nolife.mw.exceptions.MWResourceIOError;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.MaterialUtil;
 import nobugs.nolife.mw.util.PathUtil;
@@ -22,7 +23,7 @@ import nobugs.nolife.mw.util.PathUtil;
 public class AlbumIndexGenerator extends SubGenerator {
 
 	@Override
-	protected void generateSubMemento() throws MWException {
+	protected void generateSubMemento() {
 		String indexfilePath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MW_ALBUM)+"\\index.html";
 		String listFilePath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MW_ALBUM)+"\\albums.list";
 
@@ -49,7 +50,7 @@ public class AlbumIndexGenerator extends SubGenerator {
 	 * @param indexfilePath
 	 * @throws MWException
 	 */
-	private void generateIndexPage(String indexfilePath, Set<String> yyyys, Set<String> yyyymms) throws MWException {
+	private void generateIndexPage(String indexfilePath, Set<String> yyyys, Set<String> yyyymms) {
 
 		// velocity用のマップ
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -70,7 +71,7 @@ public class AlbumIndexGenerator extends SubGenerator {
 	 * @param yyyymms
 	 * @throws MWException
 	 */
-	private void generateAlbumList(String listFilePath, Set<String> yyyymms) throws MWException {
+	private void generateAlbumList(String listFilePath, Set<String> yyyymms) {
 		File listFile = new File(listFilePath);
 		FileWriter writer;
 		try {
@@ -80,7 +81,7 @@ public class AlbumIndexGenerator extends SubGenerator {
 			}
 			writer.close();
 		} catch (IOException e) {
-			throw new MWException("アルバムリスト作成時にIOExceptionが発生しました",e);
+			throw new MWResourceIOError("アルバムリスト作成時にIOExceptionが発生しました",e);
 		}
 	}
 

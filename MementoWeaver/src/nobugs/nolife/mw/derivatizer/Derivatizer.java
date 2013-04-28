@@ -15,27 +15,26 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-import nobugs.nolife.mw.MWException;
+import nobugs.nolife.mw.exceptions.MWResourceIOError;
 import nobugs.nolife.mw.util.Constants;
 
 public abstract class Derivatizer {
 	private static Logger logger = Logger.getGlobal();
-	public abstract void derivate() throws MWException;
+	public abstract void derivate();
 
-	protected void createThumbnail(File path) throws MWException{
+	protected void createThumbnail(File path){
 		createThumbnail(path.toPath());
 	}
 	
-	protected void createThumbnail(Path path) throws MWException{
+	protected void createThumbnail(Path path){
 		logger.info(path.toString()+"のサムネイル作成を開始します。");
 		
 		BufferedImage sourceImage = null;
 		BufferedImage thumbnailImage = null;
-		FileOutputStream out;
 
-		try {
-			// 出力ファイルパス
-			File thumbnailFile = getOutputFile(path);
+		// 出力ファイルパス
+		File thumbnailFile = getOutputFile(path);
+		try(FileOutputStream out = new FileOutputStream(thumbnailFile)) {
 
 			sourceImage = ImageIO.read(path.toFile());
 
@@ -50,12 +49,10 @@ public abstract class Derivatizer {
 			operator.filter(sourceImage, thumbnailImage);
 
 			// サムネイルの書き出し
-			out = new FileOutputStream(thumbnailFile);
 			ImageIO.write(thumbnailImage, "jpeg", out);
 
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new MWException("サムネイルの作成で例外が発生しました"+e.getMessage());
+			throw new MWResourceIOError(e);
 		}
 	}
 
@@ -70,14 +67,18 @@ public abstract class Derivatizer {
 		return ratio;
 	}
 
-	private File getOutputFile(Path path) throws IOException{
+	private File getOutputFile(Path path){
 		FileSystem fs = FileSystems.getDefault();
 		Path parent = path.getParent();
 		Path basename = path.getFileName();
 
 		Path thumbnailDirectory = fs.getPath(parent.toString(), Constants.THUMBNAIL_SUBPATH);
 		if (Files.notExists(thumbnailDirectory, LinkOption.NOFOLLOW_LINKS)) {
-			Files.createDirectories(thumbnailDirectory);
+			try {
+				Files.createDirectories(thumbnailDirectory);
+			} catch (IOException e) {
+				throw new MWResourceIOError(e);
+			}
 		}
 
 		String outfilename = fs.getPath(thumbnailDirectory.toString(), basename.toString()).toString();

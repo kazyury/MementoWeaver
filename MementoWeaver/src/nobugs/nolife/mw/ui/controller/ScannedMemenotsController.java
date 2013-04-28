@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 import name.antonsmirnov.javafx.dialog.Dialog;
 import nobugs.nolife.mw.AppMain;
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.ScannedResult;
 import nobugs.nolife.mw.processing.ScanProcessor;
 import nobugs.nolife.mw.processing.ScannedResultProcessor;
@@ -53,7 +52,7 @@ public class ScannedMemenotsController extends AnchorPane implements MWSceneCont
 
 	// イベントハンドラ
 	// テーブルビューのクリック
-	@FXML protected void clicked(MouseEvent e) throws MWException {
+	@FXML protected void clicked(MouseEvent e){
 		// 選択行のTableRecordを取得し、次の画面に渡す。
 		TableRecord record = tableView.getSelectionModel().getSelectedItem();
 		if(record == null){
@@ -70,7 +69,7 @@ public class ScannedMemenotsController extends AnchorPane implements MWSceneCont
 		appl.fwdScanneMaterialDetail(sr);
 	}
 	
-	@FXML protected void scan(ActionEvent e) throws MWException {
+	@FXML protected void scan(ActionEvent e){
 		ScanProcessor processor = new ScanProcessor();
 		
 		// スキャンモードを設定
@@ -82,7 +81,7 @@ public class ScannedMemenotsController extends AnchorPane implements MWSceneCont
 		}
 	}
 
-	@FXML protected void update(ActionEvent e) throws MWException {
+	@FXML protected void update(ActionEvent e){
 		
 		// ObservableList<TableRecord>からList<ScannedResult>への詰め替え
 		Iterator<TableRecord> iterator = tableRecord.iterator();
@@ -103,7 +102,7 @@ public class ScannedMemenotsController extends AnchorPane implements MWSceneCont
 		Dialog.showInfo("udpateIgnored success", "Ignored の更新を完了しました.");
 	}
 	
-	@FXML protected void cancel(ActionEvent e) throws MWException {appl.fwdMainMenu();}
+	@FXML protected void cancel(ActionEvent e){appl.fwdMainMenu();}
 
 	
 	
@@ -111,7 +110,7 @@ public class ScannedMemenotsController extends AnchorPane implements MWSceneCont
 	public void initialize(URL arg0, ResourceBundle arg1) { /* nothing to do */ }
 
 	@Override
-	public void setApplication(AppMain appMain, Object bulk) throws MWException {
+	public void setApplication(AppMain appMain, Object bulk){
 		this.appl = appMain;
 		// コンボボックスアイテム設定
 		targetType.setItems(targetTypeList);

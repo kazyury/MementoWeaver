@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.dao.MaterialDao;
 import nobugs.nolife.mw.dao.MementoDao;
 import nobugs.nolife.mw.dao.TaggedMaterialDao;
@@ -29,7 +28,7 @@ public class ArchiveProcessor {
 	private static MementoDao mementoDao = new MementoDao();
 
 
-	public void archive(List<Memento> mementoList) throws MWException{
+	public void archive(List<Memento> mementoList) {
 		// メメントに属している素材のマテリアルID一覧とその素材が他のメメントにも属しているかのMapを取得(あとでチェックで使用)
 		Map<String, Boolean> materialUsageMap = getMaterialUsageMap(mementoList);
 		logger.info("materialUsageMap を取得しました.");

@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import nobugs.nolife.mw.AppMain;
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.dao.MementoDao;
 import nobugs.nolife.mw.entities.Memento;
 import javafx.collections.FXCollections;
@@ -32,8 +31,8 @@ public class PublishedMementoListController extends AnchorPane implements MWScen
 	private ObservableList<Memento> listRecords = FXCollections.observableArrayList();
 
 	// イベントハンドラ
-	@FXML protected void cancel(ActionEvent e) throws MWException {	appl.fwdMainMenu(); }
-	@FXML protected void clicked(MouseEvent e) throws MWException {
+	@FXML protected void cancel(ActionEvent e){	appl.fwdMainMenu(); }
+	@FXML protected void clicked(MouseEvent e){
 		// 選択行のMementoを取得し、次の画面に渡す。
 		Memento memento = listView.getSelectionModel().getSelectedItem();
 		appl.fwdModifyMemento(memento);
@@ -62,7 +61,7 @@ public class PublishedMementoListController extends AnchorPane implements MWScen
 	public void initialize(URL arg0, ResourceBundle arg1) { /* nothing to do */ }
 
 	@Override
-	public void setApplication(AppMain appMain, Object bulk) throws MWException {
+	public void setApplication(AppMain appMain, Object bulk){
 		this.appl = appMain;
 		category = (String)bulk;
 		typeLabel.setText(typeLabel.getText()+category); // ラベル文字列にカテゴリを追記

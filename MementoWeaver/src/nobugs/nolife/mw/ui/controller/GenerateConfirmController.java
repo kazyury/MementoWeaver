@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import nobugs.nolife.mw.AppMain;
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.generator.Generator;
 import nobugs.nolife.mw.processing.MementoGenerateProcessor;
 import javafx.collections.FXCollections;
@@ -29,17 +28,13 @@ public class GenerateConfirmController extends AnchorPane implements MWSceneCont
 	private ObservableList<String> listRecords = FXCollections.observableArrayList();
 
 	// イベントハンドラ
-	@FXML protected void cancel(ActionEvent e) throws MWException {appl.fwdInstalledMaterialList();}
-	@FXML protected void generate(ActionEvent e) throws MWException {appl.fwdGenerateResult();}
+	@FXML protected void cancel(ActionEvent e){appl.fwdInstalledMaterialList();}
+	@FXML protected void generate(ActionEvent e){appl.fwdGenerateResult();}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		MementoGenerateProcessor processor = new MementoGenerateProcessor();
-		try {
-			generatorList=processor.getGeneratorList();
-		} catch (MWException e1) {
-			e1.printStackTrace();
-		}
+		generatorList=processor.getGeneratorList();
 
 		logger.fine("生成されるメメント名をObservableListに登録します");
 		for(Generator generator:generatorList){

@@ -4,8 +4,9 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import name.antonsmirnov.javafx.dialog.Dialog;
 import nobugs.nolife.mw.AppMain;
-import nobugs.nolife.mw.MWException;
+import nobugs.nolife.mw.exceptions.MWInvalidUserInputException;
 import nobugs.nolife.mw.processing.InstallProcessor;
 import nobugs.nolife.mw.util.CacheManager;
 import nobugs.nolife.mw.util.Constants;
@@ -29,9 +30,14 @@ public class InstallMaterialController extends AnchorPane implements MWSceneCont
 	@FXML private TextField pathInput;
 
 	// イベントハンドラ
-	@FXML	protected void install(ActionEvent e) throws MWException {
+	@FXML	protected void install(ActionEvent e){
 		InstallProcessor processor = new InstallProcessor();
-		processor.installProcess(pathInput.getText(), stagingAreaPath);
+		try {
+			processor.installProcess(pathInput.getText(), stagingAreaPath);
+		} catch (MWInvalidUserInputException ex) {
+			Dialog.showError(getId(), ex.getMessage());
+			return;
+		}
 
 		// 今回のpathInputをプロパティにセットして保管
 		CacheManager.storeMaterialSourceCache(pathInput.getText());

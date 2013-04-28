@@ -5,10 +5,11 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.TaggedMaterial;
 import nobugs.nolife.mw.entities.TaggedMaterialPK;
+import nobugs.nolife.mw.exceptions.MWException;
+import nobugs.nolife.mw.exceptions.MWImplementationError;
 import nobugs.nolife.mw.util.AgeCalculator;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.MaterialUtil;
@@ -23,7 +24,7 @@ public class UpdateTagProcessor {
 	 * @param toggleButtonState:画面上のタグ設定内容
 	 * @throws MWException 
 	 */
-	public void updateTagProess(Material m, Map<String, Boolean> toggleButtonState) throws MWException {
+	public void updateTagProess(Material m, Map<String, Boolean> toggleButtonState) {
 		// 既にDBに登録されているタグの処理
 		for(TaggedMaterial tm:m.getTaggedMaterials()){
 			String tag = tm.getId().getTag();
@@ -57,7 +58,7 @@ public class UpdateTagProcessor {
 	 * @param memo
 	 * @throws MWException 
 	 */
-	public void updateTagProess(Material m, Map<String, Boolean> toggleButtonState, String memo) throws MWException {
+	public void updateTagProess(Material m, Map<String, Boolean> toggleButtonState, String memo) {
 
 		// 既にDBに登録されているタグの処理
 		for(TaggedMaterial tm:m.getTaggedMaterials()){
@@ -124,7 +125,7 @@ public class UpdateTagProcessor {
 	 * @param isSelected 画面上でそのタグが選択されているか否か
 	 * @throws MWException
 	 */
-	private void updateTagState(TaggedMaterial tm, Boolean isSelected) throws MWException{
+	private void updateTagState(TaggedMaterial tm, Boolean isSelected){
 		logger.info("タグ["+tm.getId().getTag()+"]の状態更新処理を行います。");
 		// DB側の状態
 		String state = tm.getTagState();
@@ -142,7 +143,7 @@ public class UpdateTagProcessor {
 				logger.info("Publishedタグの状態は変更しません.");
 			} else {
 				// 例外：Bug(PublishedではDisable制御している)
-				throw new MWException("[BUG] TAG already Published.Cannot remove.");
+				throw new MWImplementationError("[BUG] TAG already Published.Cannot remove.");
 			}
 		} else if(state.equals(Constants.TAG_STATE_NOT_IN_USE)){
 			if(isSelected.booleanValue()){
@@ -153,7 +154,7 @@ public class UpdateTagProcessor {
 			}
 		} else {
 			// 例外:Bug
-			throw new MWException("[BUG] Unknwon tag state["+state+"].");
+			throw new MWImplementationError("[BUG] Unknwon tag state["+state+"].");
 		}
 	}
 

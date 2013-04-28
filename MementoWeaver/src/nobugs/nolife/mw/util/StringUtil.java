@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.TaggedMaterial;
+import nobugs.nolife.mw.exceptions.MWException;
+import nobugs.nolife.mw.exceptions.MWImplementationError;
+import nobugs.nolife.mw.exceptions.MWInvalidUserInputException;
 
 public class StringUtil {
 	private static Logger logger = Logger.getGlobal();
@@ -31,16 +33,17 @@ public class StringUtil {
 	 * 連結したタグ名をString配列に分解して返却する。
 	 * @param joinedTagString
 	 * @return
+	 * @throws MWInvalidUserInputException 
 	 * @throws MWException 
 	 */
-	public static String[] splitTagString(String joinedTagString) throws MWException{
+	public static String[] splitTagString(String joinedTagString) throws MWInvalidUserInputException{
 		if(joinedTagString==null || joinedTagString.equals("")){
 			return new String[0];
 		}
 		if(joinedTagString.startsWith("[") && joinedTagString.endsWith("]")){
 			return joinedTagString.substring(1, joinedTagString.lastIndexOf("]")).split("\\]\\[");
 		} else {
-			throw new MWException("Joined tag string is not valid.");
+			throw new MWInvalidUserInputException("入力されたタグ値が不正です。[から始まり]で終わる必要があります.");
 		}
 	}
 
@@ -91,7 +94,7 @@ public class StringUtil {
 	 * @return RFC1123形式(の一部)に変換された文字列
 	 * @throws MWException 下位で発生した例外はMWException に変換してthrow する。
 	 */
-	public static String formatChronicleDate(String year, String month, String date, String hour, String minute, String second) throws MWException {
+	public static String formatChronicleDate(String year, String month, String date, String hour, String minute, String second) {
 		// 期待している桁にあうように、0埋めを実施
 		year  =  String.format("%04d",Integer.parseInt(year));
 		month =  String.format("%02d",Integer.parseInt(month));
@@ -105,7 +108,7 @@ public class StringUtil {
 			aDate = new SimpleDateFormat("yyyyMMddHHmmss").parse(year+month+date+hour+minute+second);
 		} catch(ParseException e) {
 			logger.severe("日付形式の変換時に例外が発生しました。"+e.getMessage());
-			throw new MWException(e);
+			throw new MWImplementationError("日付形式の変換時に例外が発生しました。",e);
 		}
 
 		logger.fine("was set : "+aDate);

@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import name.antonsmirnov.javafx.dialog.Dialog;
 import nobugs.nolife.mw.AppMain;
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.TaggedMaterial;
+import nobugs.nolife.mw.exceptions.MWException;
+import nobugs.nolife.mw.exceptions.MWInvalidUserInputException;
+import nobugs.nolife.mw.exceptions.MWResourceIOError;
 import nobugs.nolife.mw.image.ImageManipulator;
 import nobugs.nolife.mw.processing.UpdateTagProcessor;
 import nobugs.nolife.mw.util.Constants;
@@ -34,7 +37,7 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 	private Material material;
 	/** 素材内のメモが全て同一か? */
 	private boolean isSameMemoOnly = true;
-	
+
 	/** tagname と ToggleButtonのmap */
 	private Map<String, ToggleButton> tagMap = new HashMap<String, ToggleButton>();
 
@@ -56,18 +59,24 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 	@FXML private ToggleButton taitoTag;
 
 	// イベントハンドラ
-	@FXML	protected void rotateLeft(ActionEvent e) throws MWException {
+	@FXML	protected void rotateLeft(ActionEvent e){
 		rotate(270);
 		setImageView();
 	}
-	@FXML	protected void rotateRight(ActionEvent e) throws MWException {
+	@FXML	protected void rotateRight(ActionEvent e){
 		rotate(90);
 		setImageView();
 	}
-	
-	@FXML	protected void apply(ActionEvent e) throws MWException {
+
+	@FXML	protected void apply(ActionEvent e){
 		// 画面で選択・入力されたタグ情報
-		Map<String, Boolean> toggleButtonState = gatherInputedTag();
+		Map<String, Boolean> toggleButtonState=null;
+		try {
+			toggleButtonState = gatherInputedTag();
+		} catch (MWInvalidUserInputException e1) {
+			Dialog.showError(getId(), e1.getMessage());
+			return;
+		}
 
 		// タグ情報を更新して画面を閉じる
 		UpdateTagProcessor processor = new UpdateTagProcessor();
@@ -82,7 +91,7 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 
 	}
 
-	@FXML	protected void cancel(ActionEvent e) throws MWException {
+	@FXML	protected void cancel(ActionEvent e){
 		appl.fwdInstalledMaterialList();
 	}
 
@@ -99,7 +108,7 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 	}
 
 	@Override
-	public void setApplication(AppMain appMain, Object o) throws MWException {
+	public void setApplication(AppMain appMain, Object o){
 		appl = appMain;
 		material = (Material)o;
 		// imageViewへの表示
@@ -150,7 +159,7 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 				}
 			}
 		}
-		
+
 		// メモが存在するならばmemoTextAreaに設定
 		// 異なるメモが格納されている場合には、[複数の異なるメモがあります。メメントの修正でコメントを修正してください。]ってことにする。
 		if(isSameMemoOnly) {
@@ -161,36 +170,31 @@ public class EditMaterialController extends AnchorPane implements MWSceneControl
 		}
 	}
 
-	private void setImageView() throws MWException {
+	private void setImageView(){
 		String fullpath = PathUtil.getInstalledPhotoPath(material).toString();
-		FileInputStream is = null;
-		try {
-			is = new FileInputStream(fullpath);
+		try(FileInputStream is = new FileInputStream(fullpath)) {
 			imageView.setImage(new Image(is));
-			is.close();
 		} catch (IOException e) {
-			throw new MWException("ImageViewへのイメージ描画で例外が発生しました", e.getCause());
+			Dialog.showError(getId(), "ImageViewへのイメージ描画で例外が発生しました");
+			throw new MWResourceIOError("ImageViewへのイメージ描画で例外が発生しました", e.getCause());
 		}
 	}
-	
-	private void rotate(int degree) throws MWException {
-		try {
-			// 素材本体を回転する。
-			ImageManipulator.rotate(PathUtil.getInstalledPhotoPath(material), degree);
-			// サムネイルを回転する。
-			ImageManipulator.rotate(PathUtil.getInstalledThumbnailPath(material), degree);
-		} catch (IOException ioe) {
-			throw new MWException("例外が発生しました",ioe.getCause());
-		}
+
+	private void rotate(int degree){
+		// 素材本体を回転する。
+		ImageManipulator.rotate(PathUtil.getInstalledPhotoPath(material), degree);
+		// サムネイルを回転する。
+		ImageManipulator.rotate(PathUtil.getInstalledThumbnailPath(material), degree);
 	}
-	
+
 	/**
 	 * 画面のトグルボタン・tagTextFieldで入力されたタグの状態をMap<タグ名,Boolean>で返却する。
 	 * タグが選択又は入力されているときにはtrueとなる。PredefinedTagが未選択の場合にはfalse.
 	 * @return
+	 * @throws MWInvalidUserInputException 
 	 * @throws MWException
 	 */
-	private Map<String, Boolean> gatherInputedTag() throws MWException {
+	private Map<String, Boolean> gatherInputedTag() throws MWInvalidUserInputException{
 		// 画面上のトグルボタン状態の取得
 		Map<String, Boolean> toggleButtonState = new HashMap<>();
 		for(Map.Entry<String,ToggleButton> entry:tagMap.entrySet()){

@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.persistence.TypedQuery;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.entities.TaggedMaterial;
@@ -34,7 +33,7 @@ public class PartyGenerator extends Generator {
 	}
 
 	@Override
-	protected Memento generateMemento(List<TaggedMaterial> updateTargetList) throws MWException {
+	protected Memento generateMemento(List<TaggedMaterial> updateTargetList) {
 
 		// æ“ª1Œ‚ÌMaterial
 		Material m = updateTargetList.get(0).getMaterial();

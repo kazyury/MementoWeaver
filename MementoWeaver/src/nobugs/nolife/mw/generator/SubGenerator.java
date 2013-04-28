@@ -4,16 +4,15 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.util.PersistenceUtil;
 
 public abstract class SubGenerator {
 	protected static Logger logger = Logger.getGlobal();
 	protected EntityManager em = PersistenceUtil.getMWEntityManager();
 	
-	protected abstract void generateSubMemento() throws MWException;
+	protected abstract void generateSubMemento();
 
-	public void generate() throws MWException{
+	public void generate(){
 		generateSubMemento();
 	}
 }

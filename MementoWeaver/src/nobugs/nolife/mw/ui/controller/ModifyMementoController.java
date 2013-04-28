@@ -9,9 +9,10 @@ import java.util.logging.Logger;
 
 import name.antonsmirnov.javafx.dialog.Dialog;
 import nobugs.nolife.mw.AppMain;
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.entities.TaggedMaterial;
+import nobugs.nolife.mw.exceptions.MWException;
+import nobugs.nolife.mw.exceptions.MWInvalidUserInputException;
 import nobugs.nolife.mw.processing.ModifyMementoProcessor;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.PathUtil;
@@ -52,7 +53,7 @@ public class ModifyMementoController extends AnchorPane implements MWSceneContro
 	private ObservableList<TableRecord> tableRecord = FXCollections.observableArrayList();
 
 	// イベントハンドラ
-	@FXML protected void append(ActionEvent e) throws MWException {
+	@FXML protected void append(ActionEvent e){
 		// FileChooserの表示
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Select Material");
@@ -67,36 +68,38 @@ public class ModifyMementoController extends AnchorPane implements MWSceneContro
 				TaggedMaterial tm = processor.appendTaggedMaterialProcess(memento, materialFile, tag);
 				if(tm==null){
 					Dialog.showError("Append Material Error", "選択された素材は既にメメント内で使用されています。");
+					return;
 				} else {
 					tableRecord.add(new TableRecord(tm));
 					memento.getTaggedMaterials().add(tm);
 				}
-			} catch (MWException ex) {
-				Dialog.showError("Append Material Error", "選択された素材はDBに登録されていません。Scanを実行してください。");
+			} catch (MWInvalidUserInputException ex) {
+				Dialog.showError(getId(), ex.getMessage());
+				return;
 			}
 		}
 	}
 
-	@FXML protected void remove(ActionEvent e) throws MWException {
+	@FXML protected void remove(ActionEvent e){
 		int idx = tableView.getSelectionModel().getSelectedIndex();
 		TableRecord deleted = tableRecord.remove(idx);
 		deleted.getTaggedMaterial().setTagState(Constants.TAG_STATE_NOT_IN_USE);
 	}
 	
-	@FXML protected void submit(ActionEvent e) throws MWException {
+	@FXML protected void submit(ActionEvent e){
 		processor.mementoSubmitProcess(memento);
 		Dialog.showInfo("Memento was Modified", "Memento["+memento.getMementoId()+"]は正常に更新されました。");
 		appl.fwdMainMenu();
 	}
 	
-	@FXML protected void cancel(ActionEvent e) throws MWException {	appl.fwdMainMenu(); }
+	@FXML protected void cancel(ActionEvent e){	appl.fwdMainMenu(); }
 
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) { /* nothing to do */ }
 
 	@Override
-	public void setApplication(AppMain appMain, Object bulk) throws MWException {
+	public void setApplication(AppMain appMain, Object bulk){
 		appl = appMain;
 		memento = (Memento)bulk;
 		fillTable();
@@ -108,7 +111,7 @@ public class ModifyMementoController extends AnchorPane implements MWSceneContro
 	 * FIXME 全てのTaggedMaterialを表示しているが、タグ状態に応じて制御する必要がある
 	 * @throws MWException
 	 */
-	private void fillTable() throws MWException {
+	private void fillTable(){
 		for(TaggedMaterial tm:memento.getTaggedMaterials()){
 			logger.info("素材["+tm.getId().getMaterialId()+"]を追加します");
 			tableRecord.add(new TableRecord(tm));
@@ -155,7 +158,7 @@ public class ModifyMementoController extends AnchorPane implements MWSceneContro
 		private StringProperty memo;
 		private TaggedMaterial taggedMaterial;
 
-		private TableRecord(TaggedMaterial tm) throws MWException {
+		private TableRecord(TaggedMaterial tm){
 			this.taggedMaterial = tm;
 			this.id = new SimpleStringProperty(tm.getId().getMaterialId());
 			this.image = new SimpleStringProperty(PathUtil.getProductionThumbnailPath(tm.getMaterial()).toString());

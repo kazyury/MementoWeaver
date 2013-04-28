@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.persistence.TypedQuery;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.entities.TaggedMaterial;
@@ -33,7 +32,7 @@ public class WinnerGenerator extends Generator {
 	}
 
 	@Override
-	protected Memento generateMemento(List<TaggedMaterial> updateTargetList) throws MWException {
+	protected Memento generateMemento(List<TaggedMaterial> updateTargetList) {
 
 		// æ“ª1Œ‚ÌMaterial
 		Material m = updateTargetList.get(0).getMaterial();
@@ -59,7 +58,7 @@ public class WinnerGenerator extends Generator {
 		// •Ô‹p—pƒƒƒ“ƒg‚ğ¶¬
 		Memento memento = new Memento();
 		memento.setMementoId(getMementoId(m));
-		memento.setCategory("winnerPage");
+		memento.setCategory(Constants.MEMENTO_CATEGORY_WINNER);
 		memento.setProductionPath(outfile);
 		 // mapped by mementos(TaggedMaterial)‚È‚Ì‚ÅATaggedMaterial‘¤‚Åmementos‚ğİ’è
 		for(TaggedMaterial tm:updateTargetList) {

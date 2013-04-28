@@ -10,7 +10,8 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
-import nobugs.nolife.mw.MWException;
+import nobugs.nolife.mw.exceptions.MWException;
+import nobugs.nolife.mw.exceptions.MWResourceIOError;
 import nobugs.nolife.mw.util.Constants;
 
 public class QuicktimeDerivatizer extends Derivatizer {
@@ -21,7 +22,7 @@ public class QuicktimeDerivatizer extends Derivatizer {
 	public QuicktimeDerivatizer(Path path){	this.path = path; }
 
 	@Override
-	public void derivate() throws MWException {
+	public void derivate() {
 		// 動画スナップショットの作成
 		Path snapshotPath = createSnapshot();
 		// 動画スナップショットのサムネイル(動画サムネイル)の作成
@@ -33,7 +34,7 @@ public class QuicktimeDerivatizer extends Derivatizer {
 	 * @return 作成したスナップショットのPathオブジェクト
 	 * @throws MWException 
 	 */
-	private Path createSnapshot() throws MWException {
+	private Path createSnapshot() {
 		String filename = path.getFileName().toString();
 		int pos = filename.lastIndexOf(".");
 		String basename = filename.substring(0,pos);
@@ -44,23 +45,27 @@ public class QuicktimeDerivatizer extends Derivatizer {
 		// ffmpeg は 最初に -i オプションを指定しないとCodecを認識できないらしい。
 		String command = Constants.FFMPEG_PATH+" -i " + path.toString()+Constants.FFMPEG_OPTS+snapshotFilePath.toString();
 		logger.info(command+"を実行します");
+
+		Process process = null;
 		try {
-			// rt.execだけだとffmpegが終わる前にサムネイル作成が走り始めてしまうっぽい。
-			//			rt.exec(command);
-			Process process = rt.exec(command);
-			InputStream is = process.getInputStream();
-			InputStreamReader isr = new InputStreamReader(is);
-			BufferedReader br = new BufferedReader(isr);
-			String result;
+			process = rt.exec(command);
+		} catch (IOException e) {
+			throw new MWResourceIOError(e);
+		}
+		InputStream is = process.getInputStream();
+		InputStreamReader isr = new InputStreamReader(is);
+		BufferedReader br = new BufferedReader(isr);
+		// rt.execだけだとffmpegが終わる前にサムネイル作成が走り始めてしまうっぽい。
+		//			rt.exec(command);
+		String result;
+		try {
 			while ((result = br.readLine()) != null) {
 				logger.fine(result);
 			}
-
 		} catch (IOException e) {
-			throw new MWException("例外が発生しました",e.getCause());
+			throw new MWResourceIOError(e);
 		}
+
 		return snapshotFilePath;
-
 	}
-
 }

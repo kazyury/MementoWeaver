@@ -6,8 +6,8 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.PredefinedTag;
+import nobugs.nolife.mw.exceptions.MWConfigurationError;
 import nobugs.nolife.mw.util.PersistenceUtil;
 
 public class GeneratorFactory {
@@ -23,7 +23,7 @@ public class GeneratorFactory {
 		subGeneratorMap.put("ChronicleGenerator","nobugs.nolife.mw.generator.ChronicleIndexGenerator");
 	}
 
-	public static Generator getGenerator(String tag) throws MWException{
+	public static Generator getGenerator(String tag){
 		EntityManager em = PersistenceUtil.getMWEntityManager();
 		PredefinedTag pt = em.find(PredefinedTag.class, tag);
 		em.close();
@@ -40,24 +40,22 @@ public class GeneratorFactory {
 				klass = Class.forName(pt.getFqcn());
 				generator = (Generator) klass.newInstance();
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-				throw new MWException("例外が発生しました",e.getCause());
+				throw new MWConfigurationError("例外が発生しました",e.getCause());
 			}
 			generatorMap.put(pt.getFqcn(), generator);
 			return generator;
 		}
 	}
 
-	public static SubGenerator getSubGenerator(String mainGeneratorName) throws MWException {
+	public static SubGenerator getSubGenerator(String mainGeneratorName) {
 		Class<?> klass;
 		SubGenerator subGenerator;
 		try {
 			klass = Class.forName(subGeneratorMap.get(mainGeneratorName));
 			subGenerator = (SubGenerator) klass.newInstance();
 		} catch (ClassNotFoundException|InstantiationException|IllegalAccessException e) {
-			throw new MWException("例外が発生しました",e.getCause());
+			throw new MWConfigurationError("例外が発生しました",e.getCause());
 		}
 		return subGenerator;
 	}
-
-
 }

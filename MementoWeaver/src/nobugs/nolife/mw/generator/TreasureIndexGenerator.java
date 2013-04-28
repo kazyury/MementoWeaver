@@ -9,9 +9,9 @@ import java.util.TreeSet;
 
 import javax.persistence.TypedQuery;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.TaggedMaterial;
+import nobugs.nolife.mw.exceptions.MWException;
 import nobugs.nolife.mw.util.AgeCalculator;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.MaterialUtil;
@@ -22,7 +22,7 @@ import nobugs.nolife.mw.util.StringUtil;
 public class TreasureIndexGenerator extends SubGenerator {
 
 	@Override
-	protected void generateSubMemento() throws MWException {
+	protected void generateSubMemento() {
 		String indexfilePath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MW_TREASURE)+"\\index.html";
 		String menuFilePath = PathUtil.getDirectoryProperty(Constants.DIRPROP_KEY_MW_TREASURE)+"\\menu.xml";
 
@@ -47,7 +47,7 @@ public class TreasureIndexGenerator extends SubGenerator {
 	 * @param indexfilePath
 	 * @throws MWException
 	 */
-	private void generateIndexPage(String indexfilePath) throws MWException {
+	private void generateIndexPage(String indexfilePath) {
 
 		// velocity用のマップ
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -67,7 +67,7 @@ public class TreasureIndexGenerator extends SubGenerator {
 	 * @param yyyymms
 	 * @throws MWException
 	 */
-	private void generateMenuXml(String menuFilePath, Set<String> ages) throws MWException {
+	private void generateMenuXml(String menuFilePath, Set<String> ages) {
 		List<String> records = new ArrayList<String>();
 	    for (String age:ages) {
 	      records.add(StringUtil.htmlEncode("<li><a href='../treasures/t_age"+age+".html'>泰斗"+age+"才のお宝</a></li>"));

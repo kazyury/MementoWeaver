@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import nobugs.nolife.mw.AppMain;
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.processing.MementoGenerateProcessor;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -21,7 +20,7 @@ public class GeneratedResultController extends AnchorPane implements MWSceneCont
 	public void initialize(URL arg0, ResourceBundle arg1) { /* nothing to do */	}
 
 	@Override
-	public void setApplication(AppMain appMain, Object bulk) throws MWException {
+	public void setApplication(AppMain appMain, Object bulk){
 		this.appl = appMain;
 
 		MementoGenerateProcessor processor = new MementoGenerateProcessor();

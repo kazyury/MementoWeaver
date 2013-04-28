@@ -7,13 +7,13 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
-import nobugs.nolife.mw.MWException;
 import nobugs.nolife.mw.dto.ScannedMaterialDTO;
 import nobugs.nolife.mw.entities.Material;
 import nobugs.nolife.mw.entities.Memento;
 import nobugs.nolife.mw.entities.ScannedResult;
 import nobugs.nolife.mw.entities.TaggedMaterial;
 import nobugs.nolife.mw.entities.TaggedMaterialPK;
+import nobugs.nolife.mw.exceptions.MWException;
 import nobugs.nolife.mw.util.Constants;
 import nobugs.nolife.mw.util.MaterialUtil;
 import nobugs.nolife.mw.util.PathUtil;
@@ -32,7 +32,7 @@ public class ScannedResultProcessor {
 	}
 
 	public void manageScannedMaterialProcess(ScannedResult scannedResult, List<ScannedMaterialDTO> scannedMaterialList, 
-			String category, String tag) throws MWException {
+			String category, String tag) {
 		Memento memento = scannedResult.getMemento();
 		String path = scannedResult.getProductionPath();
 		List<ScannedResult> scannedResults = new ArrayList<>();
@@ -71,7 +71,7 @@ public class ScannedResultProcessor {
 	 * @return
 	 * @throws MWException
 	 */
-	private List<TaggedMaterial> toTaggedMaterials(Memento memento, String tag, List<ScannedMaterialDTO> scannedMaterialList) throws MWException {
+	private List<TaggedMaterial> toTaggedMaterials(Memento memento, String tag, List<ScannedMaterialDTO> scannedMaterialList) {
 		List<TaggedMaterial> taggedMaterials = new ArrayList<>();
 		List<Memento> mementos = new ArrayList<>();
 		mementos.add(memento);
